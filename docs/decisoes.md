@@ -17,4 +17,7 @@ Registro das decisões já tomadas. Para mudar alguma, conversar com o Osmar ant
 | 2026-11-04 | **Mundo:** horror cósmico em **São Paulo capital**. | Definição do Osmar (bloco 1 de escopo). |
 | 2026-11-04 | **Referências:** franquia Arkham Horror (jogos e Arkham Horror Files). Nada 100% novo, nada 100% copiado. Nomes e personagens próprios. | Inspiração sem copiar propriedade da Fantasy Flight. Lovecraft é domínio público. |
 | 2026-11-04 | **Narração:** mistura de Stephen King e Lovecraft, mais King do que Lovecraft. | Definição do Osmar (bloco 1 de escopo). |
+| 2026-11-04 | **Ficha única** para todos os personagens. Campos a definir pelo Osmar. | Definição do Osmar (bloco 2 de escopo). |
+| 2026-11-04 | **Três formas de criar personagem:** descrição livre (a IA preenche e pergunta o que faltar), perguntas rápidas ou perguntas completas. | Dar opção a quem quer agilidade e a quem quer detalhe. |
+| 2026-11-04 | **Modo de mortalidade** escolhido no fim da criação: Mortal (morre), Semimortal (cai e volta com debuff), Imortal (desmaia e é salvo sem efeito colateral). | O jogador escolhe que tipo de história quer viver. |
 | 2026-11-04 | Padrões de UI/UX ficam em `docs/padroes-ui.md`, cada um com uma label `ui-<nome>` no Jira. Únicas labels permitidas: `ui-*` e `bug`. | A mesma ideia sempre com a mesma cara, e todos os usos de um padrão fáceis de encontrar para refatorar. |
