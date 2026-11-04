@@ -32,6 +32,31 @@ de forma que dê para reconstruir o raciocínio depois só lendo o Jira.
 - **Ligar tickets relacionados** (ex.: "depende de", "relacionado a") e citar a chave (`AHSP-N`) nos commits.
 - Antes de mexer em algo existente, **ler os tickets anteriores** sobre aquilo.
 
+## Hierarquia no Jira
+
+```
+Épico            → uma entrega grande / uma "vertical" do produto (ex.: Ficha de personagem, IA mestra)
+ ├─ Tarefa       → uma parte entregável do épico
+ │   └─ Subtask  → um passo da tarefa. Subtask com label `bug` = "subbug": bug achado testando ESSA tarefa
+ └─ Bug          → bug em algo maior ou já concluído; fica no épico e é ligado à tarefa de origem
+```
+
+**Antes de qualquer trabalho novo:**
+1. Procurar os épicos existentes (`project = AHSP AND issuetype = Epic`).
+2. Se algum parece servir, **perguntar ao Osmar** se aquele épico cobre o assunto ou se é preciso um novo.
+3. Se não houver épico, propor um novo.
+4. Quebrar o épico em tarefas (e as tarefas em subtasks, quando fizer sentido).
+
+**Todo épico tem na descrição:**
+- **Propósito**: por que ele existe e o que entrega para o jogador;
+- **O que entra / o que não entra**;
+- **Contexto e dependências** com outros épicos.
+
+Antes de decidir algo numa tarefa, **subir na hierarquia** (ler o épico) e **olhar os tickets vizinhos**
+(outras tarefas do mesmo épico e épicos relacionados) para manter tudo coerente.
+
+O Claude mantém os status atualizados: o épico fica **Em andamento** enquanto alguma tarefa dele estiver aberta.
+
 ## Fluxo dos tickets no Jira
 
 | Status | Significado |
