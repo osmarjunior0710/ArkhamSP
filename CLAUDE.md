@@ -57,6 +57,18 @@ Antes de decidir algo numa tarefa, **subir na hierarquia** (ler o épico) e **ol
 
 O Claude mantém os status atualizados: o épico fica **Em andamento** enquanto alguma tarefa dele estiver aberta.
 
+## Padrões de UI/UX
+
+O arquivo `docs/padroes-ui.md` é o catálogo de padrões de interface e funcionalidade.
+
+- **Antes de qualquer trabalho de tela ou funcionalidade:** consultar o arquivo. Se já existe um padrão para a
+  mesma ideia (ex.: "magias" e "pactos" são ambos recursos contáveis), **reutilizar**. Na dúvida se é o mesmo
+  padrão ou um novo, perguntar ao Osmar.
+- **Ao criar algo novo de UI:** registrar o padrão no arquivo, no mesmo ticket.
+- **Labels do Jira:** cada padrão tem uma label `ui-<nome>` (kebab-case, sem acento), aplicada a todo ticket que
+  cria, usa ou altera o padrão. Únicas labels permitidas: `ui-*` (registradas no arquivo) e `bug`.
+- **Para mudar um padrão:** buscar `project = AHSP AND labels = ui-<nome>` e refatorar todos os usos juntos.
+
 ## Fluxo dos tickets no Jira
 
 | Status | Significado |

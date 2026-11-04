@@ -14,3 +14,4 @@ Registro das decisões já tomadas. Para mudar alguma, conversar com o Osmar ant
 | 2026-11-04 | O Osmar dá direções; o Claude apresenta opções viáveis com recomendação e o Osmar escolhe. | Decisão técnica fica com quem entende o código, e a de produto com o Osmar. |
 | 2026-11-04 | Hierarquia Épico > Tarefa/Bug > Subtask. "Subbug" = Subtask com label `bug`. | O Jira não tem um tipo "sub-bug"; a label mantém o bug preso à tarefa que está sendo testada. |
 | 2026-11-04 | Todo trabalho começa procurando um épico existente; o Osmar confirma se ele serve ou se é preciso um novo. | Evitar épicos duplicados e manter o propósito claro. |
+| 2026-11-04 | Padrões de UI/UX ficam em `docs/padroes-ui.md`, cada um com uma label `ui-<nome>` no Jira. Únicas labels permitidas: `ui-*` e `bug`. | A mesma ideia sempre com a mesma cara, e todos os usos de um padrão fáceis de encontrar para refatorar. |
