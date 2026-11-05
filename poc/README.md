@@ -2,7 +2,7 @@
 
 | Arquivo | O que é | Status |
 |---|---|---|
-| `dados-3d.html` | Dois d12 3D (branco = Bênção, preto = Mythos) com física real e som. Artifact: https://claude.ai/artifact/3PLztSz9M4ZdQwF7L9kn3P | **Referência aprovada** (AHSP-10, AHSP-11). É o visual final dos dados: não apagar nem alterar. |
+| `dados-3d.html` | Dois d12 3D (branco = Bênção, preto = Mythos) com física real e som. Artifact: https://claude.ai/artifact/3PLztSz9M4ZdQwF7L9kn3P | **Referência aprovada** (AT-10, AT-11). É o visual final dos dados: não apagar nem alterar. |
 
 ## Como os dados funcionam (resumo para reaproveitar no jogo)
 
@@ -12,4 +12,4 @@
 4. O número da face de cima é desenhado de pé para a câmera.
 5. A simulação gravada é reproduzida a 60 quadros por segundo, tocando um estalo a cada batida.
 
-Detalhes técnicos completos (parâmetros de física, materiais, som) nos comentários de AHSP-10 e AHSP-11 no Jira.
+Detalhes técnicos completos (parâmetros de física, materiais, som) nos comentários de AT-10 e AT-11 no Jira.

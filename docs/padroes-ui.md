@@ -14,7 +14,7 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
 2. **Cada padrão tem uma label no Jira**: `ui-` + nome curto em kebab-case (ex.: `ui-contador-pips`).
    Todo ticket que cria, usa ou altera o padrão recebe a label.
 3. **Para mudar um padrão no futuro**, buscar todos os tickets com
-   `project = AHSP AND labels = ui-<nome>` e a seção "Onde é usado" abaixo, e refatorar tudo junto.
+   `project = AT AND labels = ui-<nome>` e a seção "Onde é usado" abaixo, e refatorar tudo junto.
 
 ## Regras das labels (para não virar bagunça)
 
@@ -34,7 +34,7 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
 - **Quando usar:** em que situações aplicar (e quando NÃO usar)
 - **Como é:** aparência e comportamento (estados, cores, interação)
 - **Variações permitidas:** o que pode mudar sem virar outro padrão (ex.: rótulo, cor do tema)
-- **Onde é usado:** telas/componentes + tickets (AHSP-N)
+- **Onde é usado:** telas/componentes + tickets (AT-N)
 - **Histórico:** data — o que mudou e por quê (ticket)
 ```
 
@@ -49,7 +49,7 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
 > Não apagar nem alterar esse arquivo: a versão do jogo deve reproduzir este comportamento.
 - **Label:** `ui-rolagem-2d12`
 - **Ideia:** o jogador vê os dois dados caírem e entende na hora quem "ganhou", a Bênção ou o Mythos.
-- **Quando usar:** todo teste com risco (regra do épico AHSP-6). Não usar para sorteios internos da IA.
+- **Quando usar:** todo teste com risco (regra do épico AT-6). Não usar para sorteios internos da IA.
 - **Como é:**
   - dois d12 3D são lançados juntos de um lado da mesa, com **física real**: batem nas bordas, esbarram um no
     outro e quicam até parar; a face de cima mostra o valor sorteado, com o número de pé para o jogador;
@@ -60,8 +60,8 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
     ("Bênção 7 + Mythos 5 + 0 = 12 contra 14");
   - cor do cartão por resultado: Crítico = dourado claro; Sucesso = verde; Sucesso com deslize e Falha com progresso = amarelo; Falha = vermelho.
 - **Variações permitidas:** tamanho da área dos dados; o tema de cor da mesa.
-- **Onde é usado:** prova de conceito `poc/dados-3d.html` (AHSP-10).
+- **Onde é usado:** prova de conceito `poc/dados-3d.html` (AT-10).
 - **Histórico:**
-  - 2026-11-05: criado na prova de conceito (AHSP-10), com animação roteirizada.
-  - 2026-11-05: física real e som de batida (AHSP-11), após o Osmar achar a v1 "roteirizada, sem punch".
+  - 2026-11-05: criado na prova de conceito (AT-10), com animação roteirizada.
+  - 2026-11-05: física real e som de batida (AT-11), após o Osmar achar a v1 "roteirizada, sem punch".
   - 2026-11-05: aprovado pelo Osmar como padrão oficial e visual final dos dados.

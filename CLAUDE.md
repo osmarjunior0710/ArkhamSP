@@ -8,7 +8,9 @@ O Osmar é **QA / Game Designer, não é dev**. Ele não revisa código.
 ## Regras de trabalho
 
 1. **Uma parte por vez.** Nada de construir várias coisas de uma vez.
-2. **Todo trabalho começa num ticket do Jira** (projeto `AHSP`, site `osmarmelojunior.atlassian.net`). Sem ticket, não começa.
+2. **Todo trabalho começa num ticket do Jira** (projeto `AT`, site `osmarmelojunior.atlassian.net`). Sem ticket, não começa.
+   O projeto se chamava `AHSP` até 2026-11-05: chaves antigas `AHSP-N` são as mesmas `AT-N`.
+   O Osmar pretende criar um projeto novo no modelo Kanban; quando isso acontecer, atualizar a sigla aqui.
 3. **Antes de começar, confirmar com o Osmar** qual ticket será feito.
 4. **Decisões tomadas ficam em `docs/decisoes.md`**, para não serem rediscutidas.
 5. **Na dúvida, perguntar uma coisa de cada vez**, de forma simples e sem jargão técnico.
@@ -29,7 +31,7 @@ de forma que dê para reconstruir o raciocínio depois só lendo o Jira.
   - arquivos, links do Artifact e versões publicadas;
   - textos de instrução (prompt) dados à IA mestra;
   - nomes de funções/telas importantes e onde ficam.
-- **Ligar tickets relacionados** (ex.: "depende de", "relacionado a") e citar a chave (`AHSP-N`) nos commits.
+- **Ligar tickets relacionados** (ex.: "depende de", "relacionado a") e citar a chave (`AT-N`) nos commits.
 - Antes de mexer em algo existente, **ler os tickets anteriores** sobre aquilo.
 
 ## Hierarquia no Jira
@@ -42,7 +44,7 @@ de forma que dê para reconstruir o raciocínio depois só lendo o Jira.
 ```
 
 **Antes de qualquer trabalho novo:**
-1. Procurar os épicos existentes (`project = AHSP AND issuetype = Epic`).
+1. Procurar os épicos existentes (`project = AT AND issuetype = Epic`).
 2. Se algum parece servir, **perguntar ao Osmar** se aquele épico cobre o assunto ou se é preciso um novo.
 3. Se não houver épico, propor um novo.
 4. Quebrar o épico em tarefas (e as tarefas em subtasks, quando fizer sentido).
@@ -67,7 +69,7 @@ O arquivo `docs/padroes-ui.md` é o catálogo de padrões de interface e funcion
 - **Ao criar algo novo de UI:** registrar o padrão no arquivo, no mesmo ticket.
 - **Labels do Jira:** cada padrão tem uma label `ui-<nome>` (kebab-case, sem acento), aplicada a todo ticket que
   cria, usa ou altera o padrão. Únicas labels permitidas: `ui-*` (registradas no arquivo) e `bug`.
-- **Para mudar um padrão:** buscar `project = AHSP AND labels = ui-<nome>` e refatorar todos os usos juntos.
+- **Para mudar um padrão:** buscar `project = AT AND labels = ui-<nome>` e refatorar todos os usos juntos.
 
 ## Fluxo dos tickets no Jira
 
