@@ -42,7 +42,11 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
 
 ## Padrões registrados
 
-### Rolagem 2d12 (Bênção e Mythos) — rascunho, em prova de conceito
+### Rolagem 2d12 (Bênção e Mythos) — oficial
+
+> **Implementação de referência aprovada pelo Osmar:** `poc/dados-3d.html` (Artifact
+> https://claude.ai/artifact/3PLztSz9M4ZdQwF7L9kn3P, versão 2). "É o que eu quero no final."
+> Não apagar nem alterar esse arquivo: a versão do jogo deve reproduzir este comportamento.
 - **Label:** `ui-rolagem-2d12`
 - **Ideia:** o jogador vê os dois dados caírem e entende na hora quem "ganhou", a Bênção ou o Mythos.
 - **Quando usar:** todo teste com risco (regra do épico AHSP-6). Não usar para sorteios internos da IA.
@@ -60,3 +64,4 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
 - **Histórico:**
   - 2026-11-05: criado na prova de conceito (AHSP-10), com animação roteirizada.
   - 2026-11-05: física real e som de batida (AHSP-11), após o Osmar achar a v1 "roteirizada, sem punch".
+  - 2026-11-05: aprovado pelo Osmar como padrão oficial e visual final dos dados.
