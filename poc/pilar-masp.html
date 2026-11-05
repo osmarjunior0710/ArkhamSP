@@ -1,0 +1,357 @@
+<title>Pilar do MASP</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;700&family=Literata:opsz,wght@7..72,400;7..72,600&family=Permanent+Marker&display=swap">
+<style>
+/* Layout: noite na Paulista. Coluna da cena (narração + ação) e coluna do pilar (inscrições ao vivo). Visual escuro único, de propósito. */
+:root {
+  --bg: #0f0f10;            /* noite */
+  --surface: #18181a;
+  --line: #2c2b2e;
+  --fg: #e9e4da;
+  --muted: #9b968c;
+  --masp: #b5251f;          /* o vermelho das vigas do MASP */
+  --concrete: #3a3836;
+  --ok: #8fbf7a;
+  --warn: #d3b35a;
+  --bad: #d4705e;
+  --font-ui: "Archivo Narrow", "Arial Narrow", Arial, sans-serif;
+  --font-story: "Literata", Georgia, serif;
+  --font-hand: "Permanent Marker", "Comic Sans MS", cursive;
+  color-scheme: dark;
+}
+html, body { background: var(--bg); color: var(--fg); }
+body {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 32px;
+}
+.wrap { max-width: 1040px; margin: 0 auto; display: grid; gap: 18px; }
+header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; border-bottom: 3px solid var(--masp); padding-bottom: 10px; }
+h1 { font-weight: 700; font-size: 1.7rem; letter-spacing: .02em; margin: 0; text-transform: uppercase; }
+.tag { font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+
+.grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+@media (max-width: 760px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Cena */
+.scene { display: grid; gap: 14px; min-width: 0; }
+.log { display: grid; gap: 14px; }
+.msg { font-family: var(--font-story); font-size: 1.02rem; line-height: 1.65; white-space: pre-wrap; max-width: 68ch; }
+.msg.player {
+  font-family: var(--font-ui); font-size: .95rem; color: var(--muted);
+  border-left: 2px solid var(--line); padding-left: 10px;
+}
+.msg.player::before { content: "Você: "; color: var(--fg); font-weight: 700; }
+.msg.system { font-family: var(--font-ui); font-size: .9rem; color: var(--warn); }
+.thinking { font-family: var(--font-ui); color: var(--muted); font-style: italic; }
+
+form { display: grid; gap: 8px; }
+label.lbl { font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+textarea {
+  font: inherit; font-family: var(--font-story); color: var(--fg); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 4px; padding: 10px 12px; min-height: 76px; resize: vertical; width: 100%;
+  box-sizing: border-box;
+}
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.hint { font-size: .82rem; color: var(--muted); }
+button {
+  font-family: var(--font-ui); font-weight: 700; font-size: 1rem; letter-spacing: .08em; text-transform: uppercase;
+  color: #fff; background: var(--masp); border: 0; border-radius: 3px; padding: 10px 22px; min-height: 44px; cursor: pointer;
+}
+button:hover { filter: brightness(1.1); }
+button:disabled { opacity: .5; cursor: progress; }
+:focus-visible { outline: 2px solid var(--warn); outline-offset: 2px; }
+
+/* Pilar */
+.pillar {
+  min-width: 0;
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.015) 0 2px, transparent 2px 7px),
+    linear-gradient(180deg, #2b2a28, #232220);
+  border: 1px solid var(--line);
+  border-top: 10px solid var(--masp);
+  border-radius: 2px;
+  padding: 16px 16px 18px;
+  display: grid; gap: 12px;
+}
+.pillar h2 { margin: 0; font-size: 1rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+.inscriptions { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.ins { display: grid; gap: 2px; }
+.ins .t { font-family: var(--font-hand); font-size: 1.25rem; line-height: 1.25; color: #e8e2d4; word-break: break-word; }
+.ins.mine .t { color: #f1d27a; }
+.ins.world .t { color: #c9c2b2; opacity: .85; }
+.ins .by { font-size: .78rem; color: var(--muted); }
+.ins.fresh .t { animation: ink 1.2s ease-out; }
+@keyframes ink { from { color: var(--masp); } }
+@media (prefers-reduced-motion: reduce) { .ins.fresh .t { animation: none; } }
+.empty { color: var(--muted); font-size: .9rem; margin: 0; }
+
+/* Diagnóstico */
+.diag { border-top: 1px solid var(--line); padding-top: 12px; display: grid; gap: 6px; }
+.diag h2 { margin: 0; font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.diag dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 14px; margin: 0; font-size: .9rem; }
+.diag dt { color: var(--muted); }
+.diag dd { margin: 0; }
+.s-ok { color: var(--ok); } .s-warn { color: var(--warn); } .s-bad { color: var(--bad); }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Pilar do MASP</h1>
+    <span class="tag">Prova de conceito · AT-13</span>
+  </header>
+
+  <div class="grid">
+    <section class="scene" aria-label="Cena">
+      <div class="log" id="log" aria-live="polite">
+        <p class="msg">São quase onze da noite na Avenida Paulista. O vão livre do MASP está vazio, a não ser por um homem dormindo enrolado num cobertor cinza e pelo vento que empurra um copo de plástico de um lado para o outro.
+
+Você está diante do pilar esquerdo. O vermelho da tinta descasca em placas, e por baixo o concreto é frio como pedra de cemitério. Você repara que tem coisas escritas no pilar. Algumas parecem antigas. Uma, pelo jeito, foi feita hoje.
+
+O que você faz?</p>
+      </div>
+
+      <form id="form">
+        <label class="lbl" for="action">Sua ação</label>
+        <textarea id="action" maxlength="600" placeholder="Ex.: Chego perto e leio o que está escrito. / Pego uma caneta e escrevo meu nome no pilar."></textarea>
+        <div class="row">
+          <span class="hint" id="hint">A mestra responde usando a sua conta do Claude.</span>
+          <button id="send" type="submit">Agir</button>
+        </div>
+      </form>
+    </section>
+
+    <aside class="pillar" aria-label="Inscrições no pilar">
+      <h2>O que está escrito no pilar</h2>
+      <p class="empty" id="pillarEmpty">Carregando o pilar…</p>
+      <ul class="inscriptions" id="pillarList" hidden></ul>
+
+      <div class="diag">
+        <h2>Diagnóstico do teste</h2>
+        <dl>
+          <dt>Jogando como</dt><dd id="dWho">verificando…</dd>
+          <dt>Pode escrever</dt><dd id="dWrite">verificando…</dd>
+          <dt>Banco</dt><dd id="dDb">conectando…</dd>
+          <dt>IA</dt><dd id="dAi">verificando…</dd>
+        </dl>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  const $ = id => document.getElementById(id);
+  const logEl = $("log"), form = $("form"), actionEl = $("action"), sendBtn = $("send"), hintEl = $("hint");
+  const listEl = $("pillarList"), emptyEl = $("pillarEmpty");
+  const setDiag = (id, text, cls) => { const el = $(id); el.textContent = text; el.className = cls ? "s-" + cls : ""; };
+
+  const OPENING = logEl.querySelector(".msg").textContent.trim();
+  const turns = [];            // últimas falas desta visita (não salvas)
+  let inscriptions = [];       // [{id, texto, autorId, criadoEm}]
+  let me = null, db = null, sample = null, user = null, canWrite = null;
+  const names = {};            // autorId -> nome (resolvido na hora, nunca salvo)
+  const seen = new Set();
+
+  function addMsg(text, kind) {
+    const p = document.createElement("p");
+    p.className = "msg" + (kind ? " " + kind : "");
+    p.textContent = text;
+    logEl.append(p);
+    p.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    return p;
+  }
+
+  function ago(ms) {
+    const s = Math.max(0, (Date.now() - ms) / 1000);
+    if (s < 60) return "agora há pouco";
+    if (s < 3600) return "há " + Math.round(s / 60) + " min";
+    if (s < 86400) return "há " + Math.round(s / 3600) + " h";
+    return "há " + Math.round(s / 86400) + " dias";
+  }
+  function authorLabel(id) {
+    if (id === "mundo") return "autor desconhecido";
+    if (me && id === me) return "você";
+    return names[id] || "outra pessoa";
+  }
+
+  async function resolveNames() {
+    if (!user) return;
+    const ids = [...new Set(inscriptions.map(i => i.autorId).filter(id => id && id !== "mundo"))];
+    if (!ids.length) return;
+    try {
+      const ps = await user.profiles(ids);
+      for (const id of ids) if (ps && ps[id]) names[id] = ps[id].name || "";
+      renderPillar();
+    } catch (e) { /* nomes ficam como "outra pessoa" */ }
+  }
+
+  function renderPillar() {
+    if (!inscriptions.length) {
+      emptyEl.textContent = "O pilar está limpo. Por enquanto.";
+      emptyEl.hidden = false; listEl.hidden = true; return;
+    }
+    emptyEl.hidden = true; listEl.hidden = false;
+    listEl.replaceChildren(...inscriptions.map(i => {
+      const li = document.createElement("li");
+      li.className = "ins" + (i.autorId === "mundo" ? " world" : "") + (me && i.autorId === me ? " mine" : "") + (seen.has(i.id) ? "" : " fresh");
+      const t = document.createElement("div"); t.className = "t"; t.textContent = i.texto;
+      const by = document.createElement("div"); by.className = "by";
+      by.textContent = authorLabel(i.autorId) + " · " + ago(i.criadoEm);
+      li.append(t, by);
+      return li;
+    }));
+    inscriptions.forEach(i => seen.add(i.id));
+  }
+
+  function setBusy(b) {
+    sendBtn.disabled = b; actionEl.disabled = b;
+  }
+
+  function buildPrompt(action) {
+    const pillarText = inscriptions.length
+      ? inscriptions.map(i => "- \"" + i.texto + "\" (escrito por: " + (i.autorId === "mundo" ? "desconhecido, antigo" : (me && i.autorId === me ? "o próprio jogador" : "outra pessoa que passou por aqui")) + ", " + ago(i.criadoEm) + ")").join("\n")
+      : "(nada escrito)";
+    const history = turns.slice(-8).map(t => (t.role === "user" ? "JOGADOR: " : "MESTRA: ") + t.content).join("\n\n");
+    return [
+      "Você é a mestra de um RPG narrativo de horror cósmico que se passa em São Paulo nos dias de hoje.",
+      "Voz: mistura de Stephen King e Lovecraft, mais King do que Lovecraft. Horror que nasce do cotidiano, detalhes mundanos e concretos da cidade, ritmo próximo; o desconhecido aparece em frestas, nunca explicado.",
+      "Narre em português do Brasil, na segunda pessoa (\"você\"), em 1 a 3 parágrafos curtos. Não decida pelo jogador nem descreva o que ele sente além do físico. Termine deixando espaço para a próxima ação, sem listar opções.",
+      "",
+      "CENA FIXA: o jogador está diante do pilar esquerdo do MASP, no vão livre, na Avenida Paulista, à noite. Não saia desta cena: se o jogador tentar ir para longe, algo o mantém ali (curiosidade, um som, o pilar).",
+      "",
+      "INSCRIÇÕES QUE ESTÃO NO PILAR AGORA (são reais e compartilhadas entre jogadores; descreva-as fielmente se o jogador olhar):",
+      pillarText,
+      "",
+      "CENA ATÉ AQUI:",
+      "MESTRA: " + OPENING,
+      history ? "\n" + history : "",
+      "",
+      "NOVA AÇÃO DO JOGADOR: " + action,
+      "",
+      "Responda SOMENTE com um objeto JSON neste formato:",
+      "{\"narracao\": \"texto da narração\", \"inscricao\": null}",
+      "Regra de \"inscricao\": se, e somente se, nesta ação o jogador escrever, riscar, pichar ou gravar algo no pilar, coloque em \"inscricao\" o texto exato que ficou no pilar (até 140 caracteres). Em qualquer outro caso, use null."
+    ].join("\n");
+  }
+
+  const AI_ERRORS = {
+    not_granted: "Você não permitiu que a página usasse o Claude. Recarregue a página para ver o pedido de novo.",
+    rate_limited: "Muitas ações seguidas. Espere alguns segundos e tente de novo.",
+    session_expired: "Sua sessão do Claude expirou. Recarregue a página.",
+    sampling_disabled: "O uso do Claude por páginas está desligado nesta conta.",
+    refused: "A mestra se recusou a narrar essa ação. Tente outra.",
+    invalid_json: "A mestra respondeu num formato inesperado. Tente de novo.",
+    prompt_too_large: "A cena ficou grande demais. Recarregue a página para recomeçar a conversa."
+  };
+
+  form.addEventListener("submit", async ev => {
+    ev.preventDefault();
+    const action = actionEl.value.trim();
+    if (!action) { actionEl.focus(); return; }
+    if (!sample) { addMsg("A IA não está disponível nesta visualização. Abra o jogo pelo Claude, logado na sua conta.", "system"); return; }
+    addMsg(action, "player");
+    actionEl.value = "";
+    setBusy(true);
+    const wait = addMsg("A mestra está pensando…", "thinking");
+    try {
+      const out = await sample.json(buildPrompt(action), { cache: false });
+      wait.remove();
+      const narr = out && typeof out.narracao === "string" ? out.narracao.trim() : "";
+      addMsg(narr || "(silêncio)");
+      turns.push({ role: "user", content: action }, { role: "assistant", content: narr });
+      setDiag("dAi", "respondendo pela sua conta", "ok");
+      const ins = out && typeof out.inscricao === "string" ? out.inscricao.trim().slice(0, 140) : "";
+      if (ins) await writeInscription(ins, action);
+    } catch (e) {
+      wait.remove();
+      const code = e && e.code;
+      addMsg(AI_ERRORS[code] || "A mestra não conseguiu responder agora (" + (code || "erro") + "). Tente de novo.", "system");
+      setDiag("dAi", "erro: " + (code || "desconhecido"), "bad");
+    } finally {
+      setBusy(false);
+      actionEl.focus();
+    }
+  });
+
+  async function writeInscription(texto, acao) {
+    if (!db || !me) { addMsg("Não deu para gravar no pilar: o banco não está disponível nesta visualização.", "system"); return; }
+    if (canWrite === false) { addMsg("O texto não ficou gravado: sua conta só tem permissão de ver este jogo. Peça ao Osmar para compartilhar com você como Editor.", "system"); return; }
+    try {
+      await db.collection("pilar").add({ texto, autorId: me, criadoEm: Date.now(), acao: acao.slice(0, 300) });
+      setDiag("dWrite", "sim (gravou agora)", "ok");
+    } catch (e) {
+      const code = e && e.code;
+      if (code === "invalid_argument") {
+        canWrite = false;
+        setDiag("dWrite", "não: só visualização", "bad");
+        addMsg("O texto não ficou gravado: sua conta só tem permissão de ver este jogo. Peça ao Osmar para compartilhar com você como Editor.", "system");
+      } else {
+        addMsg("Não deu para gravar no pilar agora (" + (code || "erro") + ").", "system");
+      }
+    }
+  }
+
+  // ---------- Capacidades ----------
+  (async () => {
+    const c = window.claude;
+    if (!c || typeof c.use !== "function") {
+      ["dWho", "dWrite", "dDb", "dAi"].forEach(id => setDiag(id, "indisponível fora do Claude", "bad"));
+      emptyEl.textContent = "Abra este link pelo Claude, logado na sua conta, para ver o pilar.";
+      return;
+    }
+    [user, db, sample] = await Promise.all([c.use("user"), c.use("db"), c.use("sample")]);
+
+    // Quem está jogando
+    if (user) {
+      try {
+        me = await user.id();
+        const name = await user.name();
+        const owner = await user.isOwner().catch(() => false);
+        setDiag("dWho", (name || "sem nome visível") + (owner ? " (dono do jogo)" : ""), me ? "ok" : "warn");
+        const w = user.can ? await user.can("data.write") : null;
+        if (w === true) { canWrite = true; setDiag("dWrite", "sim", "ok"); }
+        else if (w === false) { canWrite = false; setDiag("dWrite", "não: só visualização", "bad"); }
+        else setDiag("dWrite", "a confirmar na primeira gravação", "warn");
+      } catch (e) { setDiag("dWho", "não identificado", "warn"); }
+    } else {
+      setDiag("dWho", "não identificado", "warn");
+      setDiag("dWrite", "não", "bad");
+    }
+
+    setDiag("dAi", sample ? "disponível (pede permissão na 1ª ação)" : "indisponível", sample ? "ok" : "bad");
+    if (!sample) hintEl.textContent = "A IA não está disponível nesta visualização.";
+
+    // Pilar ao vivo
+    if (!db) {
+      setDiag("dDb", "indisponível", "bad");
+      emptyEl.textContent = "Não foi possível abrir o banco do jogo nesta visualização.";
+      return;
+    }
+    let first = true;
+    const timer = setTimeout(() => {
+      if (first) { setDiag("dDb", "sem resposta ainda", "warn"); emptyEl.textContent = "O banco ainda não respondeu. Pode estar fora do ar por um momento."; }
+    }, 10000);
+    db.collection("pilar").orderBy("criadoEm", "asc").limit(200).onSnapshot(snap => {
+      inscriptions = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+      if (!snap.metadata.fromCache) { clearTimeout(timer); setDiag("dDb", "conectado, ao vivo · " + snap.size + " inscrições", "ok"); }
+      if (first) { inscriptions.forEach(i => seen.add(i.id)); first = false; }
+      renderPillar();
+      resolveNames();
+    }, err => {
+      clearTimeout(timer);
+      setDiag("dDb", "erro: " + (err && err.code), "bad");
+      emptyEl.textContent = "Não foi possível ler o pilar (" + (err && err.code) + ").";
+    });
+  })();
+
+  // atualiza os "há X min" de tempos em tempos (só a tela, nada é gravado)
+  setInterval(() => { if (inscriptions.length) renderPillar(); }, 60000);
+})();
+</script>
