@@ -42,4 +42,17 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
 
 ## Padrões registrados
 
-_Nenhum ainda. O primeiro será registrado quando a primeira tela do jogo for construída._
+### Rolagem 2d12 (Bênção e Mythos) — rascunho, em prova de conceito
+- **Label:** `ui-rolagem-2d12`
+- **Ideia:** o jogador vê os dois dados caírem e entende na hora quem "ganhou", a Bênção ou o Mythos.
+- **Quando usar:** todo teste com risco (regra do épico AHSP-6). Não usar para sorteios internos da IA.
+- **Como é:**
+  - dois d12 3D caem juntos e param com o valor sorteado na face de cima, com o número de pé para o jogador;
+  - **branco = Bênção** (número escuro), **preto = Mythos** (número claro); o branco fica à esquerda;
+  - 6 e 9 têm um sublinhado;
+  - depois que os dados param, um cartão mostra o **tipo de resultado** em destaque e a conta por extenso
+    ("Bênção 7 + Mythos 5 + 0 = 12 contra 14");
+  - cor do cartão por resultado: Crítico = dourado claro; Sucesso = verde; Sucesso com deslize e Falha com progresso = amarelo; Falha = vermelho.
+- **Variações permitidas:** tamanho da área dos dados; o tema de cor da mesa.
+- **Onde é usado:** prova de conceito `poc/dados-3d.html` (AHSP-10).
+- **Histórico:** 2026-11-05 — criado na prova de conceito (AHSP-10).

@@ -1,0 +1,475 @@
+<title>Mesa de Dados ArkhamSP</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Karla:wght@400;600&display=swap">
+<style>
+/* Layout: one dark "investigation table" scene on top, a compact control strip and result card below. Single dark look on purpose. */
+:root {
+  --bg: #0e1110;          /* tinta de mesa, quase preto esverdeado */
+  --surface: #171c1a;
+  --line: #2b3431;
+  --fg: #e6e1d3;          /* papel envelhecido */
+  --muted: #9a9a8c;
+  --accent: #b8a06a;      /* latão gasto */
+  --good: #8fbf7a;
+  --mid: #d3b35a;
+  --bad: #c9705e;
+  --crit: #e8d79a;
+  --font-display: "Cinzel", "Trajan Pro", Georgia, serif;
+  --font-body: "Karla", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: dark;
+}
+html, body { background: var(--bg); color: var(--fg); }
+body {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 32px;
+}
+.wrap { max-width: 880px; margin: 0 auto; display: grid; gap: 16px; }
+header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: 1.6rem; letter-spacing: .04em; margin: 0; text-wrap: balance; }
+.tag { font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+.scene {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 40%, #1d2522 0%, var(--bg) 75%);
+}
+@media (max-width: 560px) { .scene { aspect-ratio: 1 / 1; } }
+.scene canvas { display: block; width: 100%; height: 100%; }
+.legend {
+  position: absolute; left: 12px; bottom: 10px;
+  display: flex; gap: 14px; font-size: .8rem; color: var(--muted);
+}
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.chip { width: 12px; height: 12px; border-radius: 2px; border: 1px solid var(--muted); }
+.chip.w { background: #ece6d6; }
+.chip.b { background: #141414; }
+.fallback { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 24px; color: var(--bad); }
+
+.controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
+.field { display: grid; gap: 4px; }
+.field label { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+select, input[type="number"] {
+  font: inherit; color: var(--fg); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 4px; padding: 8px 10px; min-height: 40px;
+}
+input[type="number"] { width: 6rem; }
+button {
+  font-family: var(--font-display); font-weight: 700; font-size: 1rem; letter-spacing: .1em;
+  color: var(--bg); background: var(--accent); border: 0; border-radius: 4px;
+  padding: 10px 28px; min-height: 44px; cursor: pointer;
+}
+button:hover { filter: brightness(1.08); }
+button:disabled { opacity: .55; cursor: progress; }
+:focus-visible { outline: 2px solid var(--crit); outline-offset: 2px; }
+
+.result {
+  display: grid; gap: 6px; padding: 16px 18px;
+  background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--line); border-radius: 4px;
+}
+.result .kind { font-family: var(--font-display); font-weight: 700; font-size: 1.35rem; letter-spacing: .03em; }
+.result .math { font-variant-numeric: tabular-nums; color: var(--muted); }
+.result[data-tone="crit"] { border-left-color: var(--crit); } .result[data-tone="crit"] .kind { color: var(--crit); }
+.result[data-tone="good"] { border-left-color: var(--good); } .result[data-tone="good"] .kind { color: var(--good); }
+.result[data-tone="mid"]  { border-left-color: var(--mid); }  .result[data-tone="mid"] .kind  { color: var(--mid); }
+.result[data-tone="bad"]  { border-left-color: var(--bad); }  .result[data-tone="bad"] .kind  { color: var(--bad); }
+
+details { border-top: 1px solid var(--line); padding-top: 12px; }
+summary { cursor: pointer; color: var(--muted); font-size: .9rem; }
+.force { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; margin-top: 12px; }
+.force .check { display: flex; align-items: center; gap: 8px; min-height: 40px; }
+
+.history h2 { font-family: var(--font-display); font-size: .95rem; letter-spacing: .08em; margin: 0 0 6px; color: var(--muted); font-weight: 600; }
+.history ol { margin: 0; padding-left: 1.2rem; display: grid; gap: 2px; font-variant-numeric: tabular-nums; font-size: .9rem; }
+.history .empty { color: var(--muted); font-size: .9rem; margin: 0; }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Mesa de Dados</h1>
+    <span class="tag">Prova de conceito · AHSP-10</span>
+  </header>
+
+  <div class="scene" id="scene">
+    <div class="legend" aria-hidden="true">
+      <span><i class="chip w"></i>Bênção</span>
+      <span><i class="chip b"></i>Mythos</span>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="field">
+      <label for="attr">Atributo</label>
+      <input id="attr" type="number" min="-5" max="15" step="1" value="0">
+    </div>
+    <div class="field">
+      <label for="dc">Dificuldade</label>
+      <select id="dc">
+        <option value="8">8 · Muito fácil</option>
+        <option value="11">11 · Fácil</option>
+        <option value="14" selected>14 · Médio</option>
+        <option value="17">17 · Difícil</option>
+        <option value="20">20 · Muito difícil</option>
+        <option value="23">23 · Quase impossível</option>
+      </select>
+    </div>
+    <button id="roll" type="button">Rolar</button>
+  </div>
+
+  <div class="result" id="result" data-tone="none" aria-live="polite">
+    <div class="kind" id="kind">Pronto para rolar</div>
+    <div class="math" id="math">Escolha o atributo e a dificuldade, depois clique em Rolar.</div>
+  </div>
+
+  <details>
+    <summary>Modo de teste: escolher os valores dos dados</summary>
+    <div class="force">
+      <label class="check" for="forceOn"><input id="forceOn" type="checkbox"> Usar valores escolhidos</label>
+      <div class="field">
+        <label for="forceW">Branco (Bênção)</label>
+        <select id="forceW"></select>
+      </div>
+      <div class="field">
+        <label for="forceB">Preto (Mythos)</label>
+        <select id="forceB"></select>
+      </div>
+    </div>
+  </details>
+
+  <section class="history">
+    <h2>Últimas rolagens</h2>
+    <p class="empty" id="histEmpty">Nenhuma rolagem ainda.</p>
+    <ol id="hist" hidden></ol>
+  </section>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function () {
+  "use strict";
+  const sceneEl = document.getElementById("scene");
+  const rollBtn = document.getElementById("roll");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Selects do modo de teste
+  for (const id of ["forceW", "forceB"]) {
+    const sel = document.getElementById(id);
+    for (let v = 1; v <= 12; v++) sel.add(new Option(String(v), String(v)));
+    sel.value = "12";
+  }
+
+  if (typeof THREE === "undefined") {
+    sceneEl.insertAdjacentHTML("beforeend", '<div class="fallback">A biblioteca 3D não carregou. Recarregue a página.</div>');
+    rollBtn.disabled = true;
+    return;
+  }
+
+  // ---------- Regra (AHSP-6) ----------
+  function resolve(white, black, attr, dc) {
+    const total = white + black + attr;
+    if (white === black) return { kind: "Crítico", tone: "crit", total };
+    const pass = total >= dc;
+    if (pass) return white > black
+      ? { kind: "Sucesso", tone: "good", total }
+      : { kind: "Sucesso com deslize", tone: "mid", total };
+    return white > black
+      ? { kind: "Falha com progresso", tone: "mid", total }
+      : { kind: "Falha", tone: "bad", total };
+  }
+  function d12() {
+    const buf = new Uint32Array(1);
+    const limit = Math.floor(0x100000000 / 12) * 12;
+    let x;
+    do { crypto.getRandomValues(buf); x = buf[0]; } while (x >= limit);
+    return (x % 12) + 1;
+  }
+
+  // ---------- Cena ----------
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  sceneEl.prepend(renderer.domElement);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(34, 16 / 9, 0.1, 100);
+
+  scene.add(new THREE.HemisphereLight(0xd8d2c0, 0x0b0f0d, 0.55));
+  const key = new THREE.DirectionalLight(0xfff1d6, 1.05);
+  key.position.set(-4, 10, 5);
+  key.castShadow = true;
+  key.shadow.mapSize.set(1024, 1024);
+  key.shadow.camera.left = -8; key.shadow.camera.right = 8;
+  key.shadow.camera.top = 8; key.shadow.camera.bottom = -8;
+  key.shadow.radius = 4;
+  scene.add(key);
+  const rim = new THREE.PointLight(0x6f8f86, 0.5, 30);
+  rim.position.set(5, 4, -5);
+  scene.add(rim);
+
+  const table = new THREE.Mesh(
+    new THREE.PlaneGeometry(40, 40),
+    new THREE.ShadowMaterial({ opacity: 0.45 })
+  );
+  table.rotation.x = -Math.PI / 2;
+  table.receiveShadow = true;
+  scene.add(table);
+
+  // ---------- Geometria do d12 ----------
+  const PHI = (1 + Math.sqrt(5)) / 2;
+  const SIZE = 1.0; // raio circunscrito
+  const rawVerts = [];
+  for (const x of [-1, 1]) for (const y of [-1, 1]) for (const z of [-1, 1]) rawVerts.push([x, y, z]);
+  for (const a of [-1, 1]) for (const b of [-1, 1]) {
+    rawVerts.push([0, a / PHI, b * PHI]);
+    rawVerts.push([a / PHI, b * PHI, 0]);
+    rawVerts.push([b * PHI, 0, a / PHI]);
+  }
+  const verts = rawVerts.map(v => new THREE.Vector3(...v).multiplyScalar(SIZE / Math.sqrt(3)));
+
+  // Normais das faces = vértices do icosaedro. As 6 "positivas" recebem 1..6; as opostas, 13 - v.
+  const posNormals = [
+    [0, PHI, 1], [0, -PHI, 1], [1, 0, PHI], [-1, 0, PHI], [PHI, 1, 0], [PHI, -1, 0]
+  ].map(n => new THREE.Vector3(...n).normalize());
+  const faces = []; // {normal, value, uAxis, vAxis}
+  posNormals.forEach((n, i) => {
+    faces.push({ normal: n.clone(), value: i + 1 });
+    faces.push({ normal: n.clone().negate(), value: 12 - i });
+  });
+
+  const positions = [], uvs = [], normals = [];
+  const geom = new THREE.BufferGeometry();
+  let inradius = 0;
+  faces.forEach((f, fi) => {
+    const n = f.normal;
+    const ring = verts
+      .map(v => ({ v, d: v.dot(n) }))
+      .sort((a, b) => b.d - a.d)
+      .slice(0, 5)
+      .map(o => o.v);
+    const center = ring.reduce((acc, v) => acc.add(v), new THREE.Vector3()).multiplyScalar(1 / 5);
+    inradius = center.length();
+    // Base do plano da face: v aponta para o primeiro vértice (o "topo" do número)
+    const vAxis = ring[0].clone().sub(center).normalize();
+    const uAxis = new THREE.Vector3().crossVectors(vAxis, n).normalize();
+    f.uAxis = uAxis; f.vAxis = vAxis;
+    ring.sort((a, b) => {
+      const pa = a.clone().sub(center), pb = b.clone().sub(center);
+      return Math.atan2(pa.dot(vAxis), pa.dot(uAxis)) - Math.atan2(pb.dot(vAxis), pb.dot(uAxis));
+    });
+    const r = ring[0].distanceTo(center);
+    const uvOf = p => {
+      const d = p.clone().sub(center);
+      return [0.5 + 0.46 * d.dot(uAxis) / r, 0.5 + 0.46 * d.dot(vAxis) / r];
+    };
+    const start = positions.length / 3;
+    for (let k = 0; k < 5; k++) {
+      const a = ring[k], b = ring[(k + 1) % 5];
+      // ordem anti-horária vista de fora
+      for (const p of [center, a, b]) {
+        positions.push(p.x, p.y, p.z);
+        normals.push(n.x, n.y, n.z);
+        uvs.push(...uvOf(p));
+      }
+    }
+    geom.addGroup(start, 15, fi);
+  });
+  geom.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+  geom.setAttribute("normal", new THREE.Float32BufferAttribute(normals, 3));
+  geom.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
+  // Garante que os triângulos estejam virados para fora
+  (function fixWinding() {
+    const pos = geom.attributes.position.array;
+    const nor = geom.attributes.normal.array;
+    for (let i = 0; i < pos.length; i += 9) {
+      const a = new THREE.Vector3(pos[i], pos[i + 1], pos[i + 2]);
+      const b = new THREE.Vector3(pos[i + 3], pos[i + 4], pos[i + 5]);
+      const c = new THREE.Vector3(pos[i + 6], pos[i + 7], pos[i + 8]);
+      const cross = b.clone().sub(a).cross(c.clone().sub(a));
+      const n = new THREE.Vector3(nor[i], nor[i + 1], nor[i + 2]);
+      if (cross.dot(n) < 0) {
+        for (let k = 0; k < 3; k++) { const t = pos[i + 3 + k]; pos[i + 3 + k] = pos[i + 6 + k]; pos[i + 6 + k] = t; }
+        const uv = geom.attributes.uv.array, j = (i / 3) * 2;
+        for (let k = 0; k < 2; k++) { const t = uv[j + 2 + k]; uv[j + 2 + k] = uv[j + 4 + k]; uv[j + 4 + k] = t; }
+      }
+    }
+  })();
+
+  function faceTexture(value, bg, ink, edge) {
+    const c = document.createElement("canvas");
+    c.width = c.height = 256;
+    const g = c.getContext("2d");
+    g.fillStyle = bg; g.fillRect(0, 0, 256, 256);
+    // leve vinheta para dar volume
+    const grad = g.createRadialGradient(128, 128, 30, 128, 128, 150);
+    grad.addColorStop(0, "rgba(255,255,255,0.06)");
+    grad.addColorStop(1, edge);
+    g.fillStyle = grad; g.fillRect(0, 0, 256, 256);
+    g.fillStyle = ink;
+    g.textAlign = "center"; g.textBaseline = "middle";
+    g.font = '700 ' + (value >= 10 ? 92 : 108) + 'px "Cinzel", Georgia, serif';
+    g.fillText(String(value), 128, 136);
+    if (value === 6 || value === 9) g.fillRect(98, 196, 60, 8); // sublinhado para distinguir 6 e 9
+    const t = new THREE.CanvasTexture(c);
+    t.encoding = THREE.sRGBEncoding;
+    t.anisotropy = 4;
+    return t;
+  }
+
+  function makeDie(style) {
+    const mats = faces.map(f => new THREE.MeshStandardMaterial({
+      map: faceTexture(f.value, style.bg, style.ink, style.vignette),
+      roughness: style.roughness, metalness: 0.0
+    }));
+    const mesh = new THREE.Mesh(geom, mats);
+    mesh.castShadow = true;
+    const edges = new THREE.LineSegments(
+      new THREE.EdgesGeometry(geom, 10),
+      new THREE.LineBasicMaterial({ color: style.edge, transparent: true, opacity: 0.55 })
+    );
+    mesh.add(edges);
+    scene.add(mesh);
+    return { mesh, rest: new THREE.Vector3(), anim: null };
+  }
+
+  let dice;
+  function buildDice() {
+    dice = {
+      white: makeDie({ bg: "#ece6d6", ink: "#1a1a1a", vignette: "rgba(120,105,80,0.25)", edge: 0x8a8070, roughness: 0.45 }),
+      black: makeDie({ bg: "#151515", ink: "#efe7d2", vignette: "rgba(0,0,0,0.45)", edge: 0x5a5a5a, roughness: 0.35 })
+    };
+    placeAtRest(dice.white, 7, -1.5, 0.15);
+    placeAtRest(dice.black, 5, 1.5, -0.1);
+  }
+
+  // Orientação final: face sorteada para cima, número de pé para a câmera
+  const UP = new THREE.Vector3(0, 1, 0);
+  function finalQuat(value, jitter) {
+    const f = faces.find(x => x.value === value);
+    const qAlign = new THREE.Quaternion().setFromUnitVectors(f.normal, UP);
+    const t = f.vAxis.clone().applyQuaternion(qAlign);
+    // gira em torno de Y para levar o "topo" do número para -Z (topo da tela)
+    const qYaw = new THREE.Quaternion().setFromAxisAngle(UP, Math.PI - Math.atan2(t.x, t.z) + jitter);
+    return qYaw.multiply(qAlign);
+  }
+  function placeAtRest(die, value, x, z) {
+    die.mesh.quaternion.copy(finalQuat(value, 0));
+    die.mesh.position.set(x, inradius, z);
+    die.rest.set(x, inradius, z);
+  }
+
+  // ---------- Animação ----------
+  const easeOut = t => 1 - Math.pow(1 - t, 3);
+  function throwDie(die, value, endX, endZ, delay) {
+    const q1 = finalQuat(value, (Math.random() - 0.5) * 0.5);
+    const axis = new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).normalize();
+    die.anim = {
+      t0: performance.now() + delay,
+      dur: reduceMotion ? 350 : 1700 + Math.random() * 300,
+      from: new THREE.Vector3(endX + 4.5, 4.5, endZ + 5.5),
+      to: new THREE.Vector3(endX, inradius, endZ),
+      q1, axis,
+      spin: reduceMotion ? 0 : Math.PI * (7 + Math.random() * 3),
+      height: 3.2
+    };
+  }
+  function stepDie(die, now) {
+    const a = die.anim;
+    if (!a) return true;
+    let t = (now - a.t0) / a.dur;
+    if (t < 0) t = 0;
+    if (t >= 1) {
+      die.mesh.position.copy(a.to);
+      die.mesh.quaternion.copy(a.q1);
+      die.anim = null;
+      return true;
+    }
+    const e = easeOut(t);
+    die.mesh.position.lerpVectors(a.from, a.to, e);
+    const bounce = a.height * Math.exp(-3.2 * t) * Math.abs(Math.cos(2.4 * Math.PI * t)) * (1 - t);
+    die.mesh.position.y = a.to.y + bounce + (1 - e) * (a.from.y - a.to.y) * 0.35;
+    const qs = new THREE.Quaternion().setFromAxisAngle(a.axis, a.spin * (1 - e));
+    die.mesh.quaternion.copy(a.q1).multiply(qs);
+    return false;
+  }
+
+  let pending = null;
+  function frame(now) {
+    if (dice) {
+      const doneW = stepDie(dice.white, now);
+      const doneB = stepDie(dice.black, now);
+      if (pending && doneW && doneB) { const p = pending; pending = null; p(); }
+    }
+    renderer.render(scene, camera);
+    requestAnimationFrame(frame);
+  }
+
+  function resize() {
+    const w = sceneEl.clientWidth, h = sceneEl.clientHeight;
+    if (!w || !h) return;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    const dist = camera.aspect < 1.2 ? 12.5 : 11.5;
+    camera.position.set(0, dist * 0.86, dist * 0.5);
+    camera.lookAt(0, 0, 0.2);
+    camera.updateProjectionMatrix();
+  }
+  new ResizeObserver(resize).observe(sceneEl);
+  resize();
+
+  // ---------- Interface ----------
+  const resultEl = document.getElementById("result");
+  const kindEl = document.getElementById("kind");
+  const mathEl = document.getElementById("math");
+  const histEl = document.getElementById("hist");
+  const histEmpty = document.getElementById("histEmpty");
+  const history = [];
+
+  function showResult(w, b, attr, dc) {
+    const r = resolve(w, b, attr, dc);
+    resultEl.dataset.tone = r.tone;
+    kindEl.textContent = r.kind;
+    const sign = attr >= 0 ? "+ " + attr : "− " + Math.abs(attr);
+    mathEl.textContent = "Bênção " + w + " + Mythos " + b + " " + sign + " = " + r.total + " contra " + dc +
+      (w === b ? " · dados iguais: sucesso automático" : "");
+    history.unshift(r.kind + " · " + w + " e " + b + " · total " + r.total + " / dif. " + dc);
+    history.length = Math.min(history.length, 6);
+    histEl.replaceChildren(...history.map(t => { const li = document.createElement("li"); li.textContent = t; return li; }));
+    histEl.hidden = false; histEmpty.hidden = true;
+  }
+
+  rollBtn.addEventListener("click", () => {
+    if (!dice || pending) return;
+    const attr = parseInt(document.getElementById("attr").value, 10) || 0;
+    const dc = parseInt(document.getElementById("dc").value, 10);
+    const forced = document.getElementById("forceOn").checked;
+    const w = forced ? parseInt(document.getElementById("forceW").value, 10) : d12();
+    const b = forced ? parseInt(document.getElementById("forceB").value, 10) : d12();
+    rollBtn.disabled = true;
+    resultEl.dataset.tone = "none";
+    kindEl.textContent = "Rolando…";
+    mathEl.textContent = " ";
+    const jx = () => (Math.random() - 0.5) * 0.6;
+    throwDie(dice.white, w, -1.5 + jx(), jx(), 0);
+    throwDie(dice.black, b, 1.5 + jx(), jx(), reduceMotion ? 0 : 120);
+    pending = () => { showResult(w, b, attr, dc); rollBtn.disabled = false; };
+  });
+
+  // Espera a fonte dos números antes de desenhar as faces (com limite de tempo)
+  const fontReady = document.fonts && document.fonts.load
+    ? Promise.race([document.fonts.load('700 100px "Cinzel"'), new Promise(r => setTimeout(r, 2500))])
+    : Promise.resolve();
+  fontReady.catch(() => {}).then(() => { buildDice(); requestAnimationFrame(frame); });
+})();
+</script>
