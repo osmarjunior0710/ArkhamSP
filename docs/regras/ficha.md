@@ -51,3 +51,34 @@ Não são atributos numéricos, mas informações importantes para construir e i
 - Os resultados são somados.
 - O maior resultado individual determina a influência narrativa: Esperança ou Mythos.
 - Atributos e possíveis especializações complementam a resolução dos testes (**ainda precisamos definir exatamente como**).
+
+## 6. Especializações (recebidas em 2026-11-07)
+
+| Especialização | O que abrange |
+|---|---|
+| Atletismo | Corrida, escalada, natação, saltos e esforço físico. |
+| Combate | Luta corporal, armas brancas e armas de fogo. |
+| Furtividade | Esconder-se, infiltrar-se, escapar e agir sem ser percebido. |
+| Sobrevivência | Orientação, rastreamento, acampamento e sobrevivência em ambientes hostis. |
+| Condução | Dirigir carros, motos e outros veículos. |
+| Investigação | Procurar pistas, analisar cenas e reconstruir acontecimentos. |
+| Medicina | Diagnóstico, anatomia, cirurgia e primeiros socorros. |
+| Ciências | Biologia, química, física e conhecimentos científicos. |
+| Humanidades | História, religião, cultura, filosofia e conhecimento acadêmico. |
+| Tecnologia | Computadores, programação, redes, eletrônica e sistemas digitais. |
+| Ocultismo | Conhecimento sobrenatural e capacidade de moldar o impossível. |
+| Persuasão | Convencer, negociar, argumentar e conquistar confiança. |
+| Manipulação | Mentir, enganar, intimidar e explorar fraquezas. |
+| Empatia | Compreender emoções, intenções e comportamentos. |
+| Ofícios | Mecânica, reparos, arrombamento, ferramentas e trabalhos manuais. |
+
+### Exemplos: a mesma especialização com atributos diferentes
+
+| Especialização | Atributo | Exemplo de utilização |
+|---|---|---|
+| Atletismo | Força | Derrubar uma porta ou erguer um objeto pesado. |
+| Atletismo | Agilidade | Saltar entre edifícios ou atravessar um obstáculo. |
+| Combate | Força | Dominar alguém em uma luta corporal. |
+| Combate | Agilidade | Desviar de um golpe ou realizar um ataque rápido. |
+| Combate | Percepção | Identificar uma abertura na defesa do adversário. |
+| Furtividade | Agilidade | Passar despercebido por um corredor vigiado. |
