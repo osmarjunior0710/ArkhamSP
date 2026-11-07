@@ -18,3 +18,21 @@ Complementam os textos de lore. Não editar sem pedir ao Osmar.
 > Cultistas vão procurar lugares onde o véu é mais fino para se aproveitarem da energia do Mythos. Magistas e feiticeiros podem, de alguma forma, detectar esse véu, às vezes sem saber por quê.
 >
 > Mas não é necessariamente um efeito do Mythos sozinho. Às vezes um lugar sagrado (religioso) ou até natural, tipo uma floresta, pode ter um véu mais fino, porque tem tanta energia da Terra acumulada que fica mais fácil para ela fazer coisas para se proteger. Uma floresta onde recorrentemente aparece Boitatá ou Curupira pode ser um lugar com o véu mais fino, ou até completamente rasgado.
+
+## Respostas sobre os textos detalhados (2026-11-07)
+
+### Zonas e deuses das zonas: ignorar por enquanto
+
+> Ignora as zonas e os deuses por enquanto. Isso veio de uma outra ideia que eu tive, de separar as zonas de São Paulo por cultos, para que existam múltiplas opções de como o jogo segue. Mas, pensando bem hoje, talvez isso seja muito confuso: a pessoa conseguir acompanhar 5 timelines diferentes é muito.
+> Acho que para agora vale pensar que cultos (de forma geral) existem em São Paulo, e isso depois vai ser definido na hora que formos fazer o design do jogo.
+
+### O que afina ou engrossa o Véu: ações, não lados
+
+> Eu acho que não é exatamente o que reforça ou afina. Às vezes, como já falado, a natureza reagir é o que faz o véu abrir. Querendo ou não, a Terra rebater implica que ela também vê que tem algo errado, e implica que ela acredita que tem algo além do universo.
+> Então eu imagino o véu sendo mais fino no meio de uma floresta nativa super protegida, simplesmente pelo fato de que toda a energia do local abriu espaço para a Terra criar um guardião, assim como o Mythos cria suas criaturas.
+> Não quero definir que um ou outro faz ou desfaz. Acho mais interessante pensar que **ações** afinam ou não o véu. Cultistas fazendo um ritual afinam o véu para invocar uma criatura. Nativos fazendo um ritual da chuva afinam o véu, e a Terra consegue fazer chover para apagar um incêndio.
+> Pessoas fazerem um ritual de proteção num local podem enrijecer o véu, da mesma forma que acabar com um culto que usava um local ou, pior, destruir algo natural, por exemplo, queimar uma floresta toda. A Terra e os guardiões não vão ficar felizes com você, mas você apagou um foco que fazia o véu ser mais fino.
+
+### Deuses, entidades, anciões
+
+> Isso. Existe uma tendência de as pessoas chamarem coisas inatingíveis de deuses. Se vai ser chamado de deus, entidade, ancião, tanto faz para mim. Vai da cultura de cada local.
