@@ -29,6 +29,8 @@ Ocultismo não representa uma religião ou fonte específica de poder. Uma pesso
 
 **Ocultismo só aparece na ficha se a pessoa passa a ter alguma experiência com isso.** Se não tiver, não faz parte da realidade da pessoa.
 
+> **Decisão de 2026-11-07:** o Ocultismo é **uma especialização** (a mesma da seção 6), não um atributo: é algo desenvolvido. Fica **escondida** até o personagem ter experiência com o sobrenatural. Como as outras, combina com qualquer atributo: Intelecto + Ocultismo para resolver um ritual; Percepção + Ocultismo para encontrar padrões mágicos.
+
 ## 3. Métricas independentes
 
 | Métrica | Descrição |
@@ -82,3 +84,5 @@ Não são atributos numéricos, mas informações importantes para construir e i
 | Combate | Agilidade | Desviar de um golpe ou realizar um ataque rápido. |
 | Combate | Percepção | Identificar uma abertura na defesa do adversário. |
 | Furtividade | Agilidade | Passar despercebido por um corredor vigiado. |
+| Ocultismo | Intelecto | Resolver um ritual. |
+| Ocultismo | Percepção | Encontrar padrões mágicos. |
