@@ -60,6 +60,7 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
     ("Bênção 7 + Mythos 5 + 0 = 12 contra 14");
   - cor do cartão por resultado: Crítico = dourado claro; Sucesso = verde; Sucesso com deslize e Falha com progresso = amarelo; Falha = vermelho.
 - **Variações permitidas:** tamanho da área dos dados; o tema de cor da mesa.
+- **No jogo (decisão de 2026-11-07):** o dado branco se chama **Esperança** (a prova de conceito ainda mostra "Bênção"). Com vantagem ou desvantagem entram **3 dados** (2 Esperança + 1 Mythos, ou o contrário do lado dos inimigos): como mostrar o dado descartado ainda será desenhado.
 - **Onde é usado:** prova de conceito `poc/dados-3d.html` (AT-10).
 - **Histórico:**
   - 2026-11-05: criado na prova de conceito (AT-10), com animação roteirizada.
