@@ -100,3 +100,9 @@ Não são atributos numéricos, mas informações importantes para construir e i
 - A evolução sobe principalmente as especializações; atributos mudam pouco.
 
 > **Nota para depois (Osmar):** níveis épicos, como os níveis 19 e 20 do D&D, com uma "dádiva épica" que permita um atributo acima de 4 e uma especialização acima de 5. Não resolver agora.
+
+## 8. Vida, Lucidez e Loucura (em definição, 2026-11-07)
+
+- **Vida + Lucidez = 15 pontos** para todo personagem, em proporção inversa (inspirado em Arkham Horror). Ex.: 9 de Vida e 6 de Lucidez. Garante equilíbrio entre personagens.
+- Como dividir os 15 pontos e os limites de cada lado: **a definir**.
+- **Loucura:** ideia do Osmar: o personagem vai "ficando insano" conforme se envolve com as loucuras do mundo. Diferença importante: **estar mentalmente cansado** (Lucidez) é uma coisa; **ter visto algo que não devia** (Loucura) é outra. Mecânica: **a definir**.
