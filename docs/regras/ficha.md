@@ -105,10 +105,21 @@ Não são atributos numéricos, mas informações importantes para construir e i
 
 - **Vida + Lucidez = 15 pontos** para todo personagem, em proporção inversa (inspirado em Arkham Horror). Ex.: 9 de Vida e 6 de Lucidez. Garante equilíbrio entre personagens.
 - **Divisão dos 15 pontos:** um mix vindo da história do personagem, e o jogador pode corrigir depois se quiser. Limites de cada lado: a definir (sugestão: entre 5 e 10).
-- **Loucura:** ideia do Osmar: o personagem vai "ficando insano" conforme se envolve com as loucuras do mundo. Diferença importante: **estar mentalmente cansado** (Lucidez) é uma coisa; **ter visto algo que não devia** (Loucura) é outra. Mecânica em definição (proposta do Osmar, 2026-11-07):
-  - Todo personagem começa com **Loucura 0**; ela sobe quando coisas acontecem.
-  - **Teste de Loucura** sempre que o personagem vê algo estranho (inspirado nos *omens* de Betrayal at House on the Hill): rola **1d12 de Mythos**, tira a Loucura atual, e precisa igualar ou passar a **dificuldade da situação** (coisas comuns: baixa; um monstro: alta, ex. 6). Quanto mais louco, mais difícil passar.
-  - Falhou: a Loucura sobe **conforme a gravidade** (decidido em 2026-11-07). Cada criatura terá um campo de Loucura que diz se ela tem **valor de teste** (dificuldade; se falhar, ganha N de Loucura) ou **valor fixo** (dá N de Loucura sem teste, "só porque sim").
-  - Em revisão (2026-11-07): para a Vontade poder entrar no teste sem o número ficar alto demais, a Loucura pesaria **em faixas de 3** (a cada 3 pontos, −1 no teste), e a Vontade somaria ao dado.
-  - Forma alternativa de mostrar (mesma matemática): uma barra de **Sanidade 12** que vai descendo; o teste vira d12 + Sanidade.
-  - **Loucura no máximo (12): o personagem fica insano e é perdido.**
+- **Sanidade (Loucura) — decidida em 2026-11-07:**
+  - Todo personagem começa com **Sanidade 12**, que vai **diminuindo** conforme ele se envolve com as loucuras do mundo. Na tela: uma barra de 12 em **4 blocos de 3**.
+  - Diferença importante: **estar mentalmente cansado** (Lucidez, recupera) é uma coisa; **ter visto algo que não devia** (Sanidade, não recupera) é outra.
+  - **Teste de Sanidade** quando o personagem vê algo estranho (inspirado nos *omens* de Betrayal at House on the Hill):
+    **1d12 de Mythos + Vontade − penalidade da faixa ≥ dificuldade da situação**.
+
+    | Sanidade | Penalidade no teste |
+    |---|---|
+    | 12 a 10 | 0 |
+    | 9 a 7 | −1 |
+    | 6 a 4 | −2 |
+    | 3 a 1 | −3 |
+    | 0 | **insano: o personagem é perdido** |
+
+  - **Perda conforme a gravidade.** Cada criatura (ou situação) tem um campo de Sanidade com:
+    - **valor de teste**: dificuldade do teste; se falhar, perde N de Sanidade; ou
+    - **valor fixo**: perde N de Sanidade **sem teste**, "só porque sim".
+  - Em aberto: o que acontece nos modos Semimortal e Imortal ao chegar a 0; se uma falha garantida (0% de chance) fica assim ou se o 12 natural sempre passa.
