@@ -108,6 +108,7 @@ Não são atributos numéricos, mas informações importantes para construir e i
 - **Loucura:** ideia do Osmar: o personagem vai "ficando insano" conforme se envolve com as loucuras do mundo. Diferença importante: **estar mentalmente cansado** (Lucidez) é uma coisa; **ter visto algo que não devia** (Loucura) é outra. Mecânica em definição (proposta do Osmar, 2026-11-07):
   - Todo personagem começa com **Loucura 0**; ela sobe quando coisas acontecem.
   - **Teste de Loucura** sempre que o personagem vê algo estranho (inspirado nos *omens* de Betrayal at House on the Hill): rola **1d12 de Mythos**, tira a Loucura atual, e precisa igualar ou passar a **dificuldade da situação** (coisas comuns: baixa; um monstro: alta, ex. 6). Quanto mais louco, mais difícil passar.
-  - Falhou: a Loucura sobe.
+  - Falhou: a Loucura sobe **conforme a gravidade** (decidido em 2026-11-07). Cada criatura terá um campo de Loucura que diz se ela tem **valor de teste** (dificuldade; se falhar, ganha N de Loucura) ou **valor fixo** (dá N de Loucura sem teste, "só porque sim").
+  - Em revisão (2026-11-07): para a Vontade poder entrar no teste sem o número ficar alto demais, a Loucura pesaria **em faixas de 3** (a cada 3 pontos, −1 no teste), e a Vontade somaria ao dado.
   - Forma alternativa de mostrar (mesma matemática): uma barra de **Sanidade 12** que vai descendo; o teste vira d12 + Sanidade.
   - **Loucura no máximo (12): o personagem fica insano e é perdido.**
