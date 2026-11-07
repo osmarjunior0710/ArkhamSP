@@ -104,5 +104,10 @@ Não são atributos numéricos, mas informações importantes para construir e i
 ## 8. Vida, Lucidez e Loucura (em definição, 2026-11-07)
 
 - **Vida + Lucidez = 15 pontos** para todo personagem, em proporção inversa (inspirado em Arkham Horror). Ex.: 9 de Vida e 6 de Lucidez. Garante equilíbrio entre personagens.
-- Como dividir os 15 pontos e os limites de cada lado: **a definir**.
-- **Loucura:** ideia do Osmar: o personagem vai "ficando insano" conforme se envolve com as loucuras do mundo. Diferença importante: **estar mentalmente cansado** (Lucidez) é uma coisa; **ter visto algo que não devia** (Loucura) é outra. Mecânica: **a definir**.
+- **Divisão dos 15 pontos:** um mix vindo da história do personagem, e o jogador pode corrigir depois se quiser. Limites de cada lado: a definir (sugestão: entre 5 e 10).
+- **Loucura:** ideia do Osmar: o personagem vai "ficando insano" conforme se envolve com as loucuras do mundo. Diferença importante: **estar mentalmente cansado** (Lucidez) é uma coisa; **ter visto algo que não devia** (Loucura) é outra. Mecânica em definição (proposta do Osmar, 2026-11-07):
+  - Todo personagem começa com **Loucura 0**; ela sobe quando coisas acontecem.
+  - **Teste de Loucura** sempre que o personagem vê algo estranho (inspirado nos *omens* de Betrayal at House on the Hill): rola **1d12 de Mythos**, tira a Loucura atual, e precisa igualar ou passar a **dificuldade da situação** (coisas comuns: baixa; um monstro: alta, ex. 6). Quanto mais louco, mais difícil passar.
+  - Falhou: a Loucura sobe.
+  - Forma alternativa de mostrar (mesma matemática): uma barra de **Sanidade 12** que vai descendo; o teste vira d12 + Sanidade.
+  - **Loucura no máximo (12): o personagem fica insano e é perdido.**
