@@ -86,3 +86,17 @@ Não são atributos numéricos, mas informações importantes para construir e i
 | Furtividade | Agilidade | Passar despercebido por um corredor vigiado. |
 | Ocultismo | Intelecto | Resolver um ritual. |
 | Ocultismo | Percepção | Encontrar padrões mágicos. |
+
+## 7. Escala dos números (decidida em 2026-11-07)
+
+| | Na criação | Máximo com evolução |
+|---|---|---|
+| Atributo | 0 a 3 | 4 |
+| Especialização | 0 a 2 (recém-formado = +1) | 5 |
+| **Bônus total** (atributo + especialização) | até +5 | **+9** |
+
+- Regra de bolso: cada +3 de bônus equivale a descer uma faixa de dificuldade.
+- Com +5 ou mais, o teste muito fácil (8) nunca falha; com +9, o quase impossível (23) passa em 50%.
+- A evolução sobe principalmente as especializações; atributos mudam pouco.
+
+> **Nota para depois (Osmar):** níveis épicos, como os níveis 19 e 20 do D&D, com uma "dádiva épica" que permita um atributo acima de 4 e uma especialização acima de 5. Não resolver agora.
