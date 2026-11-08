@@ -111,13 +111,15 @@ Não são atributos numéricos, mas informações importantes para construir e i
   - **Teste de Sanidade** quando o personagem vê algo estranho (inspirado nos *omens* de Betrayal at House on the Hill):
     **1d12 de Mythos + Vontade − penalidade da faixa ≥ dificuldade da situação**.
 
-    | Sanidade | Penalidade no teste |
-    |---|---|
-    | 12 a 10 | 0 |
-    | 9 a 7 | −1 |
-    | 6 a 4 | −2 |
-    | 3 a 1 | −3 |
-    | 0 | **insano: o personagem é perdido** |
+    | Sanidade | Estado | Penalidade no teste |
+    |---|---|---|
+    | 12 a 10 | **Lúcido** | 0 |
+    | 9 a 7 | **Abalado** | −1 |
+    | 6 a 4 | **Perturbado** | −2 |
+    | 3 a 1 | **Fraturado** | −3 |
+    | 0 | **Insano** | o personagem é perdido |
+
+    Nomes dos estados decididos pelo Osmar em 2026-11-08 (progressão: treme, racha, quebra, se perde).
 
   - **Perda conforme a gravidade.** Cada criatura (ou situação) tem um campo de Sanidade com:
     - **valor de teste**: dificuldade do teste; se falhar, perde N de Sanidade; ou

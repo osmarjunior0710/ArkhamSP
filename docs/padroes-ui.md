@@ -66,3 +66,15 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
   - 2026-11-05: criado na prova de conceito (AT-10), com animação roteirizada.
   - 2026-11-05: física real e som de batida (AT-11), após o Osmar achar a v1 "roteirizada, sem punch".
   - 2026-11-05: aprovado pelo Osmar como padrão oficial e visual final dos dados.
+
+### Barra de Sanidade — rascunho
+- **Label:** `ui-barra-sanidade`
+- **Ideia:** o jogador bate o olho e sabe em que estado mental o personagem está, sem fazer conta.
+- **Quando usar:** sempre que a Sanidade do personagem aparecer (ficha, tela de jogo).
+- **Como é:**
+  - barra de 12 pontos dividida em **4 blocos de 3**, esvaziando da direita para a esquerda conforme a Sanidade cai;
+  - ao lado, o **nome do estado** do bloco atual: **Lúcido** (12–10), **Abalado** (9–7), **Perturbado** (6–4), **Fraturado** (3–1), **Insano** (0);
+  - o número atual aparece junto (ex.: "Abalado · 8").
+- **Variações permitidas:** a definir quando a primeira tela for construída.
+- **Onde é usado:** ainda em nenhuma tela (regra em `docs/regras/ficha.md`, seção 8; AT-4).
+- **Histórico:** 2026-11-08: nomes dos estados definidos pelo Osmar.
