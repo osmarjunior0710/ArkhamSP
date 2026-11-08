@@ -103,8 +103,8 @@ Não são atributos numéricos, mas informações importantes para construir e i
 
 ## 8. Vida, Lucidez e Loucura (em definição, 2026-11-07)
 
-- **Vida + Lucidez = 15 pontos** para todo personagem, em proporção inversa (inspirado em Arkham Horror). Ex.: 9 de Vida e 6 de Lucidez. Garante equilíbrio entre personagens.
-- **Divisão dos 15 pontos:** um mix vindo da história do personagem, e o jogador pode corrigir depois se quiser. Limites de cada lado: a definir (sugestão: entre 5 e 10).
+- **Vida + Lucidez = 14 pontos** para todo personagem, em proporção inversa (inspirado em Arkham Horror), **no máximo 9 de cada lado** (logo, no mínimo 5). Ex.: 9 de Vida e 5 de Lucidez; 7 e 7. Atualizado em 2026-11-08 (antes: 15 pontos).
+- **Divisão dos 14 pontos:** um mix vindo da história do personagem, e o jogador pode corrigir depois se quiser.
 - **Sanidade (Loucura) — decidida em 2026-11-07:**
   - Todo personagem começa com **Sanidade 12**, que vai **diminuindo** conforme ele se envolve com as loucuras do mundo. Na tela: uma barra de 12 em **4 blocos de 3**.
   - Diferença importante: **estar mentalmente cansado** (Lucidez, recupera) é uma coisa; **ter visto algo que não devia** (Sanidade, não recupera) é outra.
