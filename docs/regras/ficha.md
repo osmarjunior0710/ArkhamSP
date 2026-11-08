@@ -125,3 +125,19 @@ Não são atributos numéricos, mas informações importantes para construir e i
     - **valor de teste**: dificuldade do teste; se falhar, perde N de Sanidade; ou
     - **valor fixo**: perde N de Sanidade **sem teste**, "só porque sim".
   - Em aberto: o que acontece nos modos Semimortal e Imortal ao chegar a 0; se uma falha garantida (0% de chance) fica assim ou se o 12 natural sempre passa.
+
+## 9. Criação e evolução (2026-11-08)
+
+**Criação de personagem**
+- Atributos: **8 pontos** para distribuir, máximo 3 em cada.
+- Especializações: **5 pontos** para distribuir, máximo 2 em cada.
+
+**Evolução (provisória, até existir o sistema de XP)**
+- 20 níveis.
+- Especialização: **+1 ponto por nível**.
+- Atributo: **+1 ponto a cada 4 níveis**.
+- **Sem travas:** os pontos podem ir para onde o jogador quiser.
+- **Máximo:** atributo **+5** e especialização **+5** (teto do bônus: **+10**). Isso substitui o máximo de atributo 4 da seção 7.
+- No nível 20: 13 pontos de atributo e 25 de especialização (ex.: 5 especializações em +5, ou 4 em +5 e 5 pontos espalhados). Quem fizer 5 + 5 numa coisa só fica fraco em quase todo o resto, e esse é o preço.
+
+> **Nota para depois (Osmar):** **talentos** (como os *feats* do D&D) ficaram de fora por enquanto. Um talento que só destrava um ponto não vale a pena; voltar ao assunto se surgirem talentos realmente funcionais.
