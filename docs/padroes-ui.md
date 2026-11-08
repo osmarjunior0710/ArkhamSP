@@ -76,5 +76,32 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
   - ao lado, o **nome do estado** do bloco atual: **Lúcido** (12–10), **Abalado** (9–7), **Perturbado** (6–4), **Fraturado** (3–1), **Insano** (0);
   - o número atual aparece junto (ex.: "Abalado · 8").
 - **Variações permitidas:** a definir quando a primeira tela for construída.
-- **Onde é usado:** ainda em nenhuma tela (regra em `docs/regras/ficha.md`, seção 8; AT-4).
-- **Histórico:** 2026-11-08: nomes dos estados definidos pelo Osmar.
+- **Onde é usado:** jogo (`jogo/arkhamsp.html`): passo "Corpo e mente" da criação e resumo do personagem (AT-17, AT-16).
+- **Histórico:** 2026-11-08: nomes dos estados definidos pelo Osmar; primeira tela que usa: AT-17.
+
+### Pips de pontos — rascunho
+- **Label:** `ui-pips`
+- **Ideia:** distribuir ou mostrar valores pequenos (0 a 3, 0 a 5) de forma visual, contando "bolinhas".
+- **Quando usar:** atributos, especializações e qualquer recurso contável pequeno (ex.: o que antes seriam "magias" e "pactos" usam este mesmo padrão). Não usar para valores grandes (Vida/Lucidez usam barra de células; Sanidade usa `ui-barra-sanidade`).
+- **Como é:**
+  - linha com nome e descrição curta à esquerda; à direita: botão −, bolinhas (vazias = contorno latão; cheias = latão), botão + e o número;
+  - clicar numa bolinha define o valor até ela; clicar na última cheia diminui 1;
+  - quando há um orçamento (ex.: 8 pontos), um contador "N pontos para distribuir" fica acima da lista; verde quando zera; + e bolinhas que estourariam o orçamento ficam desabilitados.
+- **Variações permitidas:** número máximo de bolinhas; somente leitura (sem − e +).
+- **Onde é usado:** criação de personagem, passos Atributos e Especializações (AT-17).
+- **Histórico:** 2026-11-08: criado em AT-17.
+
+### Cartões de escolha — rascunho
+- **Label:** `ui-cartao-escolha`
+- **Ideia:** escolher uma entre poucas opções que precisam de explicação.
+- **Quando usar:** 2 a 4 opções com título e descrição (ex.: modo de mortalidade). Para opções curtas sem explicação, usar a régua segmentada (Leve / Moderado / Pesado).
+- **Como é:** cartões lado a lado (empilham no celular), título em Cinzel e descrição curta; o escolhido ganha borda latão e um ✓.
+- **Onde é usado:** criação de personagem, passo "Tipo de história" (AT-17).
+- **Histórico:** 2026-11-08: criado em AT-17.
+
+### Assistente em passos — rascunho
+- **Label:** `ui-assistente-passos`
+- **Ideia:** dividir um processo longo (criar personagem) em passos curtos, sem perder a noção de onde se está.
+- **Como é:** pílulas numeradas no topo (passo atual em latão); conteúdo do passo; embaixo, "Voltar" (ou "Cancelar" no primeiro) e "Continuar" (ou a ação final, ex.: "Criar personagem"). Ao tentar avançar com algo faltando, uma mensagem em vermelho diz o que falta; nada avança sozinho.
+- **Onde é usado:** criação de personagem (AT-17).
+- **Histórico:** 2026-11-08: criado em AT-17.
