@@ -4,7 +4,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Karla:wght@400;600;700&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap">
 <style>
-/* Layout: uma coluna central estreita, como um dossiê aberto sobre a mesa à noite. Visual escuro único, de propósito (mesmo mundo dos dados 3D). */
+/* Layout: uma coluna central estreita, como um dossiê aberto sobre a mesa à noite. Visual escuro único, de propósito (mesmo mundo dos dados 3D).
+   Espaçamento do projeto em passos de 4px; o padrão é o nível 3 (12px). Barras fixas no topo e embaixo durante a criação (pensado para celular). */
 :root {
   --bg: #0e1110;
   --surface: #161b19;
@@ -12,17 +13,20 @@
   --line: #2b3431;
   --fg: #e6e1d3;
   --muted: #9a9a8c;
+  --locked: #3a403d;
   --accent: #b8a06a;        /* latão gasto */
   --accent-ink: #14120c;
-  --esperanca: #ece6d6;
-  --mythos: #151515;
   --ok: #8fbf7a;
   --warn: #d3b35a;
   --bad: #c9705e;
+  --vida: #b5523f;
+  --lucidez: #6f9bb0;
   --s-lucido: #8fbf7a;
   --s-abalado: #d3b35a;
   --s-perturbado: #d8894f;
   --s-fraturado: #c9705e;
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 20px;
+  --bar-h: 64px;
   --font-display: "Cinzel", "Trajan Pro", Georgia, serif;
   --font-story: "Literata", Georgia, serif;
   --font-ui: "Karla", "Helvetica Neue", Arial, sans-serif;
@@ -31,119 +35,146 @@
 html, body { background: var(--bg); color: var(--fg); }
 [hidden] { display: none !important; }
 body {
-  font-family: var(--font-ui); font-size: 16px; line-height: 1.5;
+  font-family: var(--font-ui); font-size: 15px; line-height: 1.5;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
-  padding-block: 20px 40px;
+  padding-block: var(--sp-3) var(--sp-5);
 }
-.wrap { max-width: 760px; margin: 0 auto; display: grid; gap: 20px; }
-header.top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; border-bottom: 1px solid var(--line); padding-bottom: 10px; }
-.brand { font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; letter-spacing: .06em; margin: 0; }
-.who { font-size: .85rem; color: var(--muted); }
-h2 { font-family: var(--font-display); font-weight: 700; font-size: 1.35rem; letter-spacing: .03em; margin: 0; text-wrap: balance; }
-h3 { font-family: var(--font-display); font-weight: 600; font-size: 1rem; letter-spacing: .06em; margin: 0; color: var(--accent); }
+body.has-bar { padding-bottom: calc(var(--bar-h) + var(--sp-5) + env(safe-area-inset-bottom, 0px)); }
+.wrap { max-width: 720px; margin: 0 auto; display: grid; gap: var(--sp-3); }
+header.top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--sp-1) var(--sp-3); border-bottom: 1px solid var(--line); padding-bottom: var(--sp-2); }
+.brand { font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; letter-spacing: .06em; margin: 0; }
+.who { font-size: .82rem; color: var(--muted); }
+h2 { font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; letter-spacing: .03em; margin: 0; text-wrap: balance; }
+h3 { font-family: var(--font-display); font-weight: 600; font-size: .95rem; letter-spacing: .06em; margin: 0; color: var(--accent); }
 p { margin: 0; }
-.lead { font-family: var(--font-story); font-size: 1.05rem; line-height: 1.65; color: var(--fg); max-width: 62ch; }
+.lead { font-family: var(--font-story); font-size: 1rem; line-height: 1.6; max-width: 62ch; }
 .muted { color: var(--muted); }
-.small { font-size: .85rem; }
-.label { font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.small { font-size: .82rem; }
+.label { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 
-section.screen { display: grid; gap: 18px; }
-.card { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 18px; display: grid; gap: 14px; }
+section.screen { display: grid; gap: var(--sp-3); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: var(--sp-3); display: grid; gap: var(--sp-3); }
 
 button { font: inherit; cursor: pointer; }
 .btn {
-  font-family: var(--font-display); font-weight: 700; letter-spacing: .08em;
+  font-family: var(--font-display); font-weight: 700; font-size: .85rem; letter-spacing: .06em;
   color: var(--accent-ink); background: var(--accent); border: 0; border-radius: 4px;
-  padding: 12px 22px; min-height: 46px;
+  padding: var(--sp-2) 14px; min-height: 40px;
 }
 .btn:hover { filter: brightness(1.08); }
 .btn:disabled { opacity: .45; cursor: not-allowed; filter: none; }
 .btn.ghost { background: transparent; color: var(--fg); border: 1px solid var(--line); }
 .btn.ghost:hover { border-color: var(--accent); }
-.btn.link { background: none; border: 0; color: var(--muted); padding: 8px 0; min-height: 40px; font-family: var(--font-ui); font-weight: 600; letter-spacing: 0; text-decoration: underline; text-underline-offset: 3px; }
-.actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-.actions.split { justify-content: space-between; }
+.actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; }
 :focus-visible { outline: 2px solid var(--warn); outline-offset: 2px; }
 
 input[type="text"], textarea {
   font: inherit; color: var(--fg); background: var(--surface-2); border: 1px solid var(--line); border-radius: 4px;
-  padding: 10px 12px; width: 100%; box-sizing: border-box;
+  padding: var(--sp-2) var(--sp-3); width: 100%; box-sizing: border-box;
 }
-textarea { min-height: 84px; resize: vertical; font-family: var(--font-story); }
-.field { display: grid; gap: 6px; }
-.field .hint { font-size: .82rem; color: var(--muted); }
-.error { color: var(--bad); font-size: .88rem; }
+textarea { min-height: 76px; resize: vertical; font-family: var(--font-story); }
+.field { display: grid; gap: var(--sp-1); }
+.field .hint { font-size: .8rem; color: var(--muted); }
+.error { color: var(--bad); font-size: .85rem; }
 
 /* Lista de personagens */
-.char-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.char-item { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; }
+.char-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
+.char-item { display: flex; gap: var(--sp-3); align-items: center; justify-content: space-between; flex-wrap: wrap; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: var(--sp-3); }
+.char-item > div { min-width: 0; }
 .char-item .name { font-family: var(--font-display); font-weight: 700; }
-.char-item .concept { font-size: .88rem; color: var(--muted); }
+.char-item .concept { font-size: .85rem; color: var(--muted); }
 
-/* Passos da criação (ui-assistente-passos) */
-.steps { display: flex; gap: 6px; flex-wrap: wrap; list-style: none; margin: 0; padding: 0; }
-.steps li { font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding: 4px 8px; border: 1px solid var(--line); border-radius: 999px; }
-.steps li.done { color: var(--fg); border-color: var(--line); }
-.steps li.current { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); font-weight: 700; }
+/* Assistente em passos (ui-assistente-passos): barra fixa no topo + barra fixa embaixo */
+.create-top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: var(--bg); padding-block: var(--sp-2); border-bottom: 1px solid var(--line);
+  display: grid; gap: var(--sp-2);
+}
+.create-top .line { display: flex; justify-content: space-between; align-items: baseline; gap: var(--sp-3); flex-wrap: wrap; }
+.create-top .stepname { font-family: var(--font-display); font-weight: 700; }
+.progress { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; }
+.progress i { height: 4px; border-radius: 2px; background: var(--line); }
+.progress i.done { background: var(--muted); }
+.progress i.current { background: var(--accent); }
+.create-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 6;
+  background: var(--surface); border-top: 1px solid var(--line);
+  padding: var(--sp-2) max(16px, env(safe-area-inset-right, 0px)) calc(var(--sp-2) + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+}
+.create-bar .inner { max-width: 720px; margin: 0 auto; display: grid; gap: var(--sp-1); }
+.create-bar .buttons { display: flex; justify-content: space-between; gap: var(--sp-2); }
 
 /* Contador de pontos */
-.budget { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-.budget .num { font-family: var(--font-display); font-size: 1.6rem; font-variant-numeric: tabular-nums; }
+.budget { display: inline-flex; align-items: baseline; gap: var(--sp-2); }
+.budget .num { font-family: var(--font-display); font-size: 1.25rem; font-variant-numeric: tabular-nums; }
 .budget.ok .num { color: var(--ok); }
 .budget.over .num { color: var(--bad); }
 
 /* Pips (ui-pips) */
-.rows { display: grid; gap: 4px; }
-.row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 14px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.rows { display: grid; }
+.row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--sp-1) var(--sp-3); align-items: center; padding-block: var(--sp-2); border-bottom: 1px solid var(--line); }
 .row:last-child { border-bottom: 0; }
 .row .nm { font-weight: 700; }
-.row .ds { font-size: .82rem; color: var(--muted); }
+.row .ds { font-size: .8rem; color: var(--muted); }
+@media (max-width: 520px) { .row.pip-row { grid-template-columns: minmax(0, 1fr); } }
 .pips { display: flex; align-items: center; gap: 6px; }
-.pips .pm { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface-2); color: var(--fg); font-weight: 700; display: grid; place-items: center; }
-.pips .pm:disabled { opacity: .35; cursor: not-allowed; }
-.pips .dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--accent); background: transparent; padding: 0; }
+.pips .pm { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface-2); color: var(--fg); font-weight: 700; display: grid; place-items: center; padding: 0; }
+.pips .pm:disabled { opacity: .3; cursor: not-allowed; }
+.pips .dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--accent); background: transparent; padding: 0; }
 .pips .dot.on { background: var(--accent); }
+.pips .dot:disabled:not(.locked) { opacity: .45; cursor: not-allowed; }
+.pips .dot.locked { border: 2px dashed var(--locked); background: transparent; cursor: not-allowed; }
 .pips .val { font-variant-numeric: tabular-nums; min-width: 1.5ch; text-align: right; font-weight: 700; }
+.legend { display: flex; gap: var(--sp-3); flex-wrap: wrap; font-size: .78rem; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: var(--sp-1); }
+.legend i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.legend .l-on { background: var(--accent); border: 2px solid var(--accent); }
+.legend .l-free { border: 2px solid var(--accent); }
+.legend .l-lock { border: 2px dashed var(--locked); }
 
 /* Vida / Lucidez */
-.split-bars { display: grid; gap: 10px; }
-.meter { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr) 2ch; gap: 10px; align-items: center; }
+.split-bars { display: grid; gap: var(--sp-2); }
+.meter { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr) 2ch; gap: var(--sp-2); align-items: center; }
 .cells { display: grid; grid-template-columns: repeat(9, 1fr); gap: 3px; }
-.cells i { height: 14px; border-radius: 2px; background: var(--surface-2); border: 1px solid var(--line); }
-.cells.vida i.on { background: #b5523f; border-color: #b5523f; }
-.cells.luc i.on { background: #6f9bb0; border-color: #6f9bb0; }
+.cells i { height: 12px; border-radius: 2px; background: var(--surface-2); border: 1px solid var(--line); }
+.cells.vida i.on { background: var(--vida); border-color: var(--vida); }
+.cells.luc i.on { background: var(--lucidez); border-color: var(--lucidez); }
 input[type="range"] { width: 100%; accent-color: var(--accent); }
 
 /* Barra de Sanidade (ui-barra-sanidade) */
-.sanity { display: grid; gap: 6px; }
-.sanity .head { display: flex; justify-content: space-between; gap: 10px; }
+.sanity { display: grid; gap: var(--sp-1); }
+.sanity .head { display: flex; justify-content: space-between; gap: var(--sp-2); }
 .sanity .state { font-family: var(--font-display); font-weight: 700; }
 .sanity .blocks { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
 .sanity .block { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
-.sanity .block i { height: 12px; border-radius: 2px; background: var(--surface-2); border: 1px solid var(--line); }
+.sanity .block i { height: 10px; border-radius: 2px; background: var(--surface-2); border: 1px solid var(--line); }
 .sanity .block i.on { background: var(--s-color, var(--s-lucido)); border-color: var(--s-color, var(--s-lucido)); }
 
 /* Cartões de escolha (ui-cartao-escolha) */
-.choices { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
-.choice { text-align: left; background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; padding: 14px; color: var(--fg); display: grid; gap: 6px; min-width: 0; }
+.choices { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--sp-2); }
+.choice { text-align: left; background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; padding: var(--sp-3); color: var(--fg); display: grid; gap: var(--sp-1); min-width: 0; }
 .choice .t { font-family: var(--font-display); font-weight: 700; }
-.choice .d { font-size: .88rem; color: var(--muted); }
+.choice .d { font-size: .85rem; color: var(--muted); }
 .choice[aria-checked="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
 .choice[aria-checked="true"] .t::after { content: " ✓"; color: var(--accent); }
 
-/* Régua segmentada (limites) */
+/* Régua segmentada (limites) + exemplo */
+.limit { display: grid; gap: var(--sp-2); padding-block: var(--sp-2); border-bottom: 1px solid var(--line); }
+.limit:last-child { border-bottom: 0; }
+.limit .head { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-2); flex-wrap: wrap; }
 .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
-.seg button { background: transparent; color: var(--muted); border: 0; padding: 8px 14px; min-height: 40px; font-weight: 600; }
+.seg button { background: transparent; color: var(--muted); border: 0; padding: 6px var(--sp-3); min-height: 34px; font-weight: 600; font-size: .85rem; }
 .seg button[aria-checked="true"] { background: var(--accent); color: var(--accent-ink); }
+.example { font-family: var(--font-story); font-size: .88rem; line-height: 1.55; color: var(--fg); background: var(--surface-2); border-left: 3px solid var(--accent); padding: var(--sp-2) var(--sp-3); border-radius: 0 4px 4px 0; }
 
 /* Resumo */
-.sum-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
-.kv { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; font-size: .95rem; }
+.sum-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--sp-3); }
+.kv { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px var(--sp-3); font-size: .92rem; margin: var(--sp-1) 0 0; }
 .kv dt { color: var(--muted); }
 .kv dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; }
 .story { font-family: var(--font-story); white-space: pre-wrap; }
-.notice { border-left: 3px solid var(--warn); padding: 8px 12px; background: var(--surface); color: var(--fg); font-size: .9rem; }
+.notice { border-left: 3px solid var(--warn); padding: var(--sp-2) var(--sp-3); background: var(--surface); font-size: .88rem; }
 </style>
 
 <div class="wrap">
@@ -152,39 +183,39 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     <span class="who" id="who">Conectando…</span>
   </header>
 
-  <!-- Carregando / erro -->
   <section class="screen" id="sLoading">
     <p class="lead">Abrindo o arquivo de investigadores…</p>
   </section>
 
-  <!-- Primeira tela -->
   <section class="screen" id="sHome" hidden>
     <div id="homeBody"></div>
   </section>
 
-  <!-- Escolher personagem -->
   <section class="screen" id="sChoose" hidden>
     <h2>Escolher personagem</h2>
     <ul class="char-list" id="chooseList"></ul>
     <div class="actions"><button class="btn ghost" type="button" data-go="home">Voltar</button></div>
   </section>
 
-  <!-- Criação -->
   <section class="screen" id="sCreate" hidden>
-    <ol class="steps" id="steps" aria-label="Passos da criação"></ol>
+    <div class="create-top" id="createTop"></div>
     <div id="stepBody"></div>
-    <p class="error" id="stepError" role="alert" hidden></p>
-    <div class="actions split">
-      <button class="btn ghost" type="button" id="btnBack">Voltar</button>
-      <button class="btn" type="button" id="btnNext">Continuar</button>
-    </div>
   </section>
 
-  <!-- Personagem (resumo provisório) -->
   <section class="screen" id="sChar" hidden>
     <div id="charBody"></div>
     <div class="actions"><button class="btn ghost" type="button" data-go="home">Voltar ao início</button></div>
   </section>
+</div>
+
+<div class="create-bar" id="createBar" hidden>
+  <div class="inner">
+    <p class="error" id="stepError" role="alert" hidden></p>
+    <div class="buttons">
+      <button class="btn ghost" type="button" id="btnBack">Voltar</button>
+      <button class="btn" type="button" id="btnNext">Continuar</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -200,7 +231,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     ["presenca", "Presença", "Interação, influência e comunicação."],
     ["vontade", "Vontade", "Determinação, disciplina, autocontrole e resistência psicológica."]
   ];
-  const ESPECIALIZACOES = [
+  const PERICIAS = [
     ["atletismo", "Atletismo", "Corrida, escalada, natação, saltos e esforço físico."],
     ["combate", "Combate", "Luta corporal, armas brancas e armas de fogo."],
     ["furtividade", "Furtividade", "Esconder-se, infiltrar-se, escapar sem ser percebido."],
@@ -215,10 +246,11 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     ["manipulacao", "Manipulação", "Mentir, enganar, intimidar, explorar fraquezas."],
     ["empatia", "Empatia", "Compreender emoções, intenções e comportamentos."],
     ["oficios", "Ofícios", "Mecânica, reparos, arrombamento e trabalhos manuais."]
-    // Ocultismo: escondido até o personagem ter experiência sobrenatural.
+    // Ocultismo: escondida até o personagem ter experiência sobrenatural.
   ];
+  const PIPS_MAX = 5;                       // máximo do jogo (atributo e perícia)
   const PONTOS_ATRIBUTO = 8, MAX_ATRIBUTO_CRIACAO = 3;
-  const PONTOS_ESPEC = 5, MAX_ESPEC_CRIACAO = 2;
+  const PONTOS_PERICIA = 5, MAX_PERICIA_CRIACAO = 2;
   const VIDA_LUCIDEZ = 14, MIN_VL = 5, MAX_VL = 9;
   const SANIDADE_MAX = 12;
   const MORTALIDADE = [
@@ -228,6 +260,24 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   ];
   const LIMITES = [["horror", "Horror"], ["gore", "Gore"], ["violencia", "Violência"]];
   const NIVEIS_LIMITE = [["leve", "Leve"], ["moderado", "Moderado"], ["pesado", "Pesado"]];
+  // Exemplos de narração por limite e nível (AT-23). Gore: textos do Osmar.
+  const EXEMPLOS = {
+    horror: {
+      leve: "Uma das luzes do corredor apaga sozinha. Quando volta, a porta do quarto 12, que estava fechada, está entreaberta.",
+      moderado: "A porta do quarto 12 está entreaberta. A cama está arrumada e há um prato de comida ainda quente na mesa. No espelho, alguém está sentado na cama. O quarto está vazio.",
+      pesado: "No espelho, a pessoa sentada na cama vira o rosto devagar para você. É o seu rosto, mas os olhos estão afastados demais, e o sorriso tem dentes que não param de nascer. Você olha para a cama: o colchão ainda está afundado no formato de um corpo. E quente."
+    },
+    gore: {
+      leve: "A criatura cai no chão depois do tiro de espingarda à queima-roupa e para de se mover. O tiro foi mais efetivo do que você imaginava.",
+      moderado: "A criatura cai despedaçada. Os membros arrancados pela força do tiro à queima-roupa ainda tremem no chão enquanto a vida se esvai do corpo.",
+      pesado: "Nem a criatura esperava que um tiro à queima-roupa a desfizesse tão fácil. O braço voa contra a parede; o resto do corpo é arremessado para o outro lado e pinta o chão de sangue. As duas partes ainda se debatem, querendo te atacar, até pararem de pulsar no meio da poça que se forma."
+    },
+    violencia: {
+      leve: "O homem te empurra contra a grade e foge pela escada. Seu ombro vai doer amanhã.",
+      moderado: "O homem acerta um soco no seu estômago e te joga contra a grade. Você sente gosto de ferro na boca e, quando consegue reagir, ele já está descendo a escada.",
+      pesado: "O homem bate sua cabeça contra a grade duas vezes, com a calma de quem já fez isso antes. Algo estala no seu nariz. Quando você cai, ele ainda pisa na sua mão ao passar, devagar, para ter certeza de que você ouviu o barulho."
+    }
+  };
 
   function estadoSanidade(s) {
     if (s <= 0) return { nome: "Insano", cor: "var(--s-fraturado)" };
@@ -253,10 +303,11 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   }
   const sum = obj => Object.values(obj).reduce((a, b) => a + b, 0);
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const periciasDe = c => c.pericias || c.especializacoes || {};   // compatível com fichas antigas
 
   // ---------- Estado ----------
   let db = null, user = null, me = null, myName = "";
-  let chars = [];            // [{id, ...dados}]
+  let chars = [];
   let prefs = { ultimoPersonagem: null };
   let charsLoaded = false;
   let draft = null, step = 0, saving = false;
@@ -264,13 +315,15 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   const SCREENS = ["sLoading", "sHome", "sChoose", "sCreate", "sChar"];
   function show(id) {
     SCREENS.forEach(s => { $(s).hidden = s !== id; });
-    window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+    const creating = id === "sCreate";
+    $("createBar").hidden = !creating;
+    document.body.classList.toggle("has-bar", creating);
+    window.scrollTo(0, 0);
   }
   document.addEventListener("click", ev => {
     const go = ev.target.closest("[data-go]");
     if (go && go.dataset.go === "home") renderHome();
   });
-
   function fail(msg) {
     show("sLoading");
     $("sLoading").replaceChildren(h("p", { class: "lead", text: msg }));
@@ -279,52 +332,43 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   // ---------- Banco ----------
   function charsCol() { return db.collection("personagens/" + me + "/lista"); }
   function prefsDoc() { return db.doc("data/users/" + me + "/prefs"); }
-
   async function savePrefs(pid) {
     prefs.ultimoPersonagem = pid;
-    try { await prefsDoc().set({ ultimoPersonagem: pid, atualizadoEm: Date.now() }); } catch (e) { /* conveniência: se falhar, só não lembra */ }
+    try { await prefsDoc().set({ ultimoPersonagem: pid, atualizadoEm: Date.now() }); } catch (e) { /* conveniência */ }
   }
 
   // ---------- Primeira tela ----------
-  function charLabel(c) { return c.nome || "Sem nome"; }
-  function lastUsed() {
-    return chars.find(c => c.id === prefs.ultimoPersonagem) || chars[chars.length - 1];
-  }
+  const charLabel = c => c.nome || "Sem nome";
+  const lastUsed = () => chars.find(c => c.id === prefs.ultimoPersonagem) || chars[chars.length - 1];
 
   function renderHome() {
-    const body = $("homeBody");
     const n = chars.length;
-    const parts = [];
+    let card;
     if (n === 0) {
-      parts.push(
-        h("div", { class: "card" },
-          h("h2", { text: "Nenhum investigador ainda" }),
-          h("p", { class: "lead", text: "São Paulo não dorme. Alguém precisa prestar atenção no que acontece entre uma esquina e outra. Crie o seu primeiro personagem para começar." }),
-          h("div", { class: "actions" }, h("button", { class: "btn", type: "button", onclick: startCreate, text: "Criar personagem" }))
-        )
+      card = h("div", { class: "card" },
+        h("h2", { text: "Nenhum investigador ainda" }),
+        h("p", { class: "lead", text: "São Paulo não dorme. Alguém precisa prestar atenção no que acontece entre uma esquina e outra. Crie o seu primeiro personagem para começar." }),
+        h("div", { class: "actions" }, h("button", { class: "btn", type: "button", onclick: startCreate, text: "Criar personagem" }))
       );
     } else {
       const last = lastUsed();
-      parts.push(
-        h("div", { class: "card" },
-          h("p", { class: "label", text: n === 1 ? "Seu personagem" : "Último personagem usado" }),
-          h("h2", { text: charLabel(last) }),
-          last.conceito ? h("p", { class: "muted", text: last.conceito }) : null,
-          h("div", { class: "actions" },
-            h("button", { class: "btn", type: "button", onclick: () => openChar(last.id), text: "Continuar com " + charLabel(last) }),
-            n >= 2 ? h("button", { class: "btn ghost", type: "button", onclick: renderChoose, text: "Escolher personagem" }) : null,
-            h("button", { class: "btn ghost", type: "button", onclick: startCreate, text: "Novo personagem" })
-          )
+      card = h("div", { class: "card" },
+        h("p", { class: "label", text: n === 1 ? "Seu personagem" : "Último personagem usado" }),
+        h("h2", { text: charLabel(last) }),
+        last.conceito ? h("p", { class: "muted", text: last.conceito }) : null,
+        h("div", { class: "actions" },
+          h("button", { class: "btn", type: "button", onclick: () => openChar(last.id), text: "Continuar com " + charLabel(last) }),
+          n >= 2 ? h("button", { class: "btn ghost", type: "button", onclick: renderChoose, text: "Escolher personagem" }) : null,
+          h("button", { class: "btn ghost", type: "button", onclick: startCreate, text: "Novo personagem" })
         )
       );
     }
-    body.replaceChildren(...parts);
+    $("homeBody").replaceChildren(card);
     show("sHome");
   }
 
   function renderChoose() {
-    const list = $("chooseList");
-    list.replaceChildren(...chars.slice().reverse().map(c =>
+    $("chooseList").replaceChildren(...chars.slice().reverse().map(c =>
       h("li", { class: "char-item" },
         h("div", null, h("div", { class: "name", text: charLabel(c) }), c.conceito ? h("div", { class: "concept", text: c.conceito }) : null),
         h("button", { class: "btn ghost", type: "button", onclick: () => openChar(c.id), text: "Jogar com " + charLabel(c) })
@@ -347,43 +391,51 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   }
 
   // ---------- Componentes ----------
-  // ui-pips: valor de 0 a max, com botões − e + e bolinhas clicáveis
-  function pipsRow(label, desc, value, max, canAdd, onChange) {
+  // ui-pips: sempre mostra PIPS_MAX bolinhas; acima do limite atual ficam cinza (bloqueadas)
+  function pipsRow(label, desc, value, limit, canAdd, onChange) {
     const dots = [];
-    for (let i = 1; i <= max; i++) {
+    for (let i = 1; i <= PIPS_MAX; i++) {
+      const locked = i > limit;
+      const target = value === i ? i - 1 : i;
+      const affordable = target <= value || canAdd(target - value);
       dots.push(h("button", {
-        type: "button", class: "dot" + (i <= value ? " on" : ""),
-        "aria-label": label + ": definir " + (value === i ? i - 1 : i),
-        disabled: i > value && !canAdd(i - value) ? true : undefined,
-        onclick: () => onChange(value === i ? i - 1 : i)
+        type: "button",
+        class: "dot" + (i <= value ? " on" : "") + (locked ? " locked" : ""),
+        title: locked ? "Disponível ao evoluir o personagem" : null,
+        "aria-label": locked ? label + ": nível " + i + " bloqueado na criação" : label + ": definir " + target,
+        disabled: locked || !affordable ? true : undefined,
+        onclick: () => onChange(target)
       }));
     }
-    return h("div", { class: "row" },
+    return h("div", { class: "row pip-row" },
       h("div", null, h("div", { class: "nm", text: label }), h("div", { class: "ds", text: desc })),
       h("div", { class: "pips", role: "group", "aria-label": label },
         h("button", { type: "button", class: "pm", "aria-label": "Diminuir " + label, disabled: value <= 0 ? true : undefined, onclick: () => onChange(value - 1), text: "−" }),
         dots,
-        h("button", { type: "button", class: "pm", "aria-label": "Aumentar " + label, disabled: value >= max || !canAdd(1) ? true : undefined, onclick: () => onChange(value + 1), text: "+" }),
+        h("button", { type: "button", class: "pm", "aria-label": "Aumentar " + label, disabled: value >= limit || !canAdd(1) ? true : undefined, onclick: () => onChange(value + 1), text: "+" }),
         h("span", { class: "val", text: String(value) })
       )
     );
   }
-
+  function pipLegend() {
+    return h("div", { class: "legend", "aria-hidden": "true" },
+      h("span", null, h("i", { class: "l-on" }), "ponto usado"),
+      h("span", null, h("i", { class: "l-free" }), "disponível"),
+      h("span", null, h("i", { class: "l-lock" }), "libera ao evoluir")
+    );
+  }
   function budgetView(used, total) {
     const left = total - used;
     return h("div", { class: "budget" + (left === 0 ? " ok" : left < 0 ? " over" : ""), "aria-live": "polite" },
       h("span", { class: "num", text: String(left) }),
-      h("span", { class: "muted", text: left === 1 ? "ponto para distribuir" : "pontos para distribuir" })
+      h("span", { class: "muted small", text: left === 1 ? "ponto para distribuir" : "pontos para distribuir" })
     );
   }
-
   function cellsView(kind, n) {
     const cells = [];
     for (let i = 1; i <= MAX_VL; i++) cells.push(h("i", { class: i <= n ? "on" : "" }));
     return h("div", { class: "cells " + kind, "aria-hidden": "true" }, cells);
   }
-
-  // ui-barra-sanidade
   function sanityView(s) {
     const st = estadoSanidade(s);
     const blocks = [];
@@ -399,35 +451,35 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     wrap.style.setProperty("--s-color", st.cor);
     return wrap;
   }
-
-  // ui-cartao-escolha
   function choiceCards(options, value, onPick, groupLabel) {
     return h("div", { class: "choices", role: "radiogroup", "aria-label": groupLabel },
       options.map(([key, title, desc]) => h("button", {
-        type: "button", class: "choice", role: "radio", "aria-checked": String(value === key),
-        onclick: () => onPick(key)
+        type: "button", class: "choice", role: "radio", "aria-checked": String(value === key), onclick: () => onPick(key)
       }, h("span", { class: "t", text: title }), h("span", { class: "d", text: desc })))
     );
   }
-
-  function segmented(label, value, onPick) {
-    return h("div", { class: "row" },
-      h("div", { class: "nm", text: label }),
-      h("div", { class: "seg", role: "radiogroup", "aria-label": label },
-        NIVEIS_LIMITE.map(([k, t]) => h("button", { type: "button", role: "radio", "aria-checked": String(value === k), onclick: () => onPick(k), text: t }))
-      )
+  function limitRow(key, label, value, onPick) {
+    return h("div", { class: "limit" },
+      h("div", { class: "head" },
+        h("div", { class: "nm", text: label }),
+        h("div", { class: "seg", role: "radiogroup", "aria-label": label },
+          NIVEIS_LIMITE.map(([k, t]) => h("button", { type: "button", role: "radio", "aria-checked": String(value === k), onclick: () => onPick(k), text: t }))
+        )
+      ),
+      h("p", { class: "example", "aria-live": "polite", text: EXEMPLOS[key][value] })
     );
   }
 
   function summaryView(c) {
+    const per = periciasDe(c);
     const at = ATRIBUTOS.map(([k, n]) => [n, c.atributos[k]]);
-    const es = ESPECIALIZACOES.filter(([k]) => (c.especializacoes[k] || 0) > 0).map(([k, n]) => [n, c.especializacoes[k]]);
+    const pe = PERICIAS.filter(([k]) => (per[k] || 0) > 0).map(([k, n]) => [n, per[k]]);
     const mort = MORTALIDADE.find(m => m[0] === c.mortalidade);
     const kv = rows => h("dl", { class: "kv" }, rows.map(([a, b]) => [h("dt", { text: a }), h("dd", { text: String(b) })]));
     return h("div", { class: "card" },
       h("div", { class: "sum-grid" },
         h("div", null, h("h3", { text: "Atributos" }), kv(at)),
-        h("div", null, h("h3", { text: "Especializações" }), es.length ? kv(es) : h("p", { class: "muted small", text: "Nenhuma." }))
+        h("div", null, h("h3", { text: "Perícias" }), pe.length ? kv(pe) : h("p", { class: "muted small", text: "Nenhuma." }))
       ),
       h("div", { class: "split-bars" },
         h("div", { class: "meter" }, h("span", { text: "Vida" }), cellsView("vida", c.vida), h("strong", { text: String(c.vida) })),
@@ -437,50 +489,61 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       h("div", { class: "sum-grid" },
         h("div", null, h("h3", { text: "Crença" }), h("p", { class: "story", text: c.crenca || "Não informada." })),
         h("div", null, h("h3", { text: "Tipo de história" }), h("p", { text: mort ? mort[1] : "—" }),
-          h("p", { class: "muted small", text: "Limites: " + LIMITES.map(([k, n]) => n + " " + (NIVEIS_LIMITE.find(x => x[0] === c.limites[k]) || ["", "?"])[1].toLowerCase()).join(", ") }))
+          h("p", { class: "muted small", text: "Limites: " + LIMITES.map(([k, n]) => n + " " + ((NIVEIS_LIMITE.find(x => x[0] === (c.limites || {})[k]) || ["", "?"])[1]).toLowerCase()).join(", ") }))
       ),
       c.historia ? h("div", null, h("h3", { text: "História" }), h("p", { class: "story", text: c.historia })) : null
     );
   }
 
   // ---------- Criação ----------
-  const STEPS = ["Quem é", "Atributos", "Especializações", "Corpo e mente", "Tipo de história", "Revisar"];
+  const STEPS = ["Quem é", "Atributos", "Perícias", "Corpo e mente", "Tipo de história", "Revisar"];
 
   function newDraft() {
-    const atributos = {}, especializacoes = {};
+    const atributos = {}, pericias = {};
     ATRIBUTOS.forEach(([k]) => { atributos[k] = 0; });
-    ESPECIALIZACOES.forEach(([k]) => { especializacoes[k] = 0; });
+    PERICIAS.forEach(([k]) => { pericias[k] = 0; });
     return {
       nome: "", conceito: "", historia: "", crenca: "",
-      atributos, especializacoes, vida: 7, lucidez: 7, vidaAjustada: false,
+      atributos, pericias, vida: 7, lucidez: 7, vidaAjustada: false,
       mortalidade: null, limites: { horror: "moderado", gore: "moderado", violencia: "moderado" }
     };
   }
-  function sugestaoVida(d) { return clamp(7 + d.atributos.forca - d.atributos.vontade, MIN_VL, MAX_VL); }
+  const sugestaoVida = d => clamp(7 + d.atributos.forca - d.atributos.vontade, MIN_VL, MAX_VL);
 
   function startCreate() { draft = newDraft(); step = 0; renderStep(); show("sCreate"); }
 
   function stepError() {
     const d = draft;
     if (step === 0 && !d.nome.trim()) return "Dê um nome ao personagem para continuar.";
-    if (step === 1) {
-      const left = PONTOS_ATRIBUTO - sum(d.atributos);
-      if (left > 0) return "Ainda falta distribuir " + left + (left === 1 ? " ponto" : " pontos") + " de atributo.";
-    }
-    if (step === 2) {
-      const left = PONTOS_ESPEC - sum(d.especializacoes);
-      if (left > 0) return "Ainda falta distribuir " + left + (left === 1 ? " ponto" : " pontos") + " de especialização.";
-    }
+    if (step === 1) { const left = PONTOS_ATRIBUTO - sum(d.atributos); if (left > 0) return "Ainda falta distribuir " + left + (left === 1 ? " ponto" : " pontos") + " de atributo."; }
+    if (step === 2) { const left = PONTOS_PERICIA - sum(d.pericias); if (left > 0) return "Ainda falta distribuir " + left + (left === 1 ? " ponto" : " pontos") + " de perícia."; }
     if (step === 4 && !d.mortalidade) return "Escolha que tipo de história você quer viver.";
     return "";
   }
+  function showError(msg) { $("stepError").textContent = msg; $("stepError").hidden = !msg; }
+
+  // Barra fixa do topo: passo atual, progresso e, nos passos de pontos, o contador
+  function renderTop() {
+    const d = draft;
+    const progress = h("div", { class: "progress", "aria-hidden": "true" }, STEPS.map((_, i) => h("i", { class: i === step ? "current" : i < step ? "done" : "" })));
+    let right = null;
+    if (step === 1) right = budgetView(sum(d.atributos), PONTOS_ATRIBUTO);
+    if (step === 2) right = budgetView(sum(d.pericias), PONTOS_PERICIA);
+    $("createTop").replaceChildren(
+      h("div", { class: "line" },
+        h("div", null, h("span", { class: "label", text: "Passo " + (step + 1) + " de " + STEPS.length + " · " }), h("span", { class: "stepname", text: STEPS[step] })),
+        right
+      ),
+      progress
+    );
+  }
 
   function renderStep() {
-    $("steps").replaceChildren(...STEPS.map((s, i) => h("li", { class: i === step ? "current" : i < step ? "done" : "", "aria-current": i === step ? "step" : undefined, text: (i + 1) + ". " + s })));
-    $("stepError").hidden = true;
+    showError("");
     $("btnBack").textContent = step === 0 ? "Cancelar" : "Voltar";
     $("btnNext").textContent = step === STEPS.length - 1 ? "Criar personagem" : "Continuar";
     $("btnNext").disabled = saving;
+    renderTop();
     const d = draft;
     let body;
 
@@ -498,11 +561,9 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     }
 
     if (step === 1) {
-      const used = sum(d.atributos);
       body = h("div", { class: "card" },
-        h("h2", { text: "Atributos" }),
-        h("p", { class: "muted", text: "Capacidades naturais, independentes da profissão. Cada um vai de 0 a 3 na criação." }),
-        budgetView(used, PONTOS_ATRIBUTO),
+        h("p", { class: "muted", text: "Capacidades naturais, independentes da profissão. Na criação, cada um vai até 3; o máximo do jogo é 5." }),
+        pipLegend(),
         h("div", { class: "rows" }, ATRIBUTOS.map(([k, n, ds]) => pipsRow(n, ds, d.atributos[k], MAX_ATRIBUTO_CRIACAO,
           extra => sum(d.atributos) + extra <= PONTOS_ATRIBUTO,
           v => { d.atributos[k] = clamp(v, 0, MAX_ATRIBUTO_CRIACAO); if (!d.vidaAjustada) { d.vida = sugestaoVida(d); d.lucidez = VIDA_LUCIDEZ - d.vida; } renderStep(); })))
@@ -510,24 +571,21 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     }
 
     if (step === 2) {
-      const used = sum(d.especializacoes);
       body = h("div", { class: "card" },
-        h("h2", { text: "Especializações" }),
-        h("p", { class: "muted", text: "O que o personagem aprendeu: profissão, estudo, experiência. Cada uma vai de 0 a 2 na criação." }),
-        budgetView(used, PONTOS_ESPEC),
-        h("div", { class: "rows" }, ESPECIALIZACOES.map(([k, n, ds]) => pipsRow(n, ds, d.especializacoes[k], MAX_ESPEC_CRIACAO,
-          extra => sum(d.especializacoes) + extra <= PONTOS_ESPEC,
-          v => { d.especializacoes[k] = clamp(v, 0, MAX_ESPEC_CRIACAO); renderStep(); }))),
-        h("p", { class: "muted small", text: "Existe mais uma especialização que ninguém escolhe na criação. Ela aparece quando o personagem viver algo que não devia." })
+        h("p", { class: "muted", text: "O que o personagem aprendeu: profissão, estudo, experiência. Na criação, cada uma vai até 2; o máximo do jogo é 5." }),
+        pipLegend(),
+        h("div", { class: "rows" }, PERICIAS.map(([k, n, ds]) => pipsRow(n, ds, d.pericias[k], MAX_PERICIA_CRIACAO,
+          extra => sum(d.pericias) + extra <= PONTOS_PERICIA,
+          v => { d.pericias[k] = clamp(v, 0, MAX_PERICIA_CRIACAO); renderStep(); }))),
+        h("p", { class: "muted small", text: "Existe mais uma perícia que ninguém escolhe na criação. Ela aparece quando o personagem viver algo que não devia." })
       );
     }
 
     if (step === 3) {
-      // Controle: valor = Lucidez (arrastar para a direita = mais mente). Atualiza as barras no lugar, sem recriar o controle.
       const range = h("input", { id: "fVida", type: "range", min: String(MIN_VL), max: String(MAX_VL), step: "1", value: String(d.lucidez), "aria-label": "Lucidez (a Vida é o restante de 14)" });
       const bars = h("div", { class: "split-bars" });
       const sug = sugestaoVida(d);
-      const sugBtn = h("button", { class: "btn ghost", type: "button", text: "Usar sugestão da ficha (Vida " + sug + " / Lucidez " + (VIDA_LUCIDEZ - sug) + ")" });
+      const sugBtn = h("button", { class: "btn ghost", type: "button", text: "Usar sugestão (Vida " + sug + " / Lucidez " + (VIDA_LUCIDEZ - sug) + ")" });
       const paint = () => {
         bars.replaceChildren(
           h("div", { class: "meter" }, h("span", { text: "Vida" }), cellsView("vida", d.vida), h("strong", { text: String(d.vida) })),
@@ -540,7 +598,6 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       sugBtn.addEventListener("click", () => { d.vida = sug; d.lucidez = VIDA_LUCIDEZ - sug; d.vidaAjustada = false; paint(); });
       paint();
       body = h("div", { class: "card" },
-        h("h2", { text: "Corpo e mente" }),
         h("p", { class: "muted", text: "Vida e Lucidez somam 14. Quanto mais o corpo aguenta, menos a mente aguenta, e vice-versa. Cada lado fica entre 5 e 9." }),
         bars,
         h("div", { class: "field" }, h("label", { for: "fVida", class: "label", text: "◂ Mais corpo · Mais mente ▸" }), range),
@@ -556,15 +613,15 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
         h("h2", { text: "Que tipo de história você quer viver?" }),
         choiceCards(MORTALIDADE, d.mortalidade, k => { d.mortalidade = k; renderStep(); }, "Modo de mortalidade"),
         h("h3", { text: "Seus limites" }),
-        h("p", { class: "muted small", text: "A mestra ajusta as descrições ao que você prefere ler. Você pode mudar depois." }),
-        h("div", { class: "rows" }, LIMITES.map(([k, n]) => segmented(n, d.limites[k], v => { d.limites[k] = v; renderStep(); })))
+        h("p", { class: "muted small", text: "A mestra ajusta as descrições ao que você prefere ler. Veja o exemplo de cada nível. Você pode mudar depois." }),
+        h("div", { class: "rows" }, LIMITES.map(([k, n]) => limitRow(k, n, d.limites[k], v => { d.limites[k] = v; renderStep(); })))
       );
     }
 
     if (step === 5) {
       const preview = Object.assign({}, d, { sanidade: SANIDADE_MAX });
       body = h("div", { class: "screen" },
-        h("div", null, h("p", { class: "label", text: "Revisar" }), h("h2", { text: d.nome.trim() || "Sem nome" }), d.conceito ? h("p", { class: "muted", text: d.conceito }) : null),
+        h("div", null, h("h2", { text: d.nome.trim() || "Sem nome" }), d.conceito ? h("p", { class: "muted", text: d.conceito }) : null),
         summaryView(preview),
         h("p", { class: "muted small", text: "Confira tudo. Depois de criado, o personagem entra no seu arquivo e já pode ser escolhido na primeira tela." })
       );
@@ -573,36 +630,36 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     $("stepBody").replaceChildren(body);
   }
 
+  function goStep(n) { step = n; renderStep(); window.scrollTo(0, 0); }
+
   $("btnBack").addEventListener("click", () => {
     if (saving) return;
     if (step === 0) { draft = null; renderHome(); return; }
-    step -= 1; renderStep();
+    goStep(step - 1);
   });
-
   $("btnNext").addEventListener("click", async () => {
     if (saving) return;
     const err = stepError();
-    if (err) { $("stepError").textContent = err; $("stepError").hidden = false; return; }
-    if (step < STEPS.length - 1) { step += 1; renderStep(); return; }
+    if (err) { showError(err); return; }
+    if (step < STEPS.length - 1) { goStep(step + 1); return; }
     await createCharacter();
   });
 
   async function createCharacter() {
     const d = draft;
-    if (sum(d.atributos) !== PONTOS_ATRIBUTO || sum(d.especializacoes) !== PONTOS_ESPEC || !d.nome.trim() || !d.mortalidade) {
-      $("stepError").textContent = "Algo ficou incompleto. Volte e confira os passos.";
-      $("stepError").hidden = false; return;
+    if (sum(d.atributos) !== PONTOS_ATRIBUTO || sum(d.pericias) !== PONTOS_PERICIA || !d.nome.trim() || !d.mortalidade) {
+      showError("Algo ficou incompleto. Volte e confira os passos."); return;
     }
     saving = true; $("btnNext").disabled = true; $("btnNext").textContent = "Criando…";
     const now = Date.now();
     const doc = {
-      versaoFicha: 1,
+      versaoFicha: 2,
       nome: d.nome.trim().slice(0, 60),
       conceito: d.conceito.trim().slice(0, 120),
       historia: d.historia.trim().slice(0, 1200),
       crenca: d.crenca.trim().slice(0, 400),
       atributos: Object.assign({}, d.atributos),
-      especializacoes: Object.assign({ ocultismo: 0 }, d.especializacoes),
+      pericias: Object.assign({ ocultismo: 0 }, d.pericias),
       ocultismoRevelado: false,
       vida: d.vida, vidaMax: d.vida,
       lucidez: d.lucidez, lucidezMax: d.lucidez,
@@ -623,11 +680,10 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       saving = false;
       $("btnNext").disabled = false; $("btnNext").textContent = "Criar personagem";
       const code = e && e.code;
-      $("stepError").textContent = code === "invalid_argument"
+      showError(code === "invalid_argument"
         ? "Sua conta não tem permissão para criar personagens neste jogo. Peça ao Osmar para compartilhar com você como Editor."
         : code === "quota_exceeded" ? "O arquivo do jogo está cheio. Avise o Osmar."
-        : "Não foi possível salvar agora (" + (code || "erro") + "). Tente de novo em alguns segundos.";
-      $("stepError").hidden = false;
+        : "Não foi possível salvar agora (" + (code || "erro") + "). Tente de novo em alguns segundos.");
     }
   }
 
@@ -641,7 +697,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     if (!me) { fail("Não foi possível identificar sua conta. Entre no Claude e abra o jogo de novo."); $("who").textContent = ""; return; }
     $("who").textContent = myName ? "Jogando como " + myName : "Conectado";
 
-    try { const p = await prefsDoc().get(); if (p.exists) prefs = Object.assign(prefs, p.data()); } catch (e) { /* sem preferência salva */ }
+    try { const p = await prefsDoc().get(); if (p.exists) prefs = Object.assign(prefs, p.data()); } catch (e) { /* sem preferência */ }
 
     const timer = setTimeout(() => { if (!charsLoaded) fail("O arquivo do jogo está demorando para responder. Verifique a conexão e recarregue a página."); }, 10000);
     charsCol().orderBy("criadoEm", "asc").onSnapshot(snap => {

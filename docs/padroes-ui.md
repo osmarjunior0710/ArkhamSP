@@ -25,6 +25,16 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
 - Nome em português, minúsculo, sem acento, com hífen (ex.: `ui-barra-de-vida`, não `UI_BarraVida`).
 - Criar uma label nova só quando um padrão novo for registrado aqui.
 
+## Fundamentos (valem para todas as telas)
+
+- **Espaçamento:** escala em passos de 4 px: 1 = 4 px, 2 = 8 px, **3 = 12 px (padrão do projeto)**, 4 = 16 px, 5 = 20 px. Cartões, linhas e grupos usam o nível 3; só sobe com motivo.
+- **Botões:** altura mínima 40 px, espaçamento interno 8 × 14 px, texto em Cinzel 0,85rem. Nada de botões gigantes.
+- **Celular primeiro:** informação que o jogador precisa consultar o tempo todo (ex.: pontos para distribuir) fica **fixa no topo**; ações principais (Voltar / Continuar) ficam numa **barra fixa embaixo**, com espaço vazio no fim da página para nada ficar escondido.
+- **Teste:** celular 390 × 844 e computador 1280 × 800 (ver `CLAUDE.md`).
+- Decidido em 2026-11-09 (AT-20, AT-22).
+
+---
+
 ## Modelo de registro
 
 ```
@@ -84,12 +94,13 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
 - **Ideia:** distribuir ou mostrar valores pequenos (0 a 3, 0 a 5) de forma visual, contando "bolinhas".
 - **Quando usar:** atributos, especializações e qualquer recurso contável pequeno (ex.: o que antes seriam "magias" e "pactos" usam este mesmo padrão). Não usar para valores grandes (Vida/Lucidez usam barra de células; Sanidade usa `ui-barra-sanidade`).
 - **Como é:**
-  - linha com nome e descrição curta à esquerda; à direita: botão −, bolinhas (vazias = contorno latão; cheias = latão), botão + e o número;
+  - linha com nome e descrição curta à esquerda (no celular, as bolinhas vão para baixo do nome); botão −, bolinhas, botão + e o número;
+  - **sempre mostra o máximo do jogo (5 bolinhas)**: cheias = latão (ponto usado); contorno latão = disponível; **contorno tracejado cinza = bloqueado** (libera ao evoluir); uma legenda curta explica os três estados;
   - clicar numa bolinha define o valor até ela; clicar na última cheia diminui 1;
-  - quando há um orçamento (ex.: 8 pontos), um contador "N pontos para distribuir" fica acima da lista; verde quando zera; + e bolinhas que estourariam o orçamento ficam desabilitados.
+  - quando há um orçamento (ex.: 8 pontos), o contador "N pontos para distribuir" fica **na barra fixa do topo**; verde quando zera; + e bolinhas que estourariam o orçamento ficam desabilitados.
 - **Variações permitidas:** número máximo de bolinhas; somente leitura (sem − e +).
-- **Onde é usado:** criação de personagem, passos Atributos e Especializações (AT-17).
-- **Histórico:** 2026-11-08: criado em AT-17.
+- **Onde é usado:** criação de personagem, passos Atributos e Perícias (AT-17).
+- **Histórico:** 2026-11-08: criado em AT-17. 2026-11-09: 5 bolinhas sempre visíveis com bloqueadas em cinza; contador na barra fixa (AT-20, AT-21).
 
 ### Cartões de escolha — rascunho
 - **Label:** `ui-cartao-escolha`
@@ -102,6 +113,18 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
 ### Assistente em passos — rascunho
 - **Label:** `ui-assistente-passos`
 - **Ideia:** dividir um processo longo (criar personagem) em passos curtos, sem perder a noção de onde se está.
-- **Como é:** pílulas numeradas no topo (passo atual em latão); conteúdo do passo; embaixo, "Voltar" (ou "Cancelar" no primeiro) e "Continuar" (ou a ação final, ex.: "Criar personagem"). Ao tentar avançar com algo faltando, uma mensagem em vermelho diz o que falta; nada avança sozinho.
+- **Como é:**
+  - **barra fixa no topo:** "Passo N de 6 · Nome do passo", barra de progresso em 6 segmentos (atual em latão) e, quando o passo tem pontos, o contador à direita;
+  - conteúdo do passo;
+  - **barra fixa embaixo:** "Voltar" (ou "Cancelar" no primeiro) à esquerda e "Continuar" (ou a ação final, ex.: "Criar personagem") à direita; a mensagem de erro aparece dentro dessa barra, acima dos botões, para nunca ficar fora da tela;
+  - ao tentar avançar com algo faltando, a mensagem diz o que falta; nada avança sozinho.
 - **Onde é usado:** criação de personagem (AT-17).
-- **Histórico:** 2026-11-08: criado em AT-17.
+- **Histórico:** 2026-11-08: criado em AT-17. 2026-11-09: pílulas trocadas por barra fixa compacta no topo; botões em barra fixa embaixo (AT-20).
+
+### Régua com exemplo — rascunho
+- **Label:** `ui-regua-exemplo`
+- **Ideia:** escolher um nível (ex.: Leve / Moderado / Pesado) vendo na hora o que ele significa.
+- **Quando usar:** escolhas de intensidade em que o nome do nível sozinho não explica (limites de conteúdo).
+- **Como é:** nome à esquerda e régua segmentada em pílula à direita (opção atual em latão); embaixo, um **exemplo de narração** em fonte de história, com barra latão à esquerda, que muda ao trocar o nível.
+- **Onde é usado:** criação de personagem, passo "Tipo de história" (AT-23).
+- **Histórico:** 2026-11-09: criado em AT-23.

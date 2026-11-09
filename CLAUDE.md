@@ -94,3 +94,11 @@ Ao terminar, mover o ticket para **Em análise** e comentar nele (e no chat):
   - resultado esperado em cada passo;
   - casos de borda que vale testar (ex.: campo vazio, texto muito longo, dois jogadores ao mesmo tempo).
 - Sempre listar o que ficou **pendente ou fora do escopo**.
+
+## Teste antes de entregar (celular e computador)
+
+Toda entrega que aparece na tela passa por teste nos dois formatos, antes de ir para Em análise:
+- **Celular:** 390 × 844 (formato de referência do projeto).
+- **Computador:** 1280 × 800.
+- Conferir: nada importante escondido atrás de barras fixas, sem rolagem lateral, botões alcançáveis com o polegar.
+- O roteiro de teste para o Osmar sempre inclui passos no celular.

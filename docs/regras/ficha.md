@@ -2,6 +2,7 @@
 Ficha de personagem: proposta do Osmar, recebida em 2026-11-07 (AT-4).
 Texto do Osmar, só reformatado em tabelas. Não editar sem pedir ao Osmar.
 Pontos ainda em aberto ficam no épico AT-4 do Jira.
+Em 2026-11-09 "Especialização" foi renomeada para "Perícia" a pedido do Osmar (o nome "especialização" fica reservado para outra coisa no futuro).
 -->
 
 # Ficha de personagem (proposta do Osmar)
@@ -29,7 +30,7 @@ Ocultismo não representa uma religião ou fonte específica de poder. Uma pesso
 
 **Ocultismo só aparece na ficha se a pessoa passa a ter alguma experiência com isso.** Se não tiver, não faz parte da realidade da pessoa.
 
-> **Decisão de 2026-11-07:** o Ocultismo é **uma especialização** (a mesma da seção 6), não um atributo: é algo desenvolvido. Fica **escondida** até o personagem ter experiência com o sobrenatural. Como as outras, combina com qualquer atributo: Intelecto + Ocultismo para resolver um ritual; Percepção + Ocultismo para encontrar padrões mágicos.
+> **Decisão de 2026-11-07:** o Ocultismo é **uma perícia** (a mesma da seção 6), não um atributo: é algo desenvolvido. Fica **escondida** até o personagem ter experiência com o sobrenatural. Como as outras, combina com qualquer atributo: Intelecto + Ocultismo para resolver um ritual; Percepção + Ocultismo para encontrar padrões mágicos.
 
 ## 3. Métricas independentes
 
@@ -52,11 +53,11 @@ Não são atributos numéricos, mas informações importantes para construir e i
 - 1d12 **Esperança** e 1d12 **Mythos**, lançados juntos.
 - Os resultados são somados.
 - O maior resultado individual determina a influência narrativa: Esperança ou Mythos.
-- Atributos e possíveis especializações complementam a resolução dos testes (**ainda precisamos definir exatamente como**).
+- Atributos e possíveis perícias complementam a resolução dos testes (**ainda precisamos definir exatamente como**).
 
-## 6. Especializações (recebidas em 2026-11-07)
+## 6. Perícias (recebidas em 2026-11-07)
 
-| Especialização | O que abrange |
+| Perícia | O que abrange |
 |---|---|
 | Atletismo | Corrida, escalada, natação, saltos e esforço físico. |
 | Combate | Luta corporal, armas brancas e armas de fogo. |
@@ -74,9 +75,9 @@ Não são atributos numéricos, mas informações importantes para construir e i
 | Empatia | Compreender emoções, intenções e comportamentos. |
 | Ofícios | Mecânica, reparos, arrombamento, ferramentas e trabalhos manuais. |
 
-### Exemplos: a mesma especialização com atributos diferentes
+### Exemplos: a mesma perícia com atributos diferentes
 
-| Especialização | Atributo | Exemplo de utilização |
+| Perícia | Atributo | Exemplo de utilização |
 |---|---|---|
 | Atletismo | Força | Derrubar uma porta ou erguer um objeto pesado. |
 | Atletismo | Agilidade | Saltar entre edifícios ou atravessar um obstáculo. |
@@ -92,14 +93,14 @@ Não são atributos numéricos, mas informações importantes para construir e i
 | | Na criação | Máximo com evolução |
 |---|---|---|
 | Atributo | 0 a 3 | 4 |
-| Especialização | 0 a 2 (recém-formado = +1) | 5 |
-| **Bônus total** (atributo + especialização) | até +5 | **+9** |
+| Perícia | 0 a 2 (recém-formado = +1) | 5 |
+| **Bônus total** (atributo + perícia) | até +5 | **+9** |
 
 - Regra de bolso: cada +3 de bônus equivale a descer uma faixa de dificuldade.
 - Com +5 ou mais, o teste muito fácil (8) nunca falha; com +9, o quase impossível (23) passa em 50%.
-- A evolução sobe principalmente as especializações; atributos mudam pouco.
+- A evolução sobe principalmente as perícias; atributos mudam pouco.
 
-> **Nota para depois (Osmar):** níveis épicos, como os níveis 19 e 20 do D&D, com uma "dádiva épica" que permita um atributo acima de 4 e uma especialização acima de 5. Não resolver agora.
+> **Nota para depois (Osmar):** níveis épicos, como os níveis 19 e 20 do D&D, com uma "dádiva épica" que permita um atributo acima de 4 e uma perícia acima de 5. Não resolver agora.
 
 ## 8. Vida, Lucidez e Loucura (em definição, 2026-11-07)
 
@@ -130,14 +131,14 @@ Não são atributos numéricos, mas informações importantes para construir e i
 
 **Criação de personagem**
 - Atributos: **8 pontos** para distribuir, máximo 3 em cada.
-- Especializações: **5 pontos** para distribuir, máximo 2 em cada.
+- Perícias: **5 pontos** para distribuir, máximo 2 em cada.
 
 **Evolução (provisória, até existir o sistema de XP)**
 - 20 níveis.
-- Especialização: **+1 ponto por nível**.
+- Perícia: **+1 ponto por nível**.
 - Atributo: **+1 ponto a cada 4 níveis**.
 - **Sem travas:** os pontos podem ir para onde o jogador quiser.
-- **Máximo:** atributo **+5** e especialização **+5** (teto do bônus: **+10**). Isso substitui o máximo de atributo 4 da seção 7.
-- No nível 20: 13 pontos de atributo e 25 de especialização (ex.: 5 especializações em +5, ou 4 em +5 e 5 pontos espalhados). Quem fizer 5 + 5 numa coisa só fica fraco em quase todo o resto, e esse é o preço.
+- **Máximo:** atributo **+5** e perícia **+5** (teto do bônus: **+10**). Isso substitui o máximo de atributo 4 da seção 7.
+- No nível 20: 13 pontos de atributo e 25 de perícia (ex.: 5 perícias em +5, ou 4 em +5 e 5 pontos espalhados). Quem fizer 5 + 5 numa coisa só fica fraco em quase todo o resto, e esse é o preço.
 
 > **Nota para depois (Osmar):** **talentos** (como os *feats* do D&D) ficaram de fora por enquanto. Um talento que só destrava um ponto não vale a pena; voltar ao assunto se surgirem talentos realmente funcionais.
