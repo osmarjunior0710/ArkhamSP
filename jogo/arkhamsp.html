@@ -144,11 +144,15 @@ textarea { min-height: 76px; resize: vertical; font-family: var(--font-story); }
 
 /* Vida / Lucidez */
 .split-bars { display: grid; gap: var(--sp-2); }
-.meter { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr) 2ch; gap: var(--sp-2); align-items: center; }
+.meter { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr) 3.5ch; gap: var(--sp-2); align-items: center; }
+.meter strong { text-align: right; font-variant-numeric: tabular-nums; }
 .cells { display: grid; grid-template-columns: repeat(9, 1fr); gap: 3px; }
 .cells i { height: 12px; border-radius: 2px; background: var(--surface-2); border: 1px solid var(--line); }
-.cells.vida i.on { background: var(--vida); border-color: var(--vida); }
-.cells.luc i.on { background: var(--lucidez); border-color: var(--lucidez); }
+.cells.vida { --c: var(--vida); }
+.cells.luc { --c: var(--lucidez); }
+.cells i.on { background: var(--c); border-color: var(--c); }
+.cells i.lost, .sanity .block i.lost { background: color-mix(in srgb, var(--c, var(--s-color)) 32%, var(--bg)); border-color: color-mix(in srgb, var(--c, var(--s-color)) 45%, var(--bg)); }
+.cells i.na { background: transparent; border: 1px dashed var(--locked); }
 input[type="range"] { width: 100%; accent-color: var(--accent); }
 
 /* Barra de Sanidade (ui-barra-sanidade) */
@@ -159,6 +163,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .sanity .block { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
 .sanity .block i { height: 10px; border-radius: 2px; background: var(--surface-2); border: 1px solid var(--line); }
 .sanity .block i.on { background: var(--s-color, var(--s-lucido)); border-color: var(--s-color, var(--s-lucido)); }
+.sanity .block i.lost { --c: var(--s-color, var(--s-lucido)); }
 
 /* Cartões de escolha (ui-cartao-escolha) */
 .choices { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--sp-2); }
@@ -472,9 +477,11 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       h("span", { class: "muted small", text: left === 1 ? "ponto para distribuir" : "pontos para distribuir" })
     );
   }
-  function cellsView(kind, n) {
+  // ui-barra-recurso: atual (cor cheia), perdido (cor escura), indisponível (cinza, acima do máximo do personagem)
+  function cellsView(kind, cur, max) {
+    if (max === undefined || max === null) max = cur;
     const cells = [];
-    for (let i = 1; i <= MAX_VL; i++) cells.push(h("i", { class: i <= n ? "on" : "" }));
+    for (let i = 1; i <= MAX_VL; i++) cells.push(h("i", { class: i <= cur ? "on" : i <= max ? "lost" : "na" }));
     return h("div", { class: "cells " + kind, "aria-hidden": "true" }, cells);
   }
   function sanityView(s) {
@@ -482,7 +489,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     const blocks = [];
     for (let b = 0; b < 4; b++) {
       const cells = [];
-      for (let k = 1; k <= 3; k++) cells.push(h("i", { class: b * 3 + k <= s ? "on" : "" }));
+      for (let k = 1; k <= 3; k++) cells.push(h("i", { class: b * 3 + k <= s ? "on" : "lost" }));
       blocks.push(h("div", { class: "block" }, cells));
     }
     const wrap = h("div", { class: "sanity", role: "img", "aria-label": "Sanidade " + s + " de 12: " + st.nome },
@@ -524,8 +531,8 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
         h("div", null, h("h3", { text: "Perícias" }), pe.length ? kvp(pe) : h("p", { class: "muted small", text: "Nenhuma." }))
       ),
       h("div", { class: "split-bars" },
-        h("div", { class: "meter" }, h("span", { text: "Vida" }), cellsView("vida", c.vida), h("strong", { text: String(c.vida) })),
-        h("div", { class: "meter" }, h("span", { text: "Lucidez" }), cellsView("luc", c.lucidez), h("strong", { text: String(c.lucidez) }))
+        h("div", { class: "meter", role: "img", "aria-label": "Vida " + c.vida + " de " + (c.vidaMax || c.vida) }, h("span", { text: "Vida" }), cellsView("vida", c.vida, c.vidaMax), h("strong", { text: c.vidaMax && c.vida < c.vidaMax ? c.vida + "/" + c.vidaMax : String(c.vida) })),
+        h("div", { class: "meter", role: "img", "aria-label": "Lucidez " + c.lucidez + " de " + (c.lucidezMax || c.lucidez) }, h("span", { text: "Lucidez" }), cellsView("luc", c.lucidez, c.lucidezMax), h("strong", { text: c.lucidezMax && c.lucidez < c.lucidezMax ? c.lucidez + "/" + c.lucidezMax : String(c.lucidez) }))
       ),
       sanityView(c.sanidade),
       h("div", { class: "sum-grid" },

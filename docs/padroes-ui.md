@@ -85,9 +85,10 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
   - barra de 12 pontos dividida em **4 blocos de 3**, esvaziando da direita para a esquerda conforme a Sanidade cai;
   - ao lado, o **nome do estado** do bloco atual: **Lúcido** (12–10), **Abalado** (9–7), **Perturbado** (6–4), **Fraturado** (3–1), **Insano** (0);
   - o número atual aparece junto (ex.: "Abalado · 8").
+  - casas perdidas ficam na **cor do estado, escura** (mesma lógica de `ui-barra-recurso`).
 - **Variações permitidas:** a definir quando a primeira tela for construída.
 - **Onde é usado:** jogo (`jogo/arkhamsp.html`): passo "Corpo e mente" da criação e resumo do personagem (AT-17, AT-16).
-- **Histórico:** 2026-11-08: nomes dos estados definidos pelo Osmar; primeira tela que usa: AT-17.
+- **Histórico:** 2026-11-08: nomes dos estados definidos pelo Osmar; primeira tela que usa: AT-17. 2026-11-09: casas perdidas em cor escura (AT-26).
 
 ### Pips de pontos — rascunho
 - **Label:** `ui-pips`
@@ -136,3 +137,17 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
 - **Como é:** o botão da ação tem contorno vermelho ("Apagar"). Ao tocar, abre **dentro do próprio item** uma confirmação: frase em vermelho dizendo o que vai acontecer e que não dá para desfazer ("Apagar Victor para sempre? Não dá para desfazer."), com "Cancelar" e "Apagar para sempre". Nada de janelas do navegador.
 - **Onde é usado:** Lista de personagens (AT-24).
 - **Histórico:** 2026-11-09: criado em AT-24.
+
+### Barra de recurso (Vida, Lucidez) — rascunho
+- **Label:** `ui-barra-recurso`
+- **Ideia:** ver de relance quanto o personagem tem, quanto já perdeu e qual é o máximo dele, pronto para dano e cura.
+- **Quando usar:** Vida e Lucidez (e qualquer recurso futuro que tenha atual e máximo).
+- **Como é:**
+  - 9 casas (o máximo possível no jogo), em linha, com o nome à esquerda e o número à direita;
+  - **atual:** cor cheia (Vida = vermelho, Lucidez = azul);
+  - **perdido** (entre o atual e o máximo do personagem): a mesma cor, **escura**;
+  - **indisponível** (acima do máximo do personagem): **contorno tracejado cinza**, como as bolinhas bloqueadas de `ui-pips`;
+  - o número mostra "atual/máximo" quando o personagem está machucado (ex.: "6/7"), e só o valor quando está cheio.
+- **Exemplo:** Vida máxima 7, tomou 1 de dano → 6 vermelhas, 1 vermelha escura, 2 tracejadas.
+- **Onde é usado:** criação (passo Corpo e mente) e prévia do personagem (AT-26).
+- **Histórico:** 2026-11-09: criado em AT-26, a pedido do Osmar, para preparar a futura calculadora de dano.
