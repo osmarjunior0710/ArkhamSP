@@ -94,13 +94,13 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
 - **Ideia:** distribuir ou mostrar valores pequenos (0 a 3, 0 a 5) de forma visual, contando "bolinhas".
 - **Quando usar:** atributos, especializações e qualquer recurso contável pequeno (ex.: o que antes seriam "magias" e "pactos" usam este mesmo padrão). Não usar para valores grandes (Vida/Lucidez usam barra de células; Sanidade usa `ui-barra-sanidade`).
 - **Como é:**
-  - linha com nome e descrição curta à esquerda (no celular, as bolinhas vão para baixo do nome); botão −, bolinhas, botão + e o número;
+  - linha com nome e descrição curta à esquerda (no celular, as bolinhas vão para baixo do nome); à direita, na ordem: **bolinhas, botão −, número, botão +**;
   - **sempre mostra o máximo do jogo (5 bolinhas)**: cheias = latão (ponto usado); contorno latão = disponível; **contorno tracejado cinza = bloqueado** (libera ao evoluir); uma legenda curta explica os três estados;
   - clicar numa bolinha define o valor até ela; clicar na última cheia diminui 1;
   - quando há um orçamento (ex.: 8 pontos), o contador "N pontos para distribuir" fica **na barra fixa do topo**; verde quando zera; + e bolinhas que estourariam o orçamento ficam desabilitados.
-- **Variações permitidas:** número máximo de bolinhas; somente leitura (sem − e +).
+- **Variações permitidas:** número máximo de bolinhas; **somente leitura** (bolinhas menores, sem − e +, sem número; vazias em cinza): usada na prévia/ficha do personagem.
 - **Onde é usado:** criação de personagem, passos Atributos e Perícias (AT-17).
-- **Histórico:** 2026-11-08: criado em AT-17. 2026-11-09: 5 bolinhas sempre visíveis com bloqueadas em cinza; contador na barra fixa (AT-20, AT-21).
+- **Histórico:** 2026-11-08: criado em AT-17. 2026-11-09: 5 bolinhas sempre visíveis com bloqueadas em cinza; contador na barra fixa (AT-20, AT-21). 2026-11-09: ordem "bolinhas − número +"; versão somente leitura na prévia (AT-25).
 
 ### Cartões de escolha — rascunho
 - **Label:** `ui-cartao-escolha`
@@ -128,3 +128,11 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
 - **Como é:** nome à esquerda e régua segmentada em pílula à direita (opção atual em latão); embaixo, um **exemplo de narração** em fonte de história, com barra latão à esquerda, que muda ao trocar o nível.
 - **Onde é usado:** criação de personagem, passo "Tipo de história" (AT-23).
 - **Histórico:** 2026-11-09: criado em AT-23.
+
+### Confirmar ação destrutiva — rascunho
+- **Label:** `ui-confirmar-acao`
+- **Ideia:** impedir que o jogador perca algo sem querer (ex.: apagar personagem).
+- **Quando usar:** qualquer ação que não dá para desfazer.
+- **Como é:** o botão da ação tem contorno vermelho ("Apagar"). Ao tocar, abre **dentro do próprio item** uma confirmação: frase em vermelho dizendo o que vai acontecer e que não dá para desfazer ("Apagar Victor para sempre? Não dá para desfazer."), com "Cancelar" e "Apagar para sempre". Nada de janelas do navegador.
+- **Onde é usado:** Lista de personagens (AT-24).
+- **Histórico:** 2026-11-09: criado em AT-24.

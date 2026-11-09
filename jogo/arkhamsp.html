@@ -125,7 +125,16 @@ textarea { min-height: 76px; resize: vertical; font-family: var(--font-story); }
 .pips .dot.on { background: var(--accent); }
 .pips .dot:disabled:not(.locked) { opacity: .45; cursor: not-allowed; }
 .pips .dot.locked { border: 2px dashed var(--locked); background: transparent; cursor: not-allowed; }
-.pips .val { font-variant-numeric: tabular-nums; min-width: 1.5ch; text-align: right; font-weight: 700; }
+.pips .val { font-variant-numeric: tabular-nums; min-width: 1.5ch; text-align: center; font-weight: 700; }
+.pips .dot + .pm { margin-left: var(--sp-2); }
+.pips.ro { gap: 4px; }
+.pips.ro .dot { display: inline-block; width: 12px; height: 12px; border-width: 1.5px; }
+.pips.ro .dot:not(.on) { border-color: var(--locked); }
+.kvp { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px var(--sp-3); align-items: center; font-size: .92rem; margin-top: var(--sp-1); }
+.kvp .k { color: var(--muted); }
+.btn.danger { background: transparent; color: var(--bad); border: 1px solid var(--bad); }
+.confirm { display: grid; gap: var(--sp-2); width: 100%; border-top: 1px dashed var(--line); padding-top: var(--sp-2); }
+.confirm p { color: var(--bad); font-size: .9rem; }
 .legend { display: flex; gap: var(--sp-3); flex-wrap: wrap; font-size: .78rem; color: var(--muted); }
 .legend span { display: inline-flex; align-items: center; gap: var(--sp-1); }
 .legend i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
@@ -192,8 +201,9 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   </section>
 
   <section class="screen" id="sChoose" hidden>
-    <h2>Escolher personagem</h2>
+    <h2>Seus personagens</h2>
     <ul class="char-list" id="chooseList"></ul>
+    <p class="error" id="listError" role="alert" hidden></p>
     <div class="actions"><button class="btn ghost" type="button" data-go="home">Voltar</button></div>
   </section>
 
@@ -358,7 +368,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
         last.conceito ? h("p", { class: "muted", text: last.conceito }) : null,
         h("div", { class: "actions" },
           h("button", { class: "btn", type: "button", onclick: () => openChar(last.id), text: "Continuar com " + charLabel(last) }),
-          n >= 2 ? h("button", { class: "btn ghost", type: "button", onclick: renderChoose, text: "Escolher personagem" }) : null,
+          h("button", { class: "btn ghost", type: "button", onclick: renderChoose, text: "Lista de personagens" }),
           h("button", { class: "btn ghost", type: "button", onclick: startCreate, text: "Novo personagem" })
         )
       );
@@ -367,26 +377,57 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     show("sHome");
   }
 
+  let confirmingId = null, deleting = false;
   function renderChoose() {
-    $("chooseList").replaceChildren(...chars.slice().reverse().map(c =>
-      h("li", { class: "char-item" },
+    if (!chars.length) { renderHome(); return; }
+    $("listError").hidden = true;
+    $("chooseList").replaceChildren(...chars.slice().reverse().map(c => {
+      const item = h("li", { class: "char-item" },
         h("div", null, h("div", { class: "name", text: charLabel(c) }), c.conceito ? h("div", { class: "concept", text: c.conceito }) : null),
-        h("button", { class: "btn ghost", type: "button", onclick: () => openChar(c.id), text: "Jogar com " + charLabel(c) })
-      )
-    ));
+        h("div", { class: "actions" },
+          h("button", { class: "btn", type: "button", onclick: () => openChar(c.id), text: "Jogar" }),
+          h("button", { class: "btn danger", type: "button", "aria-label": "Apagar " + charLabel(c), onclick: () => { confirmingId = c.id; renderChoose(); }, text: "Apagar" })
+        )
+      );
+      if (confirmingId === c.id) {
+        item.append(h("div", { class: "confirm", role: "group", "aria-label": "Confirmar exclusão" },
+          h("p", { text: "Apagar " + charLabel(c) + " para sempre? Não dá para desfazer." }),
+          h("div", { class: "actions" },
+            h("button", { class: "btn ghost", type: "button", onclick: () => { confirmingId = null; renderChoose(); }, text: "Cancelar" }),
+            h("button", { class: "btn danger", type: "button", disabled: deleting ? true : undefined, onclick: () => deleteChar(c.id), text: deleting ? "Apagando…" : "Apagar para sempre" })
+          )
+        ));
+      }
+      return item;
+    }));
     show("sChoose");
+  }
+  async function deleteChar(pid) {
+    if (deleting) return;
+    deleting = true; renderChoose();
+    try {
+      await charsCol().doc(pid).delete();
+      chars = chars.filter(c => c.id !== pid);
+      if (prefs.ultimoPersonagem === pid) { const last = chars[chars.length - 1]; await savePrefs(last ? last.id : null); }
+      confirmingId = null; deleting = false;
+      chars.length ? renderChoose() : renderHome();
+    } catch (e) {
+      deleting = false; renderChoose();
+      $("listError").textContent = "Não foi possível apagar agora (" + ((e && e.code) || "erro") + "). Tente de novo.";
+      $("listError").hidden = false;
+    }
   }
 
   function openChar(pid) {
     const c = chars.find(x => x.id === pid);
     if (!c) { renderHome(); return; }
     savePrefs(pid);
-    $("charBody").replaceChildren(
+    $("charBody").replaceChildren(...[
       h("h2", { text: charLabel(c) }),
       c.conceito ? h("p", { class: "muted", text: c.conceito }) : null,
       summaryView(c),
       h("p", { class: "notice", text: "Esta é uma prévia. A ficha completa e o começo da história chegam nas próximas etapas." })
-    );
+    ].filter(Boolean));
     show("sChar");
   }
 
@@ -410,10 +451,10 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     return h("div", { class: "row pip-row" },
       h("div", null, h("div", { class: "nm", text: label }), h("div", { class: "ds", text: desc })),
       h("div", { class: "pips", role: "group", "aria-label": label },
-        h("button", { type: "button", class: "pm", "aria-label": "Diminuir " + label, disabled: value <= 0 ? true : undefined, onclick: () => onChange(value - 1), text: "−" }),
         dots,
-        h("button", { type: "button", class: "pm", "aria-label": "Aumentar " + label, disabled: value >= limit || !canAdd(1) ? true : undefined, onclick: () => onChange(value + 1), text: "+" }),
-        h("span", { class: "val", text: String(value) })
+        h("button", { type: "button", class: "pm", "aria-label": "Diminuir " + label, disabled: value <= 0 ? true : undefined, onclick: () => onChange(value - 1), text: "−" }),
+        h("span", { class: "val", text: String(value) }),
+        h("button", { type: "button", class: "pm", "aria-label": "Aumentar " + label, disabled: value >= limit || !canAdd(1) ? true : undefined, onclick: () => onChange(value + 1), text: "+" })
       )
     );
   }
@@ -472,14 +513,15 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 
   function summaryView(c) {
     const per = periciasDe(c);
-    const at = ATRIBUTOS.map(([k, n]) => [n, c.atributos[k]]);
+    const at = ATRIBUTOS.map(([k, n]) => [n, c.atributos[k] || 0]);
     const pe = PERICIAS.filter(([k]) => (per[k] || 0) > 0).map(([k, n]) => [n, per[k]]);
+    const roPips = v => { const d = []; for (let i = 1; i <= PIPS_MAX; i++) d.push(h("i", { class: "dot" + (i <= v ? " on" : "") })); return h("span", { class: "pips ro", role: "img", "aria-label": v + " de " + PIPS_MAX }, d); };
+    const kvp = rows => h("div", { class: "kvp" }, rows.map(([a, b]) => [h("span", { class: "k", text: a }), roPips(b)]));
     const mort = MORTALIDADE.find(m => m[0] === c.mortalidade);
-    const kv = rows => h("dl", { class: "kv" }, rows.map(([a, b]) => [h("dt", { text: a }), h("dd", { text: String(b) })]));
     return h("div", { class: "card" },
       h("div", { class: "sum-grid" },
-        h("div", null, h("h3", { text: "Atributos" }), kv(at)),
-        h("div", null, h("h3", { text: "Perícias" }), pe.length ? kv(pe) : h("p", { class: "muted small", text: "Nenhuma." }))
+        h("div", null, h("h3", { text: "Atributos" }), kvp(at)),
+        h("div", null, h("h3", { text: "Perícias" }), pe.length ? kvp(pe) : h("p", { class: "muted small", text: "Nenhuma." }))
       ),
       h("div", { class: "split-bars" },
         h("div", { class: "meter" }, h("span", { text: "Vida" }), cellsView("vida", c.vida), h("strong", { text: String(c.vida) })),
@@ -706,6 +748,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       if (!snap.metadata.fromCache || snap.size) { charsLoaded = true; clearTimeout(timer); }
       if (first && charsLoaded && $("sCreate").hidden && $("sChar").hidden) renderHome();
       else if (!$("sHome").hidden) renderHome();
+      else if (!$("sChoose").hidden && !deleting) renderChoose();
     }, err => {
       clearTimeout(timer);
       fail("Não foi possível ler seus personagens (" + (err && err.code) + "). Recarregue a página.");
