@@ -496,7 +496,8 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       h("div", { class: "head" }, h("span", { class: "label", text: "Sanidade" }), h("span", null, h("span", { class: "state", text: st.nome }), " · " + s)),
       h("div", { class: "blocks" }, blocks)
     );
-    wrap.style.setProperty("--s-color", st.cor);
+    // Por enquanto a barra é sempre verde (cheia) e verde escuro (perdida); o estado aparece só no nome (AT-26)
+    wrap.style.setProperty("--s-color", "var(--s-lucido)");
     return wrap;
   }
   function choiceCards(options, value, onPick, groupLabel) {

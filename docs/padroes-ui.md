@@ -85,10 +85,10 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
   - barra de 12 pontos dividida em **4 blocos de 3**, esvaziando da direita para a esquerda conforme a Sanidade cai;
   - ao lado, o **nome do estado** do bloco atual: **Lúcido** (12–10), **Abalado** (9–7), **Perturbado** (6–4), **Fraturado** (3–1), **Insano** (0);
   - o número atual aparece junto (ex.: "Abalado · 8").
-  - casas perdidas ficam na **cor do estado, escura** (mesma lógica de `ui-barra-recurso`).
+  - **cores (decisão do Osmar, 2026-11-09):** por enquanto a barra é sempre **verde** (casas atuais) e **verde escuro** (casas perdidas), em qualquer estado; o estado aparece só no nome. Usar a cor do estado na barra ficou estranho e será repensado.
 - **Variações permitidas:** a definir quando a primeira tela for construída.
 - **Onde é usado:** jogo (`jogo/arkhamsp.html`): passo "Corpo e mente" da criação e resumo do personagem (AT-17, AT-16).
-- **Histórico:** 2026-11-08: nomes dos estados definidos pelo Osmar; primeira tela que usa: AT-17. 2026-11-09: casas perdidas em cor escura (AT-26).
+- **Histórico:** 2026-11-08: nomes dos estados definidos pelo Osmar; primeira tela que usa: AT-17. 2026-11-09: casas perdidas em cor escura (AT-26); barra fixada em verde / verde escuro (AT-26).
 
 ### Pips de pontos — rascunho
 - **Label:** `ui-pips`
