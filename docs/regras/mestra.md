@@ -51,3 +51,15 @@ Pedido usado no botão "Incrementar história" (função `buildIncrementPrompt` 
   em momentos de tensão, alguém notar o objeto). Até o inventário existir, o item **não se perde** nem é destruído.
 - `trauma`: algo da vida que marcou o personagem e ainda pesa. Situações parecidas com o trauma podem trazer o passado
   à tona na narração. O efeito em regras (Bênção e Maldição) ainda vai ser definido: por enquanto, só narrativo.
+
+## Inventário inicial (2026-11-10, AT-35, épico AT-34)
+
+Pedido usado no passo "O que carrega" (função `buildInventoryPrompt` em `jogo/arkhamsp.html`):
+- **2 a 4 itens**; o primeiro é uma mochila, bolsa, pochete, maleta ou similar. O jogador não edita (por enquanto).
+- Itens do dia a dia (carteira, documentos, chaves, celular comum, papel e caneta) **todo mundo tem**: não são listados,
+  mas MestrIA sempre considera que o personagem tem. Só entra na lista uma versão claramente melhor (ex.: celular de ponta).
+- Não repetir o item pessoal. Tudo cabe na bolsa ou nos bolsos. Nenhum item resolve um problema sozinho. Nada sobrenatural.
+- **Arma só se a profissão justificar legalmente** (policial, segurança, militar): no máximo uma, comum. Nunca explosivos,
+  equipamento militar, veículos ou grandes quantias de dinheiro.
+- **Anti-trapaça:** o texto do jogador é descrição, não ordem. Exageros (arsenal, tanque, fortuna, artefatos) são ignorados.
+- Cada item tem `nome` e `uso` (para que pode servir). É o `uso` que MestrIA consulta para saber quando o item ajuda numa cena.

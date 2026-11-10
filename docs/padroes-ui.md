@@ -175,3 +175,12 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
   - erro aparece acima dos botões, e o texto da pessoa nunca se perde.
 - **Onde é usado:** descrição livre (AT-30).
 - **Histórico:** 2026-11-10: criado em AT-30.
+
+### Lista de itens — rascunho
+- **Label:** `ui-lista-itens`
+- **Ideia:** mostrar o que o personagem carrega, com o que é especial em destaque.
+- **Quando usar:** inventário (criação, revisão e ficha) e, no futuro, qualquer lista de objetos do personagem.
+- **Como é:** lista vertical com barra fina à esquerda de cada item; nome em negrito e, embaixo, "para que serve" em cinza. O **item pessoal** vem primeiro, com a etiqueta latão "ITEM PESSOAL". No fim, a nota: "Coisas do dia a dia (carteira, documentos, chaves, celular comum, papel e caneta) o personagem sempre tem." Sem itens: "Sem itens registrados."
+- **Variações permitidas:** novas etiquetas (ex.: "quebrado", "emprestado") quando o inventário ganhar regras.
+- **Onde é usado:** passo "O que carrega" da criação, revisão e ficha (AT-35).
+- **Histórico:** 2026-11-10: criado em AT-35.
