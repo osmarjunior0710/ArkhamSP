@@ -128,8 +128,9 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
 - **Ideia:** escolher um nível (ex.: Leve / Moderado / Pesado) vendo na hora o que ele significa.
 - **Quando usar:** escolhas de intensidade em que o nome do nível sozinho não explica (limites de conteúdo).
 - **Como é:** nome à esquerda e régua segmentada em pílula à direita (opção atual em latão); embaixo, um **exemplo de narração** em fonte de história, com barra latão à esquerda, que muda ao trocar o nível.
-- **Onde é usado:** criação de personagem, passo "Tipo de história" (AT-23).
-- **Histórico:** 2026-11-09: criado em AT-23.
+- **Variação "seletor sem exemplo":** a mesma régua em pílula, sozinha, para escolher uma entre poucas opções curtas (ex.: pronomes ele/dele · ela/dela · elu/delu · outros). Se tiver "outros", um campo de texto aparece logo abaixo.
+- **Onde é usado:** criação de personagem, passo "Tipo de história" (AT-23); pronomes no passo "Quem é" (AT-27).
+- **Histórico:** 2026-11-09: criado em AT-23. 2026-11-10: variação "seletor sem exemplo" para pronomes (AT-27).
 
 ### Confirmar ação destrutiva — rascunho
 - **Label:** `ui-confirmar-acao`

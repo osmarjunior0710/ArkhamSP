@@ -295,6 +295,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     ["semimortal", "Semimortal", "Se cair, não morre: volta, mas com alguma sequela."],
     ["imortal", "Imortal", "Se cair, desmaia e o universo dá um jeito de salvá-lo, sem sequela."]
   ];
+  const PRONOMES = [["ele", "ele/dele"], ["ela", "ela/dela"], ["elu", "elu/delu"], ["outro", "outros"]];
   const LIMITES = [["horror", "Horror"], ["gore", "Gore"], ["violencia", "Violência"]];
   const NIVEIS_LIMITE = [["leve", "Leve"], ["moderado", "Moderado"], ["pesado", "Pesado"]];
   // Exemplos de narração por limite e nível (AT-23). Gore: textos do Osmar.
@@ -451,6 +452,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     savePrefs(pid);
     $("charBody").replaceChildren(...[
       h("h2", { text: charLabel(c) }),
+      identLine(c),
       c.conceito ? h("p", { class: "muted", text: c.conceito }) : null,
       summaryView(c),
       h("p", { class: "notice", text: "Esta é uma prévia. A ficha completa e o começo da história chegam nas próximas etapas." })
@@ -541,6 +543,12 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     );
   }
 
+  function identLine(c) {
+    const parts = [];
+    if (c.apelido) parts.push("“" + c.apelido + "”");
+    if (c.pronomes) parts.push(c.pronomes);
+    return parts.length ? h("p", { class: "small muted", text: parts.join(" · ") }) : null;
+  }
   function summaryView(c) {
     const per = periciasDe(c);
     const at = ATRIBUTOS.map(([k, n]) => [n, c.atributos[k] || 0]);
@@ -576,6 +584,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     PERICIAS.forEach(([k]) => { pericias[k] = 0; });
     return {
       nome: "", conceito: "", historia: "", crenca: "",
+      apelido: "", pronomes: "", pronomesTipo: "",
       modoCriacao: "simples", descricaoOriginal: "",
       atributos, pericias, vida: 7, lucidez: 7, vidaAjustada: false,
       mortalidade: null, limites: { horror: "moderado", gore: "moderado", violencia: "moderado" }
@@ -630,6 +639,8 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       "Regras:",
       "- Preencha um campo SOMENTE se a descrição sustentar. Se não houver informação, use null (texto) ou 0 (pontos). Ex.: se o nome não foi dito, nome = null.",
       "- nome: o nome do personagem, se dito.",
+      "- apelido: um apelido do personagem, só se for dito explicitamente.",
+      "- pronomes: 'ele/dele', 'ela/dela' ou 'elu/delu' (ou outros que o jogador indicar) somente se a descrição disser os pronomes ou se referir ao personagem de forma clara e consistente no masculino, no feminino ou em linguagem neutra; senão null.",
       "- conceito: quem é em poucas palavras (ocupação, idade, onde vive), até 120 caracteres.",
       "- historia: um resumo do passado e da vida do personagem com base na descrição, em português, terceira pessoa, até 1200 caracteres.",
       "- crenca: a visão de mundo (religião, fé, ateísmo, superstição…), se mencionada, até 400 caracteres.",
@@ -641,7 +652,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       "- Nunca escolha o tipo de história (mortalidade) nem limites de conteúdo.",
       "",
       "Responda SOMENTE com um objeto JSON neste formato:",
-      '{"nome": null, "conceito": null, "historia": null, "crenca": null, "atributos": {"forca": 0, "agilidade": 0, "intelecto": 0, "percepcao": 0, "presenca": 0, "vontade": 0}, "pericias": {"atletismo": 0, "combate": 0, "furtividade": 0, "sobrevivencia": 0, "conducao": 0, "investigacao": 0, "medicina": 0, "ciencias": 0, "humanidades": 0, "tecnologia": 0, "persuasao": 0, "manipulacao": 0, "empatia": 0, "oficios": 0}, "vida": null}',
+      '{"nome": null, "apelido": null, "pronomes": null, "conceito": null, "historia": null, "crenca": null, "atributos": {"forca": 0, "agilidade": 0, "intelecto": 0, "percepcao": 0, "presenca": 0, "vontade": 0}, "pericias": {"atletismo": 0, "combate": 0, "furtividade": 0, "sobrevivencia": 0, "conducao": 0, "investigacao": 0, "medicina": 0, "ciencias": 0, "humanidades": 0, "tecnologia": 0, "persuasao": 0, "manipulacao": 0, "empatia": 0, "oficios": 0}, "vida": null}',
       "",
       "DESCRIÇÃO DO JOGADOR:",
       text
@@ -654,7 +665,10 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     d.modoCriacao = "descricao";
     d.descricaoOriginal = text;
     const str = (v, max) => typeof v === "string" && v.trim() ? v.trim().slice(0, max) : "";
-    d.nome = str(out.nome, 60); d.conceito = str(out.conceito, 120); d.historia = str(out.historia, 1200); d.crenca = str(out.crenca, 400);
+    d.nome = str(out.nome, 60); d.apelido = str(out.apelido, 40);
+    d.pronomes = str(out.pronomes, 30);
+    if (d.pronomes) { const k = PRONOMES.find(([, t]) => t === d.pronomes.toLowerCase()); d.pronomesTipo = k ? k[0] : "outro"; if (k) d.pronomes = k[1]; }
+    d.conceito = str(out.conceito, 120); d.historia = str(out.historia, 1200); d.crenca = str(out.crenca, 400);
     const fit = (src, keys, maxEach, total, dst) => {
       keys.forEach(([k]) => { const v = Number(src && src[k]); dst[k] = Number.isFinite(v) ? clamp(Math.round(v), 0, maxEach) : 0; });
       // Se a IA passar do limite, corta primeiro dos valores menores, preservando os pontos fortes do personagem
@@ -703,6 +717,8 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   function renderReadResult(d) {
     const found = [], missing = [];
     (d.nome ? found : missing).push("Nome" + (d.nome ? ": " + d.nome : ""));
+    if (d.apelido) found.push("Apelido: " + d.apelido);
+    (d.pronomes ? found : missing).push("Pronomes" + (d.pronomes ? ": " + d.pronomes : ""));
     (d.conceito ? found : missing).push("Quem é" + (d.conceito ? ": " + d.conceito : ""));
     (d.historia ? found : missing).push("História");
     (d.crenca ? found : missing).push("Crença");
@@ -731,6 +747,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   function stepError() {
     const d = draft;
     if (step === 0 && !d.nome.trim()) return "Dê um nome ao personagem para continuar.";
+    if (step === 0 && !d.pronomes.trim()) return d.pronomesTipo === "outro" ? "Escreva os pronomes do personagem." : "Escolha os pronomes do personagem.";
     if (step === 1) { const left = PONTOS_ATRIBUTO - sum(d.atributos); if (left > 0) return "Ainda falta distribuir " + left + (left === 1 ? " ponto" : " pontos") + " de atributo."; }
     if (step === 2) { const left = PONTOS_PERICIA - sum(d.pericias); if (left > 0) return "Ainda falta distribuir " + left + (left === 1 ? " ponto" : " pontos") + " de perícia."; }
     if (step === 4 && !d.mortalidade) return "Escolha que tipo de história você quer viver.";
@@ -770,6 +787,16 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       body = h("div", { class: "card" },
         h("h2", { text: "Quem é o seu personagem?" }),
         field("fNome", "Nome", null, inp("fNome", "nome", 60, "Ex.: Cida Albuquerque")),
+        field("fApelido", "Apelido", "Opcional. Só quem é próximo do personagem vai chamá-lo assim.", inp("fApelido", "apelido", 40, "Ex.: Dona Cida")),
+        h("div", { class: "field" },
+          h("span", { class: "label", id: "lblPron", text: "Pronomes" }),
+          h("div", { class: "seg", role: "radiogroup", "aria-labelledby": "lblPron" },
+            PRONOMES.map(([k, t]) => h("button", { type: "button", role: "radio", "aria-checked": String(d.pronomesTipo === k),
+              onclick: () => { d.pronomesTipo = k; d.pronomes = k === "outro" ? "" : t; renderStep(); if (k === "outro") { const f = $("fPron"); if (f) f.focus(); } }, text: t }))
+          ),
+          d.pronomesTipo === "outro" ? inp("fPron", "pronomes", 30, "Escreva os pronomes. Ex.: ile/dile") : null,
+          h("span", { class: "hint", text: "A mestra vai usar esses pronomes em toda a narração." })
+        ),
         field("fConceito", "Quem é, em poucas palavras", "Ocupação, idade, o que faz da vida.", inp("fConceito", "conceito", 120, "Ex.: enfermeira aposentada que mora no Bixiga")),
         field("fHistoria", "História curta", "Opcional. De onde vem, o que carrega.", ta("fHistoria", "historia", 1200, "Ex.: trabalhou trinta anos no plantão noturno do Hospital das Clínicas…")),
         field("fCrenca", "Crença", "Religião, fé, ateísmo, superstição… muda como o personagem interpreta o que vê.", ta("fCrenca", "crenca", 400, "Ex.: católica de missa no domingo, mas não passa embaixo de escada"))
@@ -837,7 +864,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     if (step === 5) {
       const preview = Object.assign({}, d, { sanidade: SANIDADE_MAX });
       body = h("div", { class: "screen" },
-        h("div", null, h("h2", { text: d.nome.trim() || "Sem nome" }), d.conceito ? h("p", { class: "muted", text: d.conceito }) : null),
+        h("div", null, h("h2", { text: d.nome.trim() || "Sem nome" }), identLine(d), d.conceito ? h("p", { class: "muted", text: d.conceito }) : null),
         summaryView(preview),
         h("p", { class: "muted small", text: "Confira tudo. Depois de criado, o personagem entra no seu arquivo e já pode ser escolhido na primeira tela." })
       );
@@ -863,7 +890,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 
   async function createCharacter() {
     const d = draft;
-    if (sum(d.atributos) !== PONTOS_ATRIBUTO || sum(d.pericias) !== PONTOS_PERICIA || !d.nome.trim() || !d.mortalidade) {
+    if (sum(d.atributos) !== PONTOS_ATRIBUTO || sum(d.pericias) !== PONTOS_PERICIA || !d.nome.trim() || !d.pronomes.trim() || !d.mortalidade) {
       showError("Algo ficou incompleto. Volte e confira os passos."); return;
     }
     saving = true; $("btnNext").disabled = true; $("btnNext").textContent = "Criando…";
@@ -871,6 +898,8 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     const doc = {
       versaoFicha: 2,
       nome: d.nome.trim().slice(0, 60),
+      apelido: (d.apelido || "").trim().slice(0, 40),
+      pronomes: (d.pronomes || "").trim().slice(0, 30),
       conceito: d.conceito.trim().slice(0, 120),
       historia: d.historia.trim().slice(0, 1200),
       crenca: d.crenca.trim().slice(0, 400),
