@@ -32,11 +32,15 @@ quando MestrIA entrar no jogo (épicos AT-5 e AT-12). O tom e os guias de narra�
 ## Incrementar história (2026-11-10, AT-30)
 
 Pedido usado no botão "Incrementar história" (função `buildIncrementPrompt` em `jogo/arkhamsp.html`):
-- Manter **tudo** o que a pessoa escreveu (nada some, nada é contrariado); só acrescentar.
+- Manter os fatos e a essência do que a pessoa escreveu (nada some, nada é contrariado). As frases podem ser reescritas
+  livremente para o texto fluir (AT-32).
+- Ler primeiro e **acrescentar detalhes nos pontos mais vagos**; não precisa cobrir tudo de uma vez (AT-32).
 - Acrescentar vida (rotina, manias, lugares reais de São Paulo, relações) e preencher o que falta para a ficha:
   idade, ocupação, onde vive, crença, família, no que é bom e no que é ruim.
 - **Nome uma única vez, no começo** ("Fulano de Tal é…"). Se não houver nome, inventar um nome brasileiro.
   Depois disso não repetir nome nem apelido.
 - Depois do nome, texto **o mais neutro possível**, sem ele/ela para o personagem: os pronomes são escolha da pessoa.
 - **Nada de experiência sobrenatural**; no máximo um pressentimento sem explicação.
-- Sem números nem regras do jogo. Acrescentar no máximo uns 1500 caracteres. Resposta: `{"texto": "..."}`.
+- Sem números nem regras do jogo. Resposta: `{"texto": "..."}`.
+- **Tamanho:** cada incremento acrescenta **de 500 a 1000 caracteres** ao texto atual; o pedido informa o tamanho atual
+  e a faixa exata. Antes era "no máximo 1500", e a IA tratava o teto como meta (AT-32).
