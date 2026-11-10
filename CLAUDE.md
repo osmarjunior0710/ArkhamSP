@@ -1,6 +1,6 @@
 # ArkhamSP
 
-RPG com IA mestra. Fase atual: protótipo como Artifact do Claude.
+RPG com uma IA que narra, chamada **MestrIA** (sem gênero: sem artigo, sem "a mestra" nem "o mestre"). Fase atual: protótipo como Artifact do Claude.
 Jogadores por enquanto: o Osmar e a esposa.
 
 O Osmar é **QA / Game Designer, não é dev**. Ele não revisa código.
@@ -29,7 +29,7 @@ de forma que dê para reconstruir o raciocínio depois só lendo o Jira.
   - coleções e documentos do banco, com seus **campos, tipos e valores possíveis**;
   - atributos de personagem, regras de dados, fórmulas;
   - arquivos, links do Artifact e versões publicadas;
-  - textos de instrução (prompt) dados à IA mestra;
+  - textos de instrução (prompt) dados à MestrIA;
   - nomes de funções/telas importantes e onde ficam.
 - **Ligar tickets relacionados** (ex.: "depende de", "relacionado a") e citar a chave (`AT-N`) nos commits.
 - Antes de mexer em algo existente, **ler os tickets anteriores** sobre aquilo.
@@ -37,7 +37,7 @@ de forma que dê para reconstruir o raciocínio depois só lendo o Jira.
 ## Hierarquia no Jira
 
 ```
-Épico            → uma entrega grande / uma "vertical" do produto (ex.: Ficha de personagem, IA mestra)
+Épico            → uma entrega grande / uma "vertical" do produto (ex.: Ficha de personagem, MestrIA)
  ├─ Tarefa       → uma parte entregável do épico
  │   └─ Subtask  → um passo da tarefa. Subtask com label `bug` = "subbug": bug achado testando ESSA tarefa
  └─ Bug          → bug em algo maior ou já concluído; fica no épico e é ligado à tarefa de origem

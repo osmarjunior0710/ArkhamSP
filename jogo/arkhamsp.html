@@ -594,7 +594,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     const ta = (id, key, max, ph) => { const el = h("textarea", { id, maxlength: String(max), placeholder: ph }); el.value = d[key]; el.addEventListener("input", () => { d[key] = el.value; }); return el; };
     return [
       field("fNome", "Nome", null, inp("fNome", "nome", 60, "Ex.: Cida Albuquerque")),
-      field("fApelido", "Apelido", "Opcional. Só quem é próximo do personagem vai chamá-lo assim.", inp("fApelido", "apelido", 40, "Ex.: Dona Cida")),
+      field("fApelido", "Apelido", "Opcional. Só pessoas próximas do personagem vão usar esse nome.", inp("fApelido", "apelido", 40, "Ex.: Dona Cida")),
       h("div", { class: "field" },
         h("span", { class: "label", id: "lblPron", text: "Pronomes" }),
         h("div", { class: "seg", role: "radiogroup", "aria-labelledby": "lblPron" },
@@ -602,7 +602,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
             onclick: () => { d.pronomesTipo = k; d.pronomes = k === "outro" ? "" : t; rerender(); if (k === "outro") { const f = $("fPron"); if (f) f.focus(); } }, text: t }))
         ),
         d.pronomesTipo === "outro" ? inp("fPron", "pronomes", 30, "Escreva os pronomes. Ex.: ile/dile") : null,
-        h("span", { class: "hint", text: "A mestra vai usar esses pronomes em toda a narração." })
+        h("span", { class: "hint", text: "MestrIA vai usar esses pronomes em toda a narração." })
       ),
       field("fConceito", "Quem é, em poucas palavras", "Ocupação, idade, o que faz da vida.", inp("fConceito", "conceito", 120, "Ex.: enfermeira aposentada que mora no Bixiga")),
       comHistoria ? field("fHistoria", "História curta", "Opcional. De onde vem, o que carrega.", ta("fHistoria", "historia", 1200, "Ex.: trabalhou trinta anos no plantão noturno do Hospital das Clínicas…")) : null,
@@ -720,8 +720,8 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       tag ? h("span", { class: "tag", text: tag }) : null, h("span", { class: "t", text: title }), h("span", { class: "d", text: desc }));
     $("methodList").replaceChildren(
       card("Descrição livre", sample
-        ? "Escreva do seu jeito quem é o personagem, sem limite de tamanho. A mestra lê e preenche a ficha com o que conseguir. Depois você revisa tudo."
-        : "Indisponível nesta visualização: a mestra precisa da sua conta do Claude.", null, () => renderDescribe(""), !sample),
+        ? "Escreva do seu jeito quem é o personagem, sem limite de tamanho. MestrIA lê e preenche a ficha com o que conseguir. Depois você revisa tudo."
+        : "Indisponível nesta visualização: MestrIA precisa da sua conta do Claude.", null, () => renderDescribe(""), !sample),
       card("Perguntas simplificadas", "Passo a passo: quem é, atributos, perícias, corpo e mente e tipo de história.", null, () => { const d = newDraft(); d.modoCriacao = "simples"; openWizard(d); }),
       card("Perguntas completas", "Mais perguntas para detalhar o personagem. Por enquanto, igual às simplificadas.", "em breve", () => { const d = newDraft(); d.modoCriacao = "completo"; openWizard(d); })
     );
@@ -737,7 +737,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     err.hidden = !errMsg;
     $("describeBody").replaceChildren(
       h("h2", { text: "Descreva o seu personagem" }),
-      h("p", { class: "muted", text: "Quem é, idade, o que faz, de onde vem, no que acredita, no que é bom e no que é ruim. Escreva o quanto quiser. A mestra preenche o que conseguir; o que você não disser fica em branco para você completar." }),
+      h("p", { class: "muted", text: "Quem é, idade, o que faz, de onde vem, no que acredita, no que é bom e no que é ruim. Escreva o quanto quiser. MestrIA preenche o que conseguir; o que você não disser fica em branco para você completar." }),
       h("div", { class: "field" }, h("label", { for: "fDesc", class: "label", text: "Descrição livre" }), ta),
       err,
       h("div", { class: "actions split" },
@@ -806,18 +806,18 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     rate_limited: "Muitas tentativas seguidas. Espere alguns segundos e tente de novo.",
     session_expired: "Sua sessão do Claude expirou. Recarregue a página.",
     sampling_disabled: "O uso do Claude por páginas está desligado na sua conta. Use as perguntas simplificadas.",
-    prompt_too_large: "A descrição ficou grande demais para a mestra ler de uma vez. Resuma um pouco e tente de novo.",
-    invalid_json: "A mestra se confundiu ao ler. Tente de novo.",
-    refused: "A mestra não conseguiu ler essa descrição. Ajuste o texto e tente de novo."
+    prompt_too_large: "A descrição ficou grande demais para MestrIA ler de uma vez. Resuma um pouco e tente de novo.",
+    invalid_json: "MestrIA se confundiu ao ler. Tente de novo.",
+    refused: "MestrIA não conseguiu ler essa descrição. Ajuste o texto e tente de novo."
   };
 
   async function readDescription(text) {
     text = (text || "").trim();
     if (!text) { renderDescribe("", "Escreva alguma coisa sobre o personagem antes."); return; }
-    if (!sample) { renderDescribe(text, "A mestra não está disponível nesta visualização."); return; }
+    if (!sample) { renderDescribe(text, "MestrIA não está disponível nesta visualização."); return; }
     readCtl = new AbortController();
     $("describeBody").replaceChildren(
-      h("h2", { text: "A mestra está lendo…" }),
+      h("h2", { text: "MestrIA está lendo…" }),
       h("p", { class: "thinking", text: "Ela vai preencher o que a sua descrição contar e deixar o resto em branco." }),
       h("div", { class: "actions" }, h("button", { class: "btn ghost", type: "button", onclick: () => readCtl && readCtl.abort(), text: "Cancelar" }))
     );
@@ -848,7 +848,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     missing.push("Tipo de história e limites (sempre escolha sua)");
     const list = (title, items) => h("div", null, h("h3", { text: title }), h("ul", null, items.map(t => h("li", { text: t }))));
     $("describeBody").replaceChildren(
-      h("h2", { text: "Pronto, a mestra leu" }),
+      h("h2", { text: "Pronto: MestrIA leu" }),
       h("div", { class: "card found" },
         found.length ? list("Preenchido", found) : h("p", { class: "muted", text: "A descrição não trouxe informação suficiente para preencher a ficha." }),
         list("Para você completar", missing)
@@ -959,7 +959,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
         h("h2", { text: "Que tipo de história você quer viver?" }),
         choiceCards(MORTALIDADE, d.mortalidade, k => { d.mortalidade = k; renderStep(); }, "Modo de mortalidade"),
         h("h3", { text: "Seus limites" }),
-        h("p", { class: "muted small", text: "A mestra ajusta as descrições ao que você prefere ler. Veja o exemplo de cada nível. Você pode mudar depois." }),
+        h("p", { class: "muted small", text: "MestrIA ajusta as descrições ao que você prefere ler. Veja o exemplo de cada nível. Você pode mudar depois." }),
         h("div", { class: "rows" }, LIMITES.map(([k, n]) => limitRow(k, n, d.limites[k], v => { d.limites[k] = v; renderStep(); })))
       );
     }

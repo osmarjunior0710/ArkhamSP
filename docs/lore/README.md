@@ -1,6 +1,6 @@
 # Lore do ArkhamSP
 
-Textos de lore escritos pelo Osmar. São a **fonte canônica** do mundo: a IA mestra e o jogo se baseiam neles.
+Textos de lore escritos pelo Osmar. São a **fonte canônica** do mundo: MestrIA e o jogo se baseiam neles.
 Não editar sem pedir ao Osmar. Resumos e interpretações ficam no Jira (AT-14), nunca dentro destes arquivos.
 
 | Arquivo | Conteúdo | Versão |
