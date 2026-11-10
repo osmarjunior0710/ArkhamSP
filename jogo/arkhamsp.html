@@ -349,6 +349,8 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     for (const k of kids.flat(Infinity)) if (k !== null && k !== undefined && k !== false) el.append(k.nodeType ? k : document.createTextNode(String(k)));
     return el;
   }
+  // Troca o conteúdo de um elemento ignorando itens vazios (null/undefined/false), que o navegador escreveria como texto "null"
+  function put(el, ...kids) { el.replaceChildren(...kids.flat(Infinity).filter(k => k !== null && k !== undefined && k !== false).map(k => k.nodeType ? k : document.createTextNode(String(k)))); }
   const sum = obj => Object.values(obj).reduce((a, b) => a + b, 0);
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   const periciasDe = c => c.pericias || c.especializacoes || {};   // compatível com fichas antigas
@@ -375,7 +377,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   });
   function fail(msg) {
     show("sLoading");
-    $("sLoading").replaceChildren(h("p", { class: "lead", text: msg }));
+    put($("sLoading"), h("p", { class: "lead", text: msg }));
   }
 
   // ---------- Banco ----------
@@ -412,7 +414,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
         )
       );
     }
-    $("homeBody").replaceChildren(card);
+    put($("homeBody"), card);
     show("sHome");
   }
 
@@ -420,7 +422,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   function renderChoose() {
     if (!chars.length) { renderHome(); return; }
     $("listError").hidden = true;
-    $("chooseList").replaceChildren(...chars.slice().reverse().map(c => {
+    put($("chooseList"), ...chars.slice().reverse().map(c => {
       const item = h("li", { class: "char-item" },
         h("div", null, h("div", { class: "name", text: charLabel(c) }), c.conceito ? h("div", { class: "concept", text: c.conceito }) : null),
         h("div", { class: "actions" },
@@ -461,7 +463,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     const c = chars.find(x => x.id === pid);
     if (!c) { renderHome(); return; }
     savePrefs(pid);
-    $("charBody").replaceChildren(...[
+    put($("charBody"), ...[
       h("h2", { text: charLabel(c) }),
       identLine(c),
       c.conceito ? h("p", { class: "muted", text: c.conceito }) : null,
@@ -650,7 +652,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     $("btnBack").textContent = "Cancelar";
     $("btnNext").textContent = saving ? "Salvando…" : "Salvar alterações";
     $("btnNext").disabled = saving;
-    $("editBody").replaceChildren(
+    put($("editBody"), 
       h("h2", { text: "Editar personagem" }),
       h("div", { class: "card" }, h("h3", { text: "Quem é" }), identityFields(d, renderEdit, false),
         h("p", { class: "muted small", text: "Cada troca aqui fica registrada no histórico da ficha." })),
@@ -719,7 +721,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   function renderMethod() {
     const card = (title, desc, tag, onclick, disabled) => h("button", { type: "button", class: "method", disabled: disabled ? true : undefined, onclick },
       tag ? h("span", { class: "tag", text: tag }) : null, h("span", { class: "t", text: title }), h("span", { class: "d", text: desc }));
-    $("methodList").replaceChildren(
+    put($("methodList"), 
       card("Descrição livre", sample
         ? "Escreva do seu jeito quem é o personagem, sem limite de tamanho. MestrIA lê e preenche a ficha com o que conseguir. Depois você revisa tudo."
         : "Indisponível nesta visualização: MestrIA precisa da sua conta do Claude.", null, () => { descAnterior = null; renderDescribe(""); }, !sample),
@@ -737,7 +739,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     ta.value = text || "";
     const err = h("p", { class: "error", role: "alert", text: errMsg || "" });
     err.hidden = !errMsg;
-    $("describeBody").replaceChildren(
+    put($("describeBody"), 
       h("h2", { text: "Descreva o seu personagem" }),
       h("p", { class: "muted", text: "Quem é, idade, o que faz, de onde vem, no que acredita, no que é bom e no que é ruim. Escreva o quanto quiser. MestrIA preenche o que conseguir; o que você não disser fica em branco para você completar." }),
       h("div", { class: "field" }, h("label", { for: "fDesc", class: "label", text: "Descrição livre" }), ta),
@@ -791,7 +793,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     if (!text) { renderDescribe("", "Escreva alguma coisa sobre o personagem antes de incrementar."); return; }
     if (!sample) { renderDescribe(text, "MestrIA não está disponível nesta visualização."); return; }
     readCtl = new AbortController();
-    $("describeBody").replaceChildren(
+    put($("describeBody"), 
       h("h2", { text: "MestrIA está escrevendo…" }),
       h("p", { class: "thinking", text: "Tudo o que você escreveu continua lá. MestrIA só acrescenta." }),
       h("div", { class: "actions" }, h("button", { class: "btn ghost", type: "button", onclick: () => readCtl && readCtl.abort(), text: "Cancelar" }))
@@ -879,7 +881,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     if (!text) { renderDescribe("", "Escreva alguma coisa sobre o personagem antes."); return; }
     if (!sample) { renderDescribe(text, "MestrIA não está disponível nesta visualização."); return; }
     readCtl = new AbortController();
-    $("describeBody").replaceChildren(
+    put($("describeBody"), 
       h("h2", { text: "MestrIA está lendo…" }),
       h("p", { class: "thinking", text: "MestrIA vai preencher o que a sua descrição contar e deixar o resto em branco." }),
       h("div", { class: "actions" }, h("button", { class: "btn ghost", type: "button", onclick: () => readCtl && readCtl.abort(), text: "Cancelar" }))
@@ -910,7 +912,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     if (d.vidaAjustada) found.push("Corpo e mente: Vida " + d.vida + " / Lucidez " + d.lucidez);
     missing.push("Tipo de história e limites (sempre escolha sua)");
     const list = (title, items) => h("div", null, h("h3", { text: title }), h("ul", null, items.map(t => h("li", { text: t }))));
-    $("describeBody").replaceChildren(
+    put($("describeBody"), 
       h("h2", { text: "Pronto: MestrIA leu" }),
       h("div", { class: "card found" },
         found.length ? list("Preenchido", found) : h("p", { class: "muted", text: "A descrição não trouxe informação suficiente para preencher a ficha." }),
@@ -944,7 +946,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     let right = null;
     if (step === 1) right = budgetView(sum(d.atributos), PONTOS_ATRIBUTO);
     if (step === 2) right = budgetView(sum(d.pericias), PONTOS_PERICIA);
-    $("createTop").replaceChildren(
+    put($("createTop"), 
       h("div", { class: "line" },
         h("div", null, h("span", { class: "label", text: "Passo " + (step + 1) + " de " + STEPS.length + " · " }), h("span", { class: "stepname", text: STEPS[step] })),
         right
@@ -996,7 +998,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       const sug = sugestaoVida(d);
       const sugBtn = h("button", { class: "btn ghost", type: "button", text: "Usar sugestão (Vida " + sug + " / Lucidez " + (VIDA_LUCIDEZ - sug) + ")" });
       const paint = () => {
-        bars.replaceChildren(
+        put(bars, 
           h("div", { class: "meter" }, h("span", { text: "Vida" }), cellsView("vida", d.vida), h("strong", { text: String(d.vida) })),
           h("div", { class: "meter" }, h("span", { text: "Lucidez" }), cellsView("luc", d.lucidez), h("strong", { text: String(d.lucidez) }))
         );
@@ -1036,7 +1038,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       );
     }
 
-    $("stepBody").replaceChildren(body);
+    put($("stepBody"), body);
   }
 
   function goStep(n) { step = n; renderStep(); window.scrollTo(0, 0); }
