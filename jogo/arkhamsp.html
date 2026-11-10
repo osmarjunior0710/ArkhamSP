@@ -205,6 +205,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 #editBody > .card + .card, #charBody > .card + .card { margin-top: var(--sp-3); }
 #editBody > p { margin-top: var(--sp-3); }
 #charBody > .actions { margin: var(--sp-3) 0; }
+#describeBody > .actions { margin-top: var(--sp-3); }
 .notice { border-left: 3px solid var(--warn); padding: var(--sp-2) var(--sp-3); background: var(--surface); font-size: .88rem; }
 </style>
 
@@ -721,7 +722,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     $("methodList").replaceChildren(
       card("Descrição livre", sample
         ? "Escreva do seu jeito quem é o personagem, sem limite de tamanho. MestrIA lê e preenche a ficha com o que conseguir. Depois você revisa tudo."
-        : "Indisponível nesta visualização: MestrIA precisa da sua conta do Claude.", null, () => renderDescribe(""), !sample),
+        : "Indisponível nesta visualização: MestrIA precisa da sua conta do Claude.", null, () => { descAnterior = null; renderDescribe(""); }, !sample),
       card("Perguntas simplificadas", "Passo a passo: quem é, atributos, perícias, corpo e mente e tipo de história.", null, () => { const d = newDraft(); d.modoCriacao = "simples"; openWizard(d); }),
       card("Perguntas completas", "Mais perguntas para detalhar o personagem. Por enquanto, igual às simplificadas.", "em breve", () => { const d = newDraft(); d.modoCriacao = "completo"; openWizard(d); })
     );
@@ -730,6 +731,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 
   // ---------- Descrição livre ----------
   let readCtl = null;
+  let descAnterior = null;   // texto antes do último "Incrementar história" (AT-30), só na tela
   function renderDescribe(text, errMsg) {
     const ta = h("textarea", { id: "fDesc", class: "big", placeholder: "Ex.: Cida Albuquerque, 62 anos, enfermeira aposentada do Bixiga. Trabalhou trinta anos no plantão noturno do Hospital das Clínicas e viu coisas que não sabe explicar. É católica, mas não passa embaixo de escada. Fala com todo mundo da rua e percebe quando alguém está mentindo…" });
     ta.value = text || "";
@@ -739,13 +741,74 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       h("h2", { text: "Descreva o seu personagem" }),
       h("p", { class: "muted", text: "Quem é, idade, o que faz, de onde vem, no que acredita, no que é bom e no que é ruim. Escreva o quanto quiser. MestrIA preenche o que conseguir; o que você não disser fica em branco para você completar." }),
       h("div", { class: "field" }, h("label", { for: "fDesc", class: "label", text: "Descrição livre" }), ta),
+      descAnterior !== null ? h("div", { class: "actions" },
+        h("button", { class: "btn ghost", type: "button", onclick: () => { const t = descAnterior; descAnterior = null; renderDescribe(t); }, text: "Voltar ao meu texto" }),
+        h("span", { class: "muted small", text: "MestrIA incrementou o texto. Revise e mude o que quiser." })
+      ) : null,
       err,
-      h("div", { class: "actions split" },
-        h("button", { class: "btn ghost", type: "button", onclick: renderMethod, text: "Voltar" }),
+      h("div", { class: "actions" },
+        h("button", { class: "btn ghost", type: "button", onclick: () => incrementDescription(ta.value), text: "Incrementar história" }),
         h("button", { class: "btn", type: "button", onclick: () => readDescription(ta.value), text: "Ler descrição" })
-      )
+      ),
+      h("div", { class: "actions" }, h("button", { class: "btn ghost", type: "button", onclick: () => { descAnterior = null; renderMethod(); }, text: "Voltar" }))
     );
     show("sDescribe");
+  }
+
+  // ---------- Incrementar história (AT-30) ----------
+  // Regras do Osmar: manter tudo o que a pessoa escreveu, preencher o que falta para a ficha,
+  // nome uma única vez no começo ("Fulano de Tal é…"), resto o mais neutro possível (pronomes são escolha da pessoa).
+  function buildIncrementPrompt(text) {
+    return [
+      "Você é MestrIA, quem narra um RPG de horror cósmico em São Paulo, nos dias de hoje.",
+      "Contexto do mundo: o Véu separa o nosso mundo do Mythos, forças antigas e indiferentes. Onde o Véu é fino, coisas estranhas acontecem.",
+      "A terra e as lendas do Brasil (Curupira, Boitatá e outros guardiões) também reagem. Cultos existem pela cidade. A maioria das pessoas não sabe de nada disso.",
+      "",
+      "A pessoa escreveu a DESCRIÇÃO do personagem abaixo. Reescreva como um texto mais vivo, que ajude a montar a ficha.",
+      "",
+      "Regras:",
+      "- Mantenha TUDO o que a pessoa escreveu: nenhum fato pode sumir ou ser contrariado. Você só acrescenta.",
+      "- Acrescente vida: rotina, manias, lugares reais de São Paulo, relações com outras pessoas.",
+      "- Preencha o que estiver faltando para a ficha: idade, ocupação, onde vive, crença (religião, fé, ateísmo, superstição), família, no que é bom e no que é ruim (corpo, mente, convívio com as pessoas).",
+      "- Nome: o texto começa com o nome completo do personagem, no formato \"<Nome> é …\". Se a pessoa não deu nome, invente um nome brasileiro que combine.",
+      "- O nome aparece UMA ÚNICA VEZ, só no começo. Depois disso, nunca repita o nome (nem o apelido). Reescreva as outras menções sem o nome.",
+      "- Depois do nome, escreva o mais neutro possível: evite palavras com gênero que se refiram ao personagem (ex.: prefira \"tem medo\" a \"está assustado\", \"a pessoa\" a \"o homem\"). Não use ele/ela para o personagem. Os pronomes são escolha da pessoa.",
+      "- Se a pessoa disse os pronomes ou o gênero do personagem, mantenha essa informação no texto uma vez, mas continue evitando repetir.",
+      "- NADA de experiência sobrenatural: o personagem ainda não viveu nem entendeu nada do Mythos. No máximo um pressentimento ou algo estranho que ficou sem explicação.",
+      "- Não fale de números, atributos, perícias ou regras do jogo.",
+      "- Português do Brasil, terceira pessoa, tom sóbrio. Acrescente no máximo uns 1500 caracteres ao que já existe.",
+      "",
+      "Responda SOMENTE com um objeto JSON neste formato:",
+      '{"texto": "…"}',
+      "",
+      "DESCRIÇÃO DA PESSOA:",
+      text
+    ].join("\n");
+  }
+
+  async function incrementDescription(text) {
+    text = (text || "").trim();
+    if (!text) { renderDescribe("", "Escreva alguma coisa sobre o personagem antes de incrementar."); return; }
+    if (!sample) { renderDescribe(text, "MestrIA não está disponível nesta visualização."); return; }
+    readCtl = new AbortController();
+    $("describeBody").replaceChildren(
+      h("h2", { text: "MestrIA está escrevendo…" }),
+      h("p", { class: "thinking", text: "Tudo o que você escreveu continua lá. MestrIA só acrescenta." }),
+      h("div", { class: "actions" }, h("button", { class: "btn ghost", type: "button", onclick: () => readCtl && readCtl.abort(), text: "Cancelar" }))
+    );
+    try {
+      const out = await sample.json(buildIncrementPrompt(text), { signal: readCtl.signal });
+      readCtl = null;
+      const novo = out && typeof out.texto === "string" ? out.texto.trim().slice(0, 20000) : "";
+      if (!novo) { renderDescribe(text, "MestrIA não conseguiu incrementar agora. Tente de novo."); return; }
+      if (descAnterior === null) descAnterior = text;   // "Voltar ao meu texto" volta ao texto da pessoa
+      renderDescribe(novo);
+    } catch (e) {
+      readCtl = null;
+      const code = e && e.code;
+      if (code === "cancelled") { renderDescribe(text); return; }
+      renderDescribe(text, READ_ERRORS[code] || "Não foi possível incrementar agora (" + (code || "erro") + "). Tente de novo.");
+    }
   }
 
   function buildReadPrompt(text) {
@@ -818,7 +881,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     readCtl = new AbortController();
     $("describeBody").replaceChildren(
       h("h2", { text: "MestrIA está lendo…" }),
-      h("p", { class: "thinking", text: "Ela vai preencher o que a sua descrição contar e deixar o resto em branco." }),
+      h("p", { class: "thinking", text: "MestrIA vai preencher o que a sua descrição contar e deixar o resto em branco." }),
       h("div", { class: "actions" }, h("button", { class: "btn ghost", type: "button", onclick: () => readCtl && readCtl.abort(), text: "Cancelar" }))
     );
     try {

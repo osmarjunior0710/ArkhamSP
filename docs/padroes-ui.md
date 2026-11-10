@@ -162,3 +162,16 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
 - **Variações permitidas:** novos tipos de linha no futuro (ex.: evolução de nível, Ocultismo revelado), cada um com o seu texto.
 - **Onde é usado:** ficha do personagem (AT-28).
 - **Histórico:** 2026-11-10: criado em AT-28.
+
+### Ação de MestrIA sobre um texto — rascunho
+- **Label:** `ui-acao-mestria`
+- **Ideia:** pedir para MestrIA trabalhar num texto da pessoa (ex.: incrementar a história) sem perder o que foi escrito.
+- **Quando usar:** sempre que MestrIA reescreve ou completa um texto que a pessoa vai revisar.
+- **Como é:**
+  - botão contornado com o nome da ação (ex.: "Incrementar história") ao lado da ação principal da tela;
+  - enquanto MestrIA trabalha: título "MestrIA está escrevendo…", frase curta em itálico e botão "Cancelar" (volta com o texto intacto);
+  - ao terminar, volta **a mesma tela** com o texto novo no mesmo campo, editável;
+  - **"Voltar ao meu texto"** logo abaixo do campo, com a frase "MestrIA incrementou o texto. Revise e mude o que quiser." Desfaz até o texto original da pessoa, mesmo depois de vários incrementos;
+  - erro aparece acima dos botões, e o texto da pessoa nunca se perde.
+- **Onde é usado:** descrição livre (AT-30).
+- **Histórico:** 2026-11-10: criado em AT-30.
