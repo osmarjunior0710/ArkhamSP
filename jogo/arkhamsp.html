@@ -582,7 +582,9 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       ),
       sanityView(c.sanidade),
       h("div", { class: "sum-grid" },
-        h("div", null, h("h3", { text: "Crença" }), h("p", { class: "story", text: c.crenca || "Não informada." })),
+        h("div", null, h("h3", { text: "Crença" }), h("p", { class: "story", text: c.crenca || "Não informada." }),
+          h("h3", { text: "Item pessoal" }), h("p", { class: "story", text: c.itemPessoal || "Não informado." }),
+          h("h3", { text: "Trauma" }), h("p", { class: "story", text: c.trauma || "Não informado." })),
         h("div", null, h("h3", { text: "Tipo de história" }), h("p", { text: mort ? mort[1] : "—" }),
           h("p", { class: "muted small", text: "Limites: " + LIMITES.map(([k, n]) => n + " " + ((NIVEIS_LIMITE.find(x => x[0] === (c.limites || {})[k]) || ["", "?"])[1]).toLowerCase()).join(", ") }))
       ),
@@ -609,7 +611,10 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       ),
       field("fConceito", "Quem é, em poucas palavras", "Ocupação, idade, o que faz da vida.", inp("fConceito", "conceito", 120, "Ex.: enfermeira aposentada que mora no Bixiga")),
       comHistoria ? field("fHistoria", "História curta", "Opcional. De onde vem, o que carrega.", ta("fHistoria", "historia", 1200, "Ex.: trabalhou trinta anos no plantão noturno do Hospital das Clínicas…")) : null,
-      field("fCrenca", "Crença", "Religião, fé, ateísmo, superstição… muda como o personagem interpreta o que vê.", ta("fCrenca", "crenca", 400, "Ex.: católica de missa no domingo, mas não passa embaixo de escada"))
+      field("fCrenca", "Crença", "Religião, fé, ateísmo, superstição… muda como o personagem interpreta o que vê.", ta("fCrenca", "crenca", 400, "Ex.: católica de missa no domingo, mas não passa embaixo de escada")),
+      // Item pessoal e trauma (AT-33): só na criação; depois ficam fechados como a história de origem
+      comHistoria ? field("fItem", "Item pessoal", "Algo pequeno que o personagem leva sempre consigo e de que não se separa.", inp("fItem", "itemPessoal", 120, "Ex.: o terço da avó, com uma conta faltando")) : null,
+      comHistoria ? field("fTrauma", "Trauma", "Algo que marcou o personagem e ainda pesa. Vai ter efeito no jogo.", ta("fTrauma", "trauma", 400, "Ex.: perdeu o irmão numa enchente e não suporta barulho de chuva forte")) : null
     ];
   }
 
@@ -659,7 +664,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       h("div", { class: "card" }, h("h3", { text: "Seus limites" }),
         h("p", { class: "muted small", text: "Mude quando quiser. Isso é sobre o seu conforto, não sobre o personagem, por isso não entra no histórico." }),
         h("div", { class: "rows" }, LIMITES.map(([k, n]) => limitRow(k, n, d.limites[k], v => { d.limites[k] = v; renderEdit(); })))),
-      h("p", { class: "muted small", text: "Atributos, perícias, Vida, Lucidez e Sanidade só mudam pela evolução e pelo jogo. O tipo de história e a história de origem ficam como foram criados." })
+      h("p", { class: "muted small", text: "Atributos, perícias, Vida, Lucidez e Sanidade só mudam pela evolução e pelo jogo. O tipo de história, a história de origem, o item pessoal e o trauma ficam como foram criados." })
     );
   }
   async function saveEdit() {
@@ -705,7 +710,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     ATRIBUTOS.forEach(([k]) => { atributos[k] = 0; });
     PERICIAS.forEach(([k]) => { pericias[k] = 0; });
     return {
-      nome: "", conceito: "", historia: "", crenca: "",
+      nome: "", conceito: "", historia: "", crenca: "", itemPessoal: "", trauma: "",
       apelido: "", pronomes: "", pronomesTipo: "",
       modoCriacao: "simples", descricaoOriginal: "",
       atributos, pericias, vida: 7, lucidez: 7, vidaAjustada: false,
@@ -773,6 +778,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       "- Mantenha os fatos e a essência do que a pessoa escreveu: nada pode sumir nem ser contrariado. As frases você pode reescrever livremente para o texto novo fluir bem.",
       "- Acrescente vida: rotina, manias, lugares reais de São Paulo, relações com outras pessoas.",
       "- Se faltar algo para a ficha, dê prioridade a isso: idade, ocupação, onde vive, crença (religião, fé, ateísmo, superstição), família, no que é bom e no que é ruim (corpo, mente, convívio com as pessoas).",
+      "- Todo personagem tem um ITEM PESSOAL (algo pequeno que leva sempre consigo e de que não se separa, com uma razão afetiva) e um TRAUMA (algo da vida que marcou e ainda pesa, sem nada sobrenatural). Se o texto não tiver, crie os dois de forma que combinem com a história.",
       "- Nome: o texto começa com o nome completo do personagem, no formato \"<Nome> é …\". Se a pessoa não deu nome, invente um nome brasileiro que combine.",
       "- O nome aparece UMA ÚNICA VEZ, só no começo. Depois disso, nunca repita o nome (nem o apelido). Reescreva as outras menções sem o nome.",
       "- Depois do nome, escreva o mais neutro possível: evite palavras com gênero que se refiram ao personagem (ex.: prefira \"tem medo\" a \"está assustado\", \"a pessoa\" a \"o homem\"). Não use ele/ela para o personagem. Os pronomes são escolha da pessoa.",
@@ -830,6 +836,8 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       "- conceito: quem é em poucas palavras (ocupação, idade, onde vive), até 120 caracteres.",
       "- historia: um resumo do passado e da vida do personagem com base na descrição, em português, terceira pessoa, até 1200 caracteres.",
       "- crenca: a visão de mundo (religião, fé, ateísmo, superstição…), se mencionada, até 400 caracteres.",
+      "- item_pessoal: um objeto pequeno que o personagem leva consigo e a que é apegado, se mencionado, até 120 caracteres (ex.: 'o terço da avó, com uma conta faltando').",
+      "- trauma: algo da vida que marcou o personagem e ainda pesa, se mencionado, até 400 caracteres.",
       "- atributos (0 a 3 cada, soma no máximo 8): pontue só o que a descrição indica com clareza. Pode deixar pontos sem usar.",
       at,
       "- pericias (0 a 2 cada, soma no máximo 5): pontue só o que a descrição indica (profissão, estudo, experiência). Pode deixar pontos sem usar.",
@@ -838,7 +846,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       "- Nunca escolha o tipo de história (mortalidade) nem limites de conteúdo.",
       "",
       "Responda SOMENTE com um objeto JSON neste formato:",
-      '{"nome": null, "apelido": null, "pronomes": null, "conceito": null, "historia": null, "crenca": null, "atributos": {"forca": 0, "agilidade": 0, "intelecto": 0, "percepcao": 0, "presenca": 0, "vontade": 0}, "pericias": {"atletismo": 0, "combate": 0, "furtividade": 0, "sobrevivencia": 0, "conducao": 0, "investigacao": 0, "medicina": 0, "ciencias": 0, "humanidades": 0, "tecnologia": 0, "persuasao": 0, "manipulacao": 0, "empatia": 0, "oficios": 0}, "vida": null}',
+      '{"nome": null, "apelido": null, "pronomes": null, "conceito": null, "historia": null, "crenca": null, "item_pessoal": null, "trauma": null, "atributos": {"forca": 0, "agilidade": 0, "intelecto": 0, "percepcao": 0, "presenca": 0, "vontade": 0}, "pericias": {"atletismo": 0, "combate": 0, "furtividade": 0, "sobrevivencia": 0, "conducao": 0, "investigacao": 0, "medicina": 0, "ciencias": 0, "humanidades": 0, "tecnologia": 0, "persuasao": 0, "manipulacao": 0, "empatia": 0, "oficios": 0}, "vida": null}',
       "",
       "DESCRIÇÃO DO JOGADOR:",
       text
@@ -855,6 +863,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     d.pronomes = str(out.pronomes, 30);
     if (d.pronomes) { const k = PRONOMES.find(([, t]) => t === d.pronomes.toLowerCase()); d.pronomesTipo = k ? k[0] : "outro"; if (k) d.pronomes = k[1]; }
     d.conceito = str(out.conceito, 120); d.historia = str(out.historia, 1200); d.crenca = str(out.crenca, 400);
+    d.itemPessoal = str(out.item_pessoal, 120); d.trauma = str(out.trauma, 400);
     const fit = (src, keys, maxEach, total, dst) => {
       keys.forEach(([k]) => { const v = Number(src && src[k]); dst[k] = Number.isFinite(v) ? clamp(Math.round(v), 0, maxEach) : 0; });
       // Se a IA passar do limite, corta primeiro dos valores menores, preservando os pontos fortes do personagem
@@ -908,6 +917,8 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     (d.conceito ? found : missing).push("Quem é" + (d.conceito ? ": " + d.conceito : ""));
     (d.historia ? found : missing).push("História");
     (d.crenca ? found : missing).push("Crença");
+    (d.itemPessoal ? found : missing).push("Item pessoal" + (d.itemPessoal ? ": " + d.itemPessoal : ""));
+    (d.trauma ? found : missing).push("Trauma");
     const ua = sum(d.atributos), up = sum(d.pericias);
     if (ua) found.push("Atributos: " + ua + " de " + PONTOS_ATRIBUTO + " pontos"); if (ua < PONTOS_ATRIBUTO) missing.push((PONTOS_ATRIBUTO - ua) + " pontos de atributo para distribuir");
     if (up) found.push("Perícias: " + up + " de " + PONTOS_PERICIA + " pontos"); if (up < PONTOS_PERICIA) missing.push((PONTOS_PERICIA - up) + " pontos de perícia para distribuir");
@@ -934,6 +945,8 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     const d = draft;
     if (step === 0 && !d.nome.trim()) return "Dê um nome ao personagem para continuar.";
     if (step === 0 && !d.pronomes.trim()) return d.pronomesTipo === "outro" ? "Escreva os pronomes do personagem." : "Escolha os pronomes do personagem.";
+    if (step === 0 && !d.itemPessoal.trim()) return "Escreva o item pessoal do personagem.";
+    if (step === 0 && !d.trauma.trim()) return "Escreva o trauma do personagem.";
     if (step === 1) { const left = PONTOS_ATRIBUTO - sum(d.atributos); if (left > 0) return "Ainda falta distribuir " + left + (left === 1 ? " ponto" : " pontos") + " de atributo."; }
     if (step === 2) { const left = PONTOS_PERICIA - sum(d.pericias); if (left > 0) return "Ainda falta distribuir " + left + (left === 1 ? " ponto" : " pontos") + " de perícia."; }
     if (step === 4 && !d.mortalidade) return "Escolha que tipo de história você quer viver.";
@@ -1062,19 +1075,21 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 
   async function createCharacter() {
     const d = draft;
-    if (sum(d.atributos) !== PONTOS_ATRIBUTO || sum(d.pericias) !== PONTOS_PERICIA || !d.nome.trim() || !d.pronomes.trim() || !d.mortalidade) {
+    if (sum(d.atributos) !== PONTOS_ATRIBUTO || sum(d.pericias) !== PONTOS_PERICIA || !d.nome.trim() || !d.pronomes.trim() || !d.itemPessoal.trim() || !d.trauma.trim() || !d.mortalidade) {
       showError("Algo ficou incompleto. Volte e confira os passos."); return;
     }
     saving = true; $("btnNext").disabled = true; $("btnNext").textContent = "Criando…";
     const now = Date.now();
     const doc = {
-      versaoFicha: 2,
+      versaoFicha: 3,
       nome: d.nome.trim().slice(0, 60),
       apelido: (d.apelido || "").trim().slice(0, 40),
       pronomes: (d.pronomes || "").trim().slice(0, 30),
       conceito: d.conceito.trim().slice(0, 120),
       historia: d.historia.trim().slice(0, 1200),
       crenca: d.crenca.trim().slice(0, 400),
+      itemPessoal: d.itemPessoal.trim().slice(0, 120),
+      trauma: d.trauma.trim().slice(0, 400),
       modoCriacao: d.modoCriacao || "simples",
       descricaoOriginal: (d.descricaoOriginal || "").slice(0, 20000),
       atributos: Object.assign({}, d.atributos),

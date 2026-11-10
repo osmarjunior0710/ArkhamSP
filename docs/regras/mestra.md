@@ -44,3 +44,10 @@ Pedido usado no botão "Incrementar história" (função `buildIncrementPrompt` 
 - Sem números nem regras do jogo. Resposta: `{"texto": "..."}`.
 - **Tamanho:** cada incremento acrescenta **de 500 a 1000 caracteres** ao texto atual; o pedido informa o tamanho atual
   e a faixa exata. Antes era "no máximo 1500", e a IA tratava o teto como meta (AT-32).
+
+## Item pessoal e trauma (2026-11-10, AT-33)
+
+- `itemPessoal`: objeto pequeno que o personagem leva sempre consigo e a que é apegado. Use em cenas (tocar no objeto
+  em momentos de tensão, alguém notar o objeto). Até o inventário existir, o item **não se perde** nem é destruído.
+- `trauma`: algo da vida que marcou o personagem e ainda pesa. Situações parecidas com o trauma podem trazer o passado
+  à tona na narração. O efeito em regras (Bênção e Maldição) ainda vai ser definido: por enquanto, só narrativo.
