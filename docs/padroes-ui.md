@@ -153,3 +153,12 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
 - **Exemplo:** Vida máxima 7, tomou 1 de dano → 6 vermelhas, 1 vermelha escura, 2 tracejadas.
 - **Onde é usado:** criação (passo Corpo e mente) e prévia do personagem (AT-26).
 - **Histórico:** 2026-11-09: criado em AT-26, a pedido do Osmar, para preparar a futura calculadora de dano.
+
+### Histórico da ficha — rascunho
+- **Label:** `ui-historico-ficha`
+- **Ideia:** mostrar como o personagem mudou ao longo da jornada (ex.: trocou de nome ou de pronomes), sem apagar quem ele foi.
+- **Quando usar:** trocas de identidade do personagem (nome, apelido, pronomes, conceito, crença). **Não usar** para limites de conteúdo: são conforto de quem joga, não algo que aconteceu com o personagem.
+- **Como é:** cartão "Histórico" na ficha, abaixo do resumo, com a troca mais recente em cima. Uma linha por troca: data em cinza e depois "Campo: “antes” → “depois”". Campo vazio aparece como "(vazio)"; textos longos são cortados em 60 caracteres com "…". O cartão só aparece quando existe ao menos uma troca.
+- **Variações permitidas:** novos tipos de linha no futuro (ex.: evolução de nível, Ocultismo revelado), cada um com o seu texto.
+- **Onde é usado:** ficha do personagem (AT-28).
+- **Histórico:** 2026-11-10: criado em AT-28.

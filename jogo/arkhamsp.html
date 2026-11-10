@@ -200,6 +200,11 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .kv dt { color: var(--muted); }
 .kv dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; }
 .story { font-family: var(--font-story); white-space: pre-wrap; }
+.history { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); font-size: .88rem; overflow-wrap: anywhere; }
+.history .when { color: var(--muted); font-variant-numeric: tabular-nums; }
+#editBody > .card + .card, #charBody > .card + .card { margin-top: var(--sp-3); }
+#editBody > p { margin-top: var(--sp-3); }
+#charBody > .actions { margin: var(--sp-3) 0; }
 .notice { border-left: 3px solid var(--warn); padding: var(--sp-2) var(--sp-3); background: var(--surface); font-size: .88rem; }
 </style>
 
@@ -237,6 +242,10 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   <section class="screen" id="sCreate" hidden>
     <div class="create-top" id="createTop"></div>
     <div id="stepBody"></div>
+  </section>
+
+  <section class="screen" id="sEdit" hidden>
+    <div id="editBody"></div>
   </section>
 
   <section class="screen" id="sChar" hidden>
@@ -349,11 +358,12 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   let prefs = { ultimoPersonagem: null };
   let charsLoaded = false;
   let draft = null, step = 0, saving = false;
+  let editing = null;   // { id, d } enquanto edita um personagem existente (AT-28)
 
-  const SCREENS = ["sLoading", "sHome", "sChoose", "sMethod", "sDescribe", "sCreate", "sChar"];
+  const SCREENS = ["sLoading", "sHome", "sChoose", "sMethod", "sDescribe", "sCreate", "sEdit", "sChar"];
   function show(id) {
     SCREENS.forEach(s => { $(s).hidden = s !== id; });
-    const creating = id === "sCreate";
+    const creating = id === "sCreate" || id === "sEdit";
     $("createBar").hidden = !creating;
     document.body.classList.toggle("has-bar", creating);
     window.scrollTo(0, 0);
@@ -455,6 +465,8 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       identLine(c),
       c.conceito ? h("p", { class: "muted", text: c.conceito }) : null,
       summaryView(c),
+      historyView(c),
+      h("div", { class: "actions" }, h("button", { class: "btn ghost", type: "button", onclick: () => openEdit(c.id), text: "Editar personagem" })),
       h("p", { class: "notice", text: "Esta é uma prévia. A ficha completa e o começo da história chegam nas próximas etapas." })
     ].filter(Boolean));
     show("sChar");
@@ -573,6 +585,113 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       ),
       c.historia ? h("div", null, h("h3", { text: "História" }), h("p", { class: "story", text: c.historia })) : null
     );
+  }
+
+  // Campos de identidade: usados na criação (passo 1) e na edição (AT-28)
+  function identityFields(d, rerender, comHistoria) {
+    const field = (id, label, hint, el) => h("div", { class: "field" }, h("label", { for: id, class: "label", text: label }), el, hint ? h("span", { class: "hint", text: hint }) : null);
+    const inp = (id, key, max, ph) => { const el = h("input", { id, type: "text", maxlength: String(max), placeholder: ph, value: d[key] }); el.addEventListener("input", () => { d[key] = el.value; }); return el; };
+    const ta = (id, key, max, ph) => { const el = h("textarea", { id, maxlength: String(max), placeholder: ph }); el.value = d[key]; el.addEventListener("input", () => { d[key] = el.value; }); return el; };
+    return [
+      field("fNome", "Nome", null, inp("fNome", "nome", 60, "Ex.: Cida Albuquerque")),
+      field("fApelido", "Apelido", "Opcional. Só quem é próximo do personagem vai chamá-lo assim.", inp("fApelido", "apelido", 40, "Ex.: Dona Cida")),
+      h("div", { class: "field" },
+        h("span", { class: "label", id: "lblPron", text: "Pronomes" }),
+        h("div", { class: "seg", role: "radiogroup", "aria-labelledby": "lblPron" },
+          PRONOMES.map(([k, t]) => h("button", { type: "button", role: "radio", "aria-checked": String(d.pronomesTipo === k),
+            onclick: () => { d.pronomesTipo = k; d.pronomes = k === "outro" ? "" : t; rerender(); if (k === "outro") { const f = $("fPron"); if (f) f.focus(); } }, text: t }))
+        ),
+        d.pronomesTipo === "outro" ? inp("fPron", "pronomes", 30, "Escreva os pronomes. Ex.: ile/dile") : null,
+        h("span", { class: "hint", text: "A mestra vai usar esses pronomes em toda a narração." })
+      ),
+      field("fConceito", "Quem é, em poucas palavras", "Ocupação, idade, o que faz da vida.", inp("fConceito", "conceito", 120, "Ex.: enfermeira aposentada que mora no Bixiga")),
+      comHistoria ? field("fHistoria", "História curta", "Opcional. De onde vem, o que carrega.", ta("fHistoria", "historia", 1200, "Ex.: trabalhou trinta anos no plantão noturno do Hospital das Clínicas…")) : null,
+      field("fCrenca", "Crença", "Religião, fé, ateísmo, superstição… muda como o personagem interpreta o que vê.", ta("fCrenca", "crenca", 400, "Ex.: católica de missa no domingo, mas não passa embaixo de escada"))
+    ];
+  }
+
+  // ---------- Histórico da ficha (AT-28) ----------
+  // Só trocas de identidade entram no histórico. Limites são conforto de quem joga e não geram linha.
+  const CAMPOS_IDENTIDADE = [["nome", "Nome", 60], ["apelido", "Apelido", 40], ["pronomes", "Pronomes", 30], ["conceito", "Conceito", 120], ["crenca", "Crença", 400]];
+  const HISTORICO_MAX = 200;
+  const fmtData = ms => { const t = new Date(ms); return String(t.getDate()).padStart(2, "0") + "/" + String(t.getMonth() + 1).padStart(2, "0") + "/" + t.getFullYear(); };
+  const curto = v => !v ? "(vazio)" : v.length > 60 ? "“" + v.slice(0, 59) + "…”" : "“" + v + "”";
+  function historyView(c) {
+    const hist = (c.historico || []).filter(e => e && e.tipo === "identidade");
+    if (!hist.length) return null;
+    return h("div", { class: "card" },
+      h("h3", { text: "Histórico" }),
+      h("ul", { class: "history" }, hist.slice().reverse().map(e => {
+        const campo = (CAMPOS_IDENTIDADE.find(x => x[0] === e.campo) || [e.campo, e.campo])[1];
+        return h("li", null, h("span", { class: "when", text: fmtData(e.em) }), " " + campo + ": " + curto(e.de) + " → " + curto(e.para));
+      }))
+    );
+  }
+
+  // ---------- Edição (AT-28) ----------
+  // Regra de ouro: o personagem pode mudar quem ele é; o que ele sabe fazer só muda pela evolução.
+  function openEdit(pid) {
+    const c = chars.find(x => x.id === pid);
+    if (!c) { renderHome(); return; }
+    const pron = c.pronomes || "";
+    const tipo = (PRONOMES.find(([, t]) => t === pron) || [pron ? "outro" : ""])[0];
+    editing = { id: pid, d: {
+      nome: c.nome || "", apelido: c.apelido || "", pronomes: pron, pronomesTipo: tipo,
+      conceito: c.conceito || "", crenca: c.crenca || "",
+      limites: Object.assign({ horror: "moderado", gore: "moderado", violencia: "moderado" }, c.limites || {})
+    } };
+    renderEdit();
+    show("sEdit");
+  }
+  function renderEdit() {
+    const d = editing.d;
+    showError("");
+    $("btnBack").textContent = "Cancelar";
+    $("btnNext").textContent = saving ? "Salvando…" : "Salvar alterações";
+    $("btnNext").disabled = saving;
+    $("editBody").replaceChildren(
+      h("h2", { text: "Editar personagem" }),
+      h("div", { class: "card" }, h("h3", { text: "Quem é" }), identityFields(d, renderEdit, false),
+        h("p", { class: "muted small", text: "Cada troca aqui fica registrada no histórico da ficha." })),
+      h("div", { class: "card" }, h("h3", { text: "Seus limites" }),
+        h("p", { class: "muted small", text: "Mude quando quiser. Isso é sobre o seu conforto, não sobre o personagem, por isso não entra no histórico." }),
+        h("div", { class: "rows" }, LIMITES.map(([k, n]) => limitRow(k, n, d.limites[k], v => { d.limites[k] = v; renderEdit(); })))),
+      h("p", { class: "muted small", text: "Atributos, perícias, Vida, Lucidez e Sanidade só mudam pela evolução e pelo jogo. O tipo de história e a história de origem ficam como foram criados." })
+    );
+  }
+  async function saveEdit() {
+    const { id, d } = editing;
+    if (!d.nome.trim()) { showError("O personagem precisa de um nome."); return; }
+    if (!d.pronomes.trim()) { showError(d.pronomesTipo === "outro" ? "Escreva os pronomes do personagem." : "Escolha os pronomes do personagem."); return; }
+    const c = chars.find(x => x.id === id);
+    if (!c) { editing = null; renderHome(); return; }
+    const now = Date.now();
+    const novos = [];
+    const doc = Object.assign({}, c);
+    delete doc.id;
+    CAMPOS_IDENTIDADE.forEach(([k, , max]) => {
+      const para = (d[k] || "").trim().slice(0, max), de = c[k] || "";
+      if (para !== de) { novos.push({ tipo: "identidade", campo: k, de, para, em: now }); doc[k] = para; }
+    });
+    const limitesMudaram = LIMITES.some(([k]) => (c.limites || {})[k] !== d.limites[k]);
+    if (!novos.length && !limitesMudaram) { editing = null; openChar(id); return; }
+    doc.limites = Object.assign({}, d.limites);
+    doc.historico = (c.historico || []).concat(novos).slice(-HISTORICO_MAX);
+    doc.atualizadoEm = now;
+    saving = true; renderEdit();
+    try {
+      await charsCol().doc(id).set(doc);
+      const i = chars.findIndex(x => x.id === id);
+      if (i >= 0) chars[i] = Object.assign({ id }, doc);
+      saving = false; editing = null;
+      openChar(id);
+    } catch (e) {
+      saving = false; renderEdit();
+      const code = e && e.code;
+      showError(code === "invalid_argument"
+        ? "Sua conta não tem permissão para alterar este personagem."
+        : "Não foi possível salvar agora (" + (code || "erro") + "). Tente de novo em alguns segundos.");
+    }
   }
 
   // ---------- Criação ----------
@@ -781,25 +900,9 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     let body;
 
     if (step === 0) {
-      const field = (id, label, hint, el) => h("div", { class: "field" }, h("label", { for: id, class: "label", text: label }), el, hint ? h("span", { class: "hint", text: hint }) : null);
-      const inp = (id, key, max, ph) => { const el = h("input", { id, type: "text", maxlength: String(max), placeholder: ph, value: d[key] }); el.addEventListener("input", () => { d[key] = el.value; }); return el; };
-      const ta = (id, key, max, ph) => { const el = h("textarea", { id, maxlength: String(max), placeholder: ph }); el.value = d[key]; el.addEventListener("input", () => { d[key] = el.value; }); return el; };
       body = h("div", { class: "card" },
         h("h2", { text: "Quem é o seu personagem?" }),
-        field("fNome", "Nome", null, inp("fNome", "nome", 60, "Ex.: Cida Albuquerque")),
-        field("fApelido", "Apelido", "Opcional. Só quem é próximo do personagem vai chamá-lo assim.", inp("fApelido", "apelido", 40, "Ex.: Dona Cida")),
-        h("div", { class: "field" },
-          h("span", { class: "label", id: "lblPron", text: "Pronomes" }),
-          h("div", { class: "seg", role: "radiogroup", "aria-labelledby": "lblPron" },
-            PRONOMES.map(([k, t]) => h("button", { type: "button", role: "radio", "aria-checked": String(d.pronomesTipo === k),
-              onclick: () => { d.pronomesTipo = k; d.pronomes = k === "outro" ? "" : t; renderStep(); if (k === "outro") { const f = $("fPron"); if (f) f.focus(); } }, text: t }))
-          ),
-          d.pronomesTipo === "outro" ? inp("fPron", "pronomes", 30, "Escreva os pronomes. Ex.: ile/dile") : null,
-          h("span", { class: "hint", text: "A mestra vai usar esses pronomes em toda a narração." })
-        ),
-        field("fConceito", "Quem é, em poucas palavras", "Ocupação, idade, o que faz da vida.", inp("fConceito", "conceito", 120, "Ex.: enfermeira aposentada que mora no Bixiga")),
-        field("fHistoria", "História curta", "Opcional. De onde vem, o que carrega.", ta("fHistoria", "historia", 1200, "Ex.: trabalhou trinta anos no plantão noturno do Hospital das Clínicas…")),
-        field("fCrenca", "Crença", "Religião, fé, ateísmo, superstição… muda como o personagem interpreta o que vê.", ta("fCrenca", "crenca", 400, "Ex.: católica de missa no domingo, mas não passa embaixo de escada"))
+        identityFields(d, renderStep, true)
       );
     }
 
@@ -877,11 +980,13 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 
   $("btnBack").addEventListener("click", () => {
     if (saving) return;
+    if (editing) { const id = editing.id; editing = null; openChar(id); return; }
     if (step === 0) { const d = draft; draft = null; d && d.modoCriacao === "descricao" ? renderReadResult(d) : renderMethod(); return; }
     goStep(step - 1);
   });
   $("btnNext").addEventListener("click", async () => {
     if (saving) return;
+    if (editing) { await saveEdit(); return; }
     const err = stepError();
     if (err) { showError(err); return; }
     if (step < STEPS.length - 1) { goStep(step + 1); return; }
@@ -951,7 +1056,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       chars = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
       const first = !charsLoaded;
       if (!snap.metadata.fromCache || snap.size) { charsLoaded = true; clearTimeout(timer); }
-      if (first && charsLoaded && $("sCreate").hidden && $("sChar").hidden) renderHome();
+      if (first && charsLoaded && $("sCreate").hidden && $("sEdit").hidden && $("sChar").hidden) renderHome();
       else if (!$("sHome").hidden) renderHome();
       else if (!$("sChoose").hidden && !deleting) renderChoose();
     }, err => {
