@@ -44,6 +44,8 @@ Pedido usado no botão "Incrementar história" (função `buildIncrementPrompt` 
 - Sem números nem regras do jogo. Resposta: `{"texto": "..."}`.
 - **Tamanho:** cada incremento acrescenta **de 500 a 1000 caracteres** ao texto atual; o pedido informa o tamanho atual
   e a faixa exata. Antes era "no máximo 1500", e a IA tratava o teto como meta (AT-32).
+- **Limite total: 2000 caracteres** (AT-39). A faixa pedida nunca passa de 2000 e o pedido diz "NUNCA passe de 2000".
+  Se vier maior, o jogo corta no fim da última frase antes do limite. Com 1800 ou mais, o botão fica bloqueado.
 
 ## Item pessoal e trauma (2026-11-10, AT-33)
 

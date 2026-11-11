@@ -174,8 +174,9 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
   - ao terminar, volta **a mesma tela** com o texto novo no mesmo campo, editável;
   - **"Voltar ao meu texto"** logo abaixo do campo, com a frase "MestrIA incrementou o texto. Revise e mude o que quiser." Desfaz até o texto original da pessoa, mesmo depois de vários incrementos;
   - erro aparece acima dos botões, e o texto da pessoa nunca se perde.
+  - **limite do texto (AT-39):** contador "N / máximo" abaixo do campo; a partir de 90% do máximo, o botão da ação fica desabilitado e aparece a frase "Com X caracteres ou mais, não dá para incrementar.".
 - **Onde é usado:** descrição livre (AT-30).
-- **Histórico:** 2026-11-10: criado em AT-30.
+- **Histórico:** 2026-11-10: criado em AT-30. 2026-11-11: contador e bloqueio a partir de 90% do limite (AT-39).
 
 ### Lista de itens — rascunho
 - **Label:** `ui-lista-itens`
