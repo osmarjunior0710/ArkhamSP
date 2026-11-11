@@ -55,7 +55,10 @@ Pedido usado no botão "Incrementar história" (função `buildIncrementPrompt` 
 ## Inventário inicial (2026-11-10, AT-35, épico AT-34)
 
 Pedido usado no passo "O que carrega" (função `buildInventoryPrompt` em `jogo/arkhamsp.html`):
-- **2 a 4 itens**; o primeiro é uma mochila, bolsa, pochete, maleta ou similar. O jogador não edita (por enquanto).
+- **Dois kits** para o jogador escolher, como nos roguelikes (AT-36). Cada kit tem **2 a 4 itens**; o primeiro é a
+  **mesma bolsa** nos dois (o jogo garante). Fora a bolsa, os kits não têm nada em comum e, de preferência, são
+  inversamente proporcionais (um tem martelo, o outro serra). Valor parecido: é um gostinho de escolha. Arma em no máximo um kit.
+- Cada kit tem nome curto e uma frase do que favorece. O jogador escolhe o kit, mas não edita os itens (por enquanto).
 - Itens do dia a dia (carteira, documentos, chaves, celular comum, papel e caneta) **todo mundo tem**: não são listados,
   mas MestrIA sempre considera que o personagem tem. Só entra na lista uma versão claramente melhor (ex.: celular de ponta).
 - Não repetir o item pessoal. Tudo cabe na bolsa ou nos bolsos. Nenhum item resolve um problema sozinho. Nada sobrenatural.

@@ -109,7 +109,8 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
 - **Quando usar:** 2 a 4 opções com título e descrição (ex.: modo de mortalidade). Para opções curtas sem explicação, usar a régua segmentada (Leve / Moderado / Pesado).
 - **Como é:** cartões lado a lado (empilham no celular), título em Cinzel e descrição curta; o escolhido ganha borda latão e um ✓.
 - **Variação "cartão de navegação":** cartão em largura total que, ao tocar, já leva para a próxima tela (sem ✓). Pode ter uma etiqueta latão no topo (ex.: "EM BREVE"). Desabilitado fica com opacidade baixa e o texto explica por quê.
-- **Onde é usado:** criação de personagem, passo "Tipo de história" (AT-17); escolha do modo de criação, como cartão de navegação (AT-19).
+- **Variação "cartão com lista":** o cartão traz, abaixo da frase, uma lista no padrão `ui-lista-itens` (ex.: os itens de um kit). Lado a lado no computador, empilhados no celular.
+- **Onde é usado:** criação de personagem, passo "Tipo de história" (AT-17); escolha do modo de criação, como cartão de navegação (AT-19); escolha do kit inicial, como cartão com lista (AT-36).
 - **Histórico:** 2026-11-08: criado em AT-17. 2026-11-10: variação "cartão de navegação" (AT-19).
 
 ### Assistente em passos — rascunho
@@ -182,5 +183,5 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
 - **Quando usar:** inventário (criação, revisão e ficha) e, no futuro, qualquer lista de objetos do personagem.
 - **Como é:** lista vertical com barra fina à esquerda de cada item; nome em negrito e, embaixo, "para que serve" em cinza. O **item pessoal** vem primeiro, com a etiqueta latão "ITEM PESSOAL". No fim, a nota: "Coisas do dia a dia (carteira, documentos, chaves, celular comum, papel e caneta) o personagem sempre tem." Sem itens: "Sem itens registrados."
 - **Variações permitidas:** novas etiquetas (ex.: "quebrado", "emprestado") quando o inventário ganhar regras.
-- **Onde é usado:** passo "O que carrega" da criação, revisão e ficha (AT-35).
+- **Onde é usado:** passo "O que carrega" da criação (dentro dos cartões de kit, AT-36), revisão e ficha (AT-35).
 - **Histórico:** 2026-11-10: criado em AT-35.
