@@ -77,18 +77,18 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
   - 2026-11-05: física real e som de batida (AT-11), após o Osmar achar a v1 "roteirizada, sem punch".
   - 2026-11-05: aprovado pelo Osmar como padrão oficial e visual final dos dados.
 
-### Barra de Sanidade — rascunho
-- **Label:** `ui-barra-sanidade`
+### Barra de Lucidez — rascunho
+- **Label:** `ui-barra-lucidez`
 - **Ideia:** o jogador bate o olho e sabe em que estado mental o personagem está, sem fazer conta.
-- **Quando usar:** sempre que a Sanidade do personagem aparecer (ficha, tela de jogo).
+- **Quando usar:** sempre que a Lucidez do personagem aparecer (ficha, tela de jogo).
 - **Como é:**
-  - barra de 12 pontos dividida em **4 blocos de 3**, esvaziando da direita para a esquerda conforme a Sanidade cai;
+  - barra de 12 pontos dividida em **4 blocos de 3**, esvaziando da direita para a esquerda conforme a Lucidez cai;
   - ao lado, o **nome do estado** do bloco atual: **Lúcido** (12–10), **Abalado** (9–7), **Perturbado** (6–4), **Fraturado** (3–1), **Insano** (0);
   - o número atual aparece junto (ex.: "Abalado · 8").
   - **cores (decisão do Osmar, 2026-11-09):** por enquanto a barra é sempre **verde** (casas atuais) e **verde escuro** (casas perdidas), em qualquer estado; o estado aparece só no nome. Usar a cor do estado na barra ficou estranho e será repensado.
 - **Variações permitidas:** a definir quando a primeira tela for construída.
 - **Onde é usado:** jogo (`jogo/arkhamsp.html`): passo "Corpo e mente" da criação e resumo do personagem (AT-17, AT-16).
-- **Histórico:** 2026-11-08: nomes dos estados definidos pelo Osmar; primeira tela que usa: AT-17. 2026-11-09: casas perdidas em cor escura (AT-26); barra fixada em verde / verde escuro (AT-26).
+- **Histórico:** 2026-11-08: nomes dos estados definidos pelo Osmar; primeira tela que usa: AT-17. 2026-11-09: casas perdidas em cor escura (AT-26); barra fixada em verde / verde escuro (AT-26). 2026-11-11: renomeado de "Barra de Sanidade" (`ui-barra-sanidade`) para "Barra de Lucidez" (`ui-barra-lucidez`), com a troca de nomes das métricas (AT-38).
 
 ### Pips de pontos — rascunho
 - **Label:** `ui-pips`
@@ -141,19 +141,19 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
 - **Onde é usado:** Lista de personagens (AT-24).
 - **Histórico:** 2026-11-09: criado em AT-24.
 
-### Barra de recurso (Vida, Lucidez) — rascunho
+### Barra de recurso (Saúde, Sanidade) — rascunho
 - **Label:** `ui-barra-recurso`
 - **Ideia:** ver de relance quanto o personagem tem, quanto já perdeu e qual é o máximo dele, pronto para dano e cura.
-- **Quando usar:** Vida e Lucidez (e qualquer recurso futuro que tenha atual e máximo).
+- **Quando usar:** Saúde e Sanidade (e qualquer recurso futuro que tenha atual e máximo).
 - **Como é:**
   - 9 casas (o máximo possível no jogo), em linha, com o nome à esquerda e o número à direita;
-  - **atual:** cor cheia (Vida = vermelho, Lucidez = azul);
+  - **atual:** cor cheia (Saúde = vermelho, Sanidade = azul);
   - **perdido** (entre o atual e o máximo do personagem): a mesma cor, **escura**;
   - **indisponível** (acima do máximo do personagem): **contorno tracejado cinza**, como as bolinhas bloqueadas de `ui-pips`;
   - o número mostra "atual/máximo" quando o personagem está machucado (ex.: "6/7"), e só o valor quando está cheio.
-- **Exemplo:** Vida máxima 7, tomou 1 de dano → 6 vermelhas, 1 vermelha escura, 2 tracejadas.
+- **Exemplo:** Saúde máxima 7, tomou 1 de dano → 6 vermelhas, 1 vermelha escura, 2 tracejadas.
 - **Onde é usado:** criação (passo Corpo e mente) e prévia do personagem (AT-26).
-- **Histórico:** 2026-11-09: criado em AT-26, a pedido do Osmar, para preparar a futura calculadora de dano.
+- **Histórico:** 2026-11-09: criado em AT-26, a pedido do Osmar, para preparar a futura calculadora de dano. 2026-11-11: Vida passou a se chamar Saúde e Lucidez passou a se chamar Sanidade (AT-38).
 
 ### Histórico da ficha — rascunho
 - **Label:** `ui-historico-ficha`

@@ -19,8 +19,8 @@
   --ok: #8fbf7a;
   --warn: #d3b35a;
   --bad: #c9705e;
-  --vida: #b5523f;
-  --lucidez: #6f9bb0;
+  --saude: #b5523f;
+  --sanidade: #6f9bb0;
   --s-lucido: #8fbf7a;
   --s-abalado: #d3b35a;
   --s-perturbado: #d8894f;
@@ -154,20 +154,20 @@ textarea.big { min-height: 40vh; }
 .legend .l-free { border: 2px solid var(--accent); }
 .legend .l-lock { border: 2px dashed var(--locked); }
 
-/* Vida / Lucidez */
+/* Saúde / Sanidade */
 .split-bars { display: grid; gap: var(--sp-2); }
 .meter { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr) 3.5ch; gap: var(--sp-2); align-items: center; }
 .meter strong { text-align: right; font-variant-numeric: tabular-nums; }
 .cells { display: grid; grid-template-columns: repeat(9, 1fr); gap: 3px; }
 .cells i { height: 12px; border-radius: 2px; background: var(--surface-2); border: 1px solid var(--line); }
-.cells.vida { --c: var(--vida); }
-.cells.luc { --c: var(--lucidez); }
+.cells.saude { --c: var(--saude); }
+.cells.san { --c: var(--sanidade); }
 .cells i.on { background: var(--c); border-color: var(--c); }
 .cells i.lost, .sanity .block i.lost { background: color-mix(in srgb, var(--c, var(--s-color)) 32%, var(--bg)); border-color: color-mix(in srgb, var(--c, var(--s-color)) 45%, var(--bg)); }
 .cells i.na { background: transparent; border: 1px dashed var(--locked); }
 input[type="range"] { width: 100%; accent-color: var(--accent); }
 
-/* Barra de Sanidade (ui-barra-sanidade) */
+/* Barra de Lucidez (ui-barra-lucidez) */
 .sanity { display: grid; gap: var(--sp-1); }
 .sanity .head { display: flex; justify-content: space-between; gap: var(--sp-2); }
 .sanity .state { font-family: var(--font-display); font-weight: 700; }
@@ -306,8 +306,8 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   const PIPS_MAX = 5;                       // máximo do jogo (atributo e perícia)
   const PONTOS_ATRIBUTO = 8, MAX_ATRIBUTO_CRIACAO = 3;
   const PONTOS_PERICIA = 5, MAX_PERICIA_CRIACAO = 2;
-  const VIDA_LUCIDEZ = 14, MIN_VL = 5, MAX_VL = 9;
-  const SANIDADE_MAX = 12;
+  const SAUDE_SANIDADE = 14, MIN_VL = 5, MAX_VL = 9;
+  const LUCIDEZ_MAX = 12;
   const MORTALIDADE = [
     ["mortal", "Mortal", "Se cair, morre. O personagem acaba."],
     ["semimortal", "Semimortal", "Se cair, não morre: volta, mas com alguma sequela."],
@@ -335,7 +335,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     }
   };
 
-  function estadoSanidade(s) {
+  function estadoLucidez(s) {
     if (s <= 0) return { nome: "Insano", cor: "var(--s-fraturado)" };
     if (s <= 3) return { nome: "Fraturado", cor: "var(--s-fraturado)" };
     if (s <= 6) return { nome: "Perturbado", cor: "var(--s-perturbado)" };
@@ -361,6 +361,19 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   function put(el, ...kids) { el.replaceChildren(...kids.flat(Infinity).filter(k => k !== null && k !== undefined && k !== false).map(k => k.nodeType ? k : document.createTextNode(String(k)))); }
   const sum = obj => Object.values(obj).reduce((a, b) => a + b, 0);
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  // AT-38: fichas antes da versão 5 usavam vida/lucidez (soma 14) e sanidade (12). Converte na leitura;
+  // ao editar, o personagem é regravado já no formato novo.
+  function normalizarFicha(c) {
+    if ((c.versaoFicha || 0) >= 5) return c;
+    const n = Object.assign({}, c, {
+      saude: c.vida, saudeMax: c.vidaMax,
+      sanidade: c.lucidez, sanidadeMax: c.lucidezMax,
+      lucidez: c.sanidade,
+      versaoFicha: 5, migradoDe: c.versaoFicha || 1
+    });
+    delete n.vida; delete n.vidaMax; delete n.lucidezMax;
+    return n;
+  }
   const periciasDe = c => c.pericias || c.especializacoes || {};   // compatível com fichas antigas
 
   // ---------- Estado ----------
@@ -531,16 +544,16 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     for (let i = 1; i <= MAX_VL; i++) cells.push(h("i", { class: i <= cur ? "on" : i <= max ? "lost" : "na" }));
     return h("div", { class: "cells " + kind, "aria-hidden": "true" }, cells);
   }
-  function sanityView(s) {
-    const st = estadoSanidade(s);
+  function lucidezView(s) {
+    const st = estadoLucidez(s);
     const blocks = [];
     for (let b = 0; b < 4; b++) {
       const cells = [];
       for (let k = 1; k <= 3; k++) cells.push(h("i", { class: b * 3 + k <= s ? "on" : "lost" }));
       blocks.push(h("div", { class: "block" }, cells));
     }
-    const wrap = h("div", { class: "sanity", role: "img", "aria-label": "Sanidade " + s + " de 12: " + st.nome },
-      h("div", { class: "head" }, h("span", { class: "label", text: "Sanidade" }), h("span", null, h("span", { class: "state", text: st.nome }), " · " + s)),
+    const wrap = h("div", { class: "sanity", role: "img", "aria-label": "Lucidez " + s + " de 12: " + st.nome },
+      h("div", { class: "head" }, h("span", { class: "label", text: "Lucidez" }), h("span", null, h("span", { class: "state", text: st.nome }), " · " + s)),
       h("div", { class: "blocks" }, blocks)
     );
     // Por enquanto a barra é sempre verde (cheia) e verde escuro (perdida); o estado aparece só no nome (AT-26)
@@ -585,10 +598,10 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
         h("div", null, h("h3", { text: "Perícias" }), pe.length ? kvp(pe) : h("p", { class: "muted small", text: "Nenhuma." }))
       ),
       h("div", { class: "split-bars" },
-        h("div", { class: "meter", role: "img", "aria-label": "Vida " + c.vida + " de " + (c.vidaMax || c.vida) }, h("span", { text: "Vida" }), cellsView("vida", c.vida, c.vidaMax), h("strong", { text: c.vidaMax && c.vida < c.vidaMax ? c.vida + "/" + c.vidaMax : String(c.vida) })),
-        h("div", { class: "meter", role: "img", "aria-label": "Lucidez " + c.lucidez + " de " + (c.lucidezMax || c.lucidez) }, h("span", { text: "Lucidez" }), cellsView("luc", c.lucidez, c.lucidezMax), h("strong", { text: c.lucidezMax && c.lucidez < c.lucidezMax ? c.lucidez + "/" + c.lucidezMax : String(c.lucidez) }))
+        h("div", { class: "meter", role: "img", "aria-label": "Saúde " + c.saude + " de " + (c.saudeMax || c.saude) }, h("span", { text: "Saúde" }), cellsView("saude", c.saude, c.saudeMax), h("strong", { text: c.saudeMax && c.saude < c.saudeMax ? c.saude + "/" + c.saudeMax : String(c.saude) })),
+        h("div", { class: "meter", role: "img", "aria-label": "Sanidade " + c.sanidade + " de " + (c.sanidadeMax || c.sanidade) }, h("span", { text: "Sanidade" }), cellsView("san", c.sanidade, c.sanidadeMax), h("strong", { text: c.sanidadeMax && c.sanidade < c.sanidadeMax ? c.sanidade + "/" + c.sanidadeMax : String(c.sanidade) }))
       ),
-      sanityView(c.sanidade),
+      lucidezView(c.lucidez),
       h("div", { class: "sum-grid" },
         h("div", null, h("h3", { text: "Crença" }), h("p", { class: "story", text: c.crenca || "Não informada." }),
           h("h3", { text: "Trauma" }), h("p", { class: "story", text: c.trauma || "Não informado." })),
@@ -672,7 +685,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       h("div", { class: "card" }, h("h3", { text: "Seus limites" }),
         h("p", { class: "muted small", text: "Mude quando quiser. Isso é sobre o seu conforto, não sobre o personagem, por isso não entra no histórico." }),
         h("div", { class: "rows" }, LIMITES.map(([k, n]) => limitRow(k, n, d.limites[k], v => { d.limites[k] = v; renderEdit(); })))),
-      h("p", { class: "muted small", text: "Atributos, perícias, Vida, Lucidez e Sanidade só mudam pela evolução e pelo jogo. O tipo de história, a história de origem, o item pessoal e o trauma ficam como foram criados." })
+      h("p", { class: "muted small", text: "Atributos, perícias, Saúde, Sanidade e Lucidez só mudam pela evolução e pelo jogo. O tipo de história, a história de origem, o item pessoal e o trauma ficam como foram criados." })
     );
   }
   async function saveEdit() {
@@ -821,11 +834,11 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       inventario: null, invChave: "", kits: null, kitEscolhido: null,
       apelido: "", pronomes: "", pronomesTipo: "",
       modoCriacao: "simples", descricaoOriginal: "",
-      atributos, pericias, vida: 7, lucidez: 7, vidaAjustada: false,
+      atributos, pericias, saude: 7, sanidade: 7, saudeAjustada: false,
       mortalidade: null, limites: { horror: "moderado", gore: "moderado", violencia: "moderado" }
     };
   }
-  const sugestaoVida = d => clamp(7 + d.atributos.forca - d.atributos.vontade, MIN_VL, MAX_VL);
+  const sugestaoSaude = d => clamp(7 + d.atributos.forca - d.atributos.vontade, MIN_VL, MAX_VL);
 
   // ---------- Escolha do modo de criação (AT-19) ----------
   function startCreate() { renderMethod(); }
@@ -950,11 +963,11 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       at,
       "- pericias (0 a 2 cada, soma no máximo 5): pontue só o que a descrição indica (profissão, estudo, experiência). Pode deixar pontos sem usar.",
       pe,
-      "- vida: número de 5 a 9 só se a descrição deixar claro se o personagem é mais forte de corpo (vida alta) ou de mente (vida baixa); senão null. Vida + Lucidez = 14.",
+      "- saude: número de 5 a 9 só se a descrição deixar claro se o personagem é mais forte de corpo (saúde alta) ou de mente (saúde baixa); senão null. Saúde + Sanidade = 14.",
       "- Nunca escolha o tipo de história (mortalidade) nem limites de conteúdo.",
       "",
       "Responda SOMENTE com um objeto JSON neste formato:",
-      '{"nome": null, "apelido": null, "pronomes": null, "conceito": null, "historia": null, "crenca": null, "item_pessoal": null, "trauma": null, "atributos": {"forca": 0, "agilidade": 0, "intelecto": 0, "percepcao": 0, "presenca": 0, "vontade": 0}, "pericias": {"atletismo": 0, "combate": 0, "furtividade": 0, "sobrevivencia": 0, "conducao": 0, "investigacao": 0, "medicina": 0, "ciencias": 0, "humanidades": 0, "tecnologia": 0, "persuasao": 0, "manipulacao": 0, "empatia": 0, "oficios": 0}, "vida": null}',
+      '{"nome": null, "apelido": null, "pronomes": null, "conceito": null, "historia": null, "crenca": null, "item_pessoal": null, "trauma": null, "atributos": {"forca": 0, "agilidade": 0, "intelecto": 0, "percepcao": 0, "presenca": 0, "vontade": 0}, "pericias": {"atletismo": 0, "combate": 0, "furtividade": 0, "sobrevivencia": 0, "conducao": 0, "investigacao": 0, "medicina": 0, "ciencias": 0, "humanidades": 0, "tecnologia": 0, "persuasao": 0, "manipulacao": 0, "empatia": 0, "oficios": 0}, "saude": null}',
       "",
       "DESCRIÇÃO DO JOGADOR:",
       text
@@ -979,9 +992,9 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     };
     fit(out.atributos, ATRIBUTOS, MAX_ATRIBUTO_CRIACAO, PONTOS_ATRIBUTO, d.atributos);
     fit(out.pericias, PERICIAS, MAX_PERICIA_CRIACAO, PONTOS_PERICIA, d.pericias);
-    const v = Number(out.vida);
-    if (Number.isFinite(v) && v >= MIN_VL && v <= MAX_VL) { d.vida = Math.round(v); d.lucidez = VIDA_LUCIDEZ - d.vida; d.vidaAjustada = true; }
-    else { d.vida = sugestaoVida(d); d.lucidez = VIDA_LUCIDEZ - d.vida; }
+    const v = Number(out.saude);
+    if (Number.isFinite(v) && v >= MIN_VL && v <= MAX_VL) { d.saude = Math.round(v); d.sanidade = SAUDE_SANIDADE - d.saude; d.saudeAjustada = true; }
+    else { d.saude = sugestaoSaude(d); d.sanidade = SAUDE_SANIDADE - d.saude; }
     return d;
   }
 
@@ -1030,7 +1043,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     const ua = sum(d.atributos), up = sum(d.pericias);
     if (ua) found.push("Atributos: " + ua + " de " + PONTOS_ATRIBUTO + " pontos"); if (ua < PONTOS_ATRIBUTO) missing.push((PONTOS_ATRIBUTO - ua) + " pontos de atributo para distribuir");
     if (up) found.push("Perícias: " + up + " de " + PONTOS_PERICIA + " pontos"); if (up < PONTOS_PERICIA) missing.push((PONTOS_PERICIA - up) + " pontos de perícia para distribuir");
-    if (d.vidaAjustada) found.push("Corpo e mente: Vida " + d.vida + " / Lucidez " + d.lucidez);
+    if (d.saudeAjustada) found.push("Corpo e mente: Saúde " + d.saude + " / Sanidade " + d.sanidade);
     missing.push("Tipo de história e limites (sempre escolha sua)");
     const list = (title, items) => h("div", null, h("h3", { text: title }), h("ul", null, items.map(t => h("li", { text: t }))));
     put($("describeBody"), 
@@ -1102,7 +1115,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
         pipLegend(),
         h("div", { class: "rows" }, ATRIBUTOS.map(([k, n, ds]) => pipsRow(n, ds, d.atributos[k], MAX_ATRIBUTO_CRIACAO,
           extra => sum(d.atributos) + extra <= PONTOS_ATRIBUTO,
-          v => { d.atributos[k] = clamp(v, 0, MAX_ATRIBUTO_CRIACAO); if (!d.vidaAjustada) { d.vida = sugestaoVida(d); d.lucidez = VIDA_LUCIDEZ - d.vida; } renderStep(); })))
+          v => { d.atributos[k] = clamp(v, 0, MAX_ATRIBUTO_CRIACAO); if (!d.saudeAjustada) { d.saude = sugestaoSaude(d); d.sanidade = SAUDE_SANIDADE - d.saude; } renderStep(); })))
       );
     }
 
@@ -1118,29 +1131,29 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     }
 
     if (step === 3) {
-      const range = h("input", { id: "fVida", type: "range", min: String(MIN_VL), max: String(MAX_VL), step: "1", value: String(d.lucidez), "aria-label": "Lucidez (a Vida é o restante de 14)" });
+      const range = h("input", { id: "fSaude", type: "range", min: String(MIN_VL), max: String(MAX_VL), step: "1", value: String(d.sanidade), "aria-label": "Sanidade (a Saúde é o restante de 14)" });
       const bars = h("div", { class: "split-bars" });
-      const sug = sugestaoVida(d);
-      const sugBtn = h("button", { class: "btn ghost", type: "button", text: "Usar sugestão (Vida " + sug + " / Lucidez " + (VIDA_LUCIDEZ - sug) + ")" });
+      const sug = sugestaoSaude(d);
+      const sugBtn = h("button", { class: "btn ghost", type: "button", text: "Usar sugestão (Saúde " + sug + " / Sanidade " + (SAUDE_SANIDADE - sug) + ")" });
       const paint = () => {
         put(bars, 
-          h("div", { class: "meter" }, h("span", { text: "Vida" }), cellsView("vida", d.vida), h("strong", { text: String(d.vida) })),
-          h("div", { class: "meter" }, h("span", { text: "Lucidez" }), cellsView("luc", d.lucidez), h("strong", { text: String(d.lucidez) }))
+          h("div", { class: "meter" }, h("span", { text: "Saúde" }), cellsView("saude", d.saude), h("strong", { text: String(d.saude) })),
+          h("div", { class: "meter" }, h("span", { text: "Sanidade" }), cellsView("san", d.sanidade), h("strong", { text: String(d.sanidade) }))
         );
-        range.value = String(d.lucidez);
-        sugBtn.disabled = d.vida === sug;
+        range.value = String(d.sanidade);
+        sugBtn.disabled = d.saude === sug;
       };
-      range.addEventListener("input", () => { d.lucidez = Number(range.value); d.vida = VIDA_LUCIDEZ - d.lucidez; d.vidaAjustada = true; paint(); });
-      sugBtn.addEventListener("click", () => { d.vida = sug; d.lucidez = VIDA_LUCIDEZ - sug; d.vidaAjustada = false; paint(); });
+      range.addEventListener("input", () => { d.sanidade = Number(range.value); d.saude = SAUDE_SANIDADE - d.sanidade; d.saudeAjustada = true; paint(); });
+      sugBtn.addEventListener("click", () => { d.saude = sug; d.sanidade = SAUDE_SANIDADE - sug; d.saudeAjustada = false; paint(); });
       paint();
       body = h("div", { class: "card" },
-        h("p", { class: "muted", text: "Vida e Lucidez somam 14. Quanto mais o corpo aguenta, menos a mente aguenta, e vice-versa. Cada lado fica entre 5 e 9." }),
+        h("p", { class: "muted", text: "Saúde e Sanidade somam 14. Quanto mais o corpo aguenta, menos a mente aguenta, e vice-versa. Cada lado fica entre 5 e 9." }),
         bars,
-        h("div", { class: "field" }, h("label", { for: "fVida", class: "label", text: "◂ Mais corpo · Mais mente ▸" }), range),
+        h("div", { class: "field" }, h("label", { for: "fSaude", class: "label", text: "◂ Mais corpo · Mais mente ▸" }), range),
         h("div", { class: "actions" }, sugBtn),
         h("p", { class: "muted small", text: "A sugestão vem da Força e da Vontade. Você pode ajustar como quiser." }),
-        sanityView(SANIDADE_MAX),
-        h("p", { class: "muted small", text: "Todo personagem começa com Sanidade 12. Ela só cai quando ele vê o que não devia, e não volta." })
+        lucidezView(LUCIDEZ_MAX),
+        h("p", { class: "muted small", text: "Todo personagem começa com Lucidez 12. Ela só cai quando o personagem vê o que não devia, e não volta." })
       );
     }
 
@@ -1171,7 +1184,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     }
 
     if (step === 6) {
-      const preview = Object.assign({}, d, { sanidade: SANIDADE_MAX });
+      const preview = Object.assign({}, d, { lucidez: LUCIDEZ_MAX });
       body = h("div", { class: "screen" },
         h("div", null, h("h2", { text: d.nome.trim() || "Sem nome" }), identLine(d), d.conceito ? h("p", { class: "muted", text: d.conceito }) : null),
         summaryView(preview),
@@ -1207,7 +1220,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     saving = true; $("btnNext").disabled = true; $("btnNext").textContent = "Criando…";
     const now = Date.now();
     const doc = {
-      versaoFicha: 4,
+      versaoFicha: 5,
       nome: d.nome.trim().slice(0, 60),
       apelido: (d.apelido || "").trim().slice(0, 40),
       pronomes: (d.pronomes || "").trim().slice(0, 30),
@@ -1223,9 +1236,9 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       atributos: Object.assign({}, d.atributos),
       pericias: Object.assign({ ocultismo: 0 }, d.pericias),
       ocultismoRevelado: false,
-      vida: d.vida, vidaMax: d.vida,
-      lucidez: d.lucidez, lucidezMax: d.lucidez,
-      sanidade: SANIDADE_MAX,
+      saude: d.saude, saudeMax: d.saude,
+      sanidade: d.sanidade, sanidadeMax: d.sanidade,
+      lucidez: LUCIDEZ_MAX,
       mortalidade: d.mortalidade,
       limites: Object.assign({}, d.limites),
       nivel: 1,
@@ -1263,7 +1276,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 
     const timer = setTimeout(() => { if (!charsLoaded) fail("O arquivo do jogo está demorando para responder. Verifique a conexão e recarregue a página."); }, 10000);
     charsCol().orderBy("criadoEm", "asc").onSnapshot(snap => {
-      chars = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+      chars = snap.docs.map(d => normalizarFicha(Object.assign({ id: d.id }, d.data())));
       const first = !charsLoaded;
       if (!snap.metadata.fromCache || snap.size) { charsLoaded = true; clearTimeout(timer); }
       if (first && charsLoaded && $("sCreate").hidden && $("sEdit").hidden && $("sChar").hidden) renderHome();
