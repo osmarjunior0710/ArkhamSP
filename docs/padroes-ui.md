@@ -187,15 +187,15 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
 - **Onde é usado:** passo "O que carrega" da criação (dentro dos cartões de kit, AT-36), revisão e ficha (AT-35).
 - **Histórico:** 2026-11-10: criado em AT-35.
 
-### Marcas (Bênção e Maldição) — rascunho
+### Marcas (Bênçãos e Maldições) — rascunho
 - **Label:** `ui-marcas`
 - **Ideia:** mostrar o que ajuda (Bênção) e o que atrapalha (Maldição) o personagem, e onde isso pesa nos dados.
 - **Quando usar:** ficha, revisão e, no futuro, condições temporárias de Bênção e Maldição durante o jogo.
 - **Como é:**
-  - bloco "Bênção e Maldição" com uma linha por marca, com barra à esquerda (latão na Bênção, vermelho na Maldição);
+  - bloco "Bênçãos e Maldições" (no plural: o personagem pode ter várias) com uma linha por marca, com barra à esquerda (latão na Bênção, vermelho na Maldição);
   - título: "▲ Bênção · Perícia — nome" ou "▼ Maldição · Perícia — nome" (com "nível 2" quando for o caso);
   - embaixo, o motivo em cinza e o efeito ("Testes de Combate rolam com desvantagem.");
   - na lista de atributos e perícias, o ícone **▲ latão** ou **▼ vermelho** ao lado do nome afetado, que aparece mesmo com 0 pontos.
 - **Variações permitidas:** marcas temporárias (condições) com um selo de duração, quando existirem.
 - **Onde é usado:** revisão da criação e ficha (AT-41).
-- **Histórico:** 2026-11-12: criado em AT-41.
+- **Histórico:** 2026-11-12: criado em AT-41; título no plural, "Bênçãos e Maldições" (AT-42).

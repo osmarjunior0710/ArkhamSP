@@ -606,7 +606,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       m.motivo ? h("div", { class: "ds", text: m.motivo }) : null,
       h("div", { class: "ef", text: "Testes de " + nomeAlvo(m) + " rolam com " + (tipo === "ben" ? "vantagem." : "desvantagem.") })
     );
-    return h("div", null, h("h3", { text: "Bênção e Maldição" }), h("ul", { class: "marcas" }, ben.map(b => linha(b, "ben")), mal.map(m => linha(m, "mal"))));
+    return h("div", null, h("h3", { text: "Bênçãos e Maldições" }), h("ul", { class: "marcas" }, ben.map(b => linha(b, "ben")), mal.map(m => linha(m, "mal"))));
   }
   function summaryView(c) {
     const per = periciasDe(c);
