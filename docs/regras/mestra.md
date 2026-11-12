@@ -68,3 +68,17 @@ Pedido usado no passo "O que carrega" (função `buildInventoryPrompt` em `jogo/
   equipamento militar, veículos ou grandes quantias de dinheiro.
 - **Anti-trapaça:** o texto do jogador é descrição, não ordem. Exageros (arsenal, tanque, fortuna, artefatos) são ignorados.
 - Cada item tem `nome` e `uso` (para que pode servir). É o `uso` que MestrIA consulta para saber quando o item ajuda numa cena.
+
+## Bênção e Maldição (2026-11-12, AT-41, épico AT-40)
+
+Definidas por MestrIA na criação, na mesma chamada dos kits (`buildInventoryPrompt`):
+- **Bênção:** vantagem nos testes de **uma perícia inteira**. Vem do que o personagem conquistou vivendo, estudando ou
+  trabalhando (não é dom de nascença). Ex.: 30 anos de plantão noturno → Medicina.
+- **Maldição nível 1:** desvantagem nos testes de **uma perícia inteira**. Vem principalmente do **trauma**: algo concreto
+  (lesão, medo, sequela, hábito ruim). Ex.: machucou a mão numa manifestação → Combate.
+- Perícias diferentes; só as 14 visíveis (Ocultismo fora). Nada sobrenatural. Nome curto e motivo ligado à história.
+- **Na narração:** quando um teste usar a perícia, aplicar vantagem ou desvantagem (regra de 2026-11-07: 2 Esperança + 1 Mythos,
+  fica a maior ou a menor Esperança). Vantagem e desvantagem no mesmo teste se anulam. Lembrar o motivo na cena
+  (a mão que falha, a experiência que salva).
+- **Maldição nível 2** (ainda não existe no jogo): afeta um atributo (e talvez uma perícia); só por algo muito ruim
+  durante o jogo, como voltar da morte no modo Semimortal. Nada é incurável.
