@@ -136,13 +136,6 @@ textarea { min-height: 76px; resize: vertical; font-family: var(--font-story); }
 .btn.danger { background: transparent; color: var(--bad); border: 1px solid var(--bad); }
 .confirm { display: grid; gap: var(--sp-2); width: 100%; border-top: 1px dashed var(--line); padding-top: var(--sp-2); }
 .confirm p { color: var(--bad); font-size: .9rem; }
-.method-list { display: grid; gap: var(--sp-2); }
-.method { text-align: left; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: var(--sp-3); color: var(--fg); display: grid; gap: var(--sp-1); width: 100%; }
-.method:hover:not(:disabled) { border-color: var(--accent); }
-.method:disabled { opacity: .5; cursor: not-allowed; }
-.method .t { font-family: var(--font-display); font-weight: 700; }
-.method .d { font-size: .85rem; color: var(--muted); }
-.method .tag { justify-self: start; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-ink); background: var(--accent); border-radius: 999px; padding: 1px 8px; }
 textarea.big { min-height: 40vh; }
 .found { display: grid; gap: var(--sp-2); }
 .found ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 2px; }
@@ -245,12 +238,6 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     <h2>Seus personagens</h2>
     <ul class="char-list" id="chooseList"></ul>
     <p class="error" id="listError" role="alert" hidden></p>
-    <div class="actions"><button class="btn ghost" type="button" data-go="home">Voltar</button></div>
-  </section>
-
-  <section class="screen" id="sMethod" hidden>
-    <h2>Como você quer criar o personagem?</h2>
-    <div class="method-list" id="methodList"></div>
     <div class="actions"><button class="btn ghost" type="button" data-go="home">Voltar</button></div>
   </section>
 
@@ -394,7 +381,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   let draft = null, step = 0, saving = false;
   let editing = null;   // { id, d } enquanto edita um personagem existente (AT-28)
 
-  const SCREENS = ["sLoading", "sHome", "sChoose", "sMethod", "sDescribe", "sCreate", "sEdit", "sChar"];
+  const SCREENS = ["sLoading", "sHome", "sChoose", "sDescribe", "sCreate", "sEdit", "sChar"];
   function show(id) {
     SCREENS.forEach(s => { $(s).hidden = s !== id; });
     const creating = id === "sCreate" || id === "sEdit";
@@ -879,22 +866,10 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   }
   const sugestaoSaude = d => clamp(7 + d.atributos.forca - d.atributos.vontade, MIN_VL, MAX_VL);
 
-  // ---------- Escolha do modo de criação (AT-19) ----------
-  function startCreate() { renderMethod(); }
+  // ---------- Início da criação (AT-43) ----------
+  // A criação sempre começa pela descrição; com o campo vazio, a pessoa segue com tudo em branco.
+  function startCreate() { descAnterior = null; renderDescribe(""); }
   function openWizard(d) { draft = d; step = 0; invErro = ""; renderStep(); show("sCreate"); }
-
-  function renderMethod() {
-    const card = (title, desc, tag, onclick, disabled) => h("button", { type: "button", class: "method", disabled: disabled ? true : undefined, onclick },
-      tag ? h("span", { class: "tag", text: tag }) : null, h("span", { class: "t", text: title }), h("span", { class: "d", text: desc }));
-    put($("methodList"), 
-      card("Descrição livre", sample
-        ? "Escreva do seu jeito quem é o personagem, sem limite de tamanho. MestrIA lê e preenche a ficha com o que conseguir. Depois você revisa tudo."
-        : "Indisponível nesta visualização: MestrIA precisa da sua conta do Claude.", null, () => { descAnterior = null; renderDescribe(""); }, !sample),
-      card("Perguntas simplificadas", "Passo a passo: quem é, atributos, perícias, corpo e mente e tipo de história.", null, () => { const d = newDraft(); d.modoCriacao = "simples"; openWizard(d); }),
-      card("Perguntas completas", "Mais perguntas para detalhar o personagem. Por enquanto, igual às simplificadas.", "em breve", () => { const d = newDraft(); d.modoCriacao = "completo"; openWizard(d); })
-    );
-    show("sMethod");
-  }
 
   // ---------- Descrição livre ----------
   let readCtl = null;
@@ -909,7 +884,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     return fim > max * 0.6 ? corte.slice(0, fim + 1).trim() : corte.trim();
   }
   function renderDescribe(text, errMsg) {
-    const ta = h("textarea", { id: "fDesc", class: "big", maxlength: String(DESC_MAX), placeholder: "Ex.: Cida Albuquerque, 62 anos, enfermeira aposentada do Bixiga. Trabalhou trinta anos no plantão noturno do Hospital das Clínicas e viu coisas que não sabe explicar. É católica, mas não passa embaixo de escada. Fala com todo mundo da rua e percebe quando alguém está mentindo…" });
+    const ta = h("textarea", { id: "fDesc", class: "big", maxlength: String(DESC_MAX), placeholder: "Descreva seu personagem com poucas palavras ou muitos detalhes. MestrIA ajuda com o resto." });
     ta.value = cortarTexto(text || "", DESC_MAX);
     const err = h("p", { class: "error", role: "alert", text: errMsg || "" });
     err.hidden = !errMsg;
@@ -926,7 +901,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     atualizar();
     put($("describeBody"), 
       h("h2", { text: "Descreva o seu personagem" }),
-      h("p", { class: "muted", text: "Quem é, idade, o que faz, de onde vem, no que acredita, no que é bom e no que é ruim. Até " + DESC_MAX + " caracteres. MestrIA preenche o que conseguir; o que você não disser fica em branco para você completar." }),
+      h("p", { class: "muted", text: "Quem é, idade, o que faz, de onde vem, no que acredita, no que é bom e no que é ruim. Até " + DESC_MAX + " caracteres. MestrIA preenche o que conseguir e o resto você completa nos próximos passos. Pode também deixar em branco e preencher tudo você." }),
       h("div", { class: "field" }, h("label", { for: "fDesc", class: "label", text: "Descrição livre" }), ta, contador),
       descAnterior !== null ? h("div", { class: "actions" },
         h("button", { class: "btn ghost", type: "button", onclick: () => { const t = descAnterior; descAnterior = null; renderDescribe(t); }, text: "Voltar ao meu texto" }),
@@ -935,10 +910,10 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       err,
       h("div", { class: "actions" },
         incBtn,
-        h("button", { class: "btn", type: "button", onclick: () => readDescription(ta.value), text: "Ler descrição" })
+        h("button", { class: "btn", type: "button", onclick: () => readDescription(ta.value), text: "Continuar" })
       ),
       incAviso,
-      h("div", { class: "actions" }, h("button", { class: "btn ghost", type: "button", onclick: () => { descAnterior = null; renderMethod(); }, text: "Voltar" }))
+      h("div", { class: "actions" }, h("button", { class: "btn ghost", type: "button", onclick: () => { descAnterior = null; renderHome(); }, text: "Voltar" }))
     );
     show("sDescribe");
   }
@@ -1060,10 +1035,10 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   }
 
   const READ_ERRORS = {
-    not_granted: "Você não permitiu que o jogo usasse o Claude. Recarregue a página para ver o pedido de novo, ou use as perguntas simplificadas.",
+    not_granted: "Você não permitiu que o jogo usasse o Claude. Recarregue a página para ver o pedido de novo, ou apague o texto e continue sem a ajuda de MestrIA.",
     rate_limited: "Muitas tentativas seguidas. Espere alguns segundos e tente de novo.",
     session_expired: "Sua sessão do Claude expirou. Recarregue a página.",
-    sampling_disabled: "O uso do Claude por páginas está desligado na sua conta. Use as perguntas simplificadas.",
+    sampling_disabled: "O uso do Claude por páginas está desligado na sua conta. Apague o texto e continue sem a ajuda de MestrIA.",
     prompt_too_large: "A descrição ficou grande demais para MestrIA ler de uma vez. Resuma um pouco e tente de novo.",
     invalid_json: "MestrIA se confundiu ao ler. Tente de novo.",
     refused: "MestrIA não conseguiu ler essa descrição. Ajuste o texto e tente de novo."
@@ -1072,8 +1047,8 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   async function readDescription(text) {
     text = (text || "").trim();
     text = text.slice(0, DESC_MAX);
-    if (!text) { renderDescribe("", "Escreva alguma coisa sobre o personagem antes."); return; }
-    if (!sample) { renderDescribe(text, "MestrIA não está disponível nesta visualização."); return; }
+    // Campo vazio: segue com tudo em branco. Sem MestrIA (fora do Claude): segue em branco, guardando o texto.
+    if (!text || !sample) { const d = newDraft(); d.modoCriacao = text ? "descricao" : "em-branco"; d.descricaoOriginal = text; openWizard(d); return; }
     readCtl = new AbortController();
     put($("describeBody"), 
       h("h2", { text: "MestrIA está lendo…" }),
@@ -1083,45 +1058,13 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     try {
       const out = await sample.json(buildReadPrompt(text), { signal: readCtl.signal });
       readCtl = null;
-      renderReadResult(applyReading(out || {}, text));
+      openWizard(applyReading(out || {}, text));
     } catch (e) {
       readCtl = null;
       const code = e && e.code;
       if (code === "cancelled") { renderDescribe(text); return; }
       renderDescribe(text, READ_ERRORS[code] || "Não foi possível ler agora (" + (code || "erro") + "). Tente de novo.");
     }
-  }
-
-  function renderReadResult(d) {
-    const found = [], missing = [];
-    (d.nome ? found : missing).push("Nome" + (d.nome ? ": " + d.nome : ""));
-    if (d.apelido) found.push("Apelido: " + d.apelido);
-    (d.pronomes ? found : missing).push("Pronomes" + (d.pronomes ? ": " + d.pronomes : ""));
-    (d.conceito ? found : missing).push("Quem é" + (d.conceito ? ": " + d.conceito : ""));
-    (d.historia ? found : missing).push("História");
-    (d.crenca ? found : missing).push("Crença");
-    (d.itemPessoal ? found : missing).push("Item pessoal" + (d.itemPessoal ? ": " + d.itemPessoal : ""));
-    (d.trauma ? found : missing).push("Trauma");
-    const ua = sum(d.atributos), up = sum(d.pericias);
-    if (ua) found.push("Atributos: " + ua + " de " + PONTOS_ATRIBUTO + " pontos"); if (ua < PONTOS_ATRIBUTO) missing.push((PONTOS_ATRIBUTO - ua) + " pontos de atributo para distribuir");
-    if (up) found.push("Perícias: " + up + " de " + PONTOS_PERICIA + " pontos"); if (up < PONTOS_PERICIA) missing.push((PONTOS_PERICIA - up) + " pontos de perícia para distribuir");
-    if (d.saudeAjustada) found.push("Corpo e mente: Saúde " + d.saude + " / Sanidade " + d.sanidade);
-    missing.push("Tipo de história e limites (sempre escolha sua)");
-    const list = (title, items) => h("div", null, h("h3", { text: title }), h("ul", null, items.map(t => h("li", { text: t }))));
-    put($("describeBody"), 
-      h("h2", { text: "Pronto: MestrIA leu" }),
-      h("div", { class: "card found" },
-        found.length ? list("Preenchido", found) : h("p", { class: "muted", text: "A descrição não trouxe informação suficiente para preencher a ficha." }),
-        list("Para você completar", missing)
-      ),
-      h("p", { class: "muted", text: "Em qual modo você quer revisar a ficha? Tudo pode ser alterado." }),
-      h("div", { class: "actions" },
-        h("button", { class: "btn", type: "button", onclick: () => { d.modoRevisao = "simples"; openWizard(d); }, text: "Revisar no modo simplificado" }),
-        h("button", { class: "btn ghost", type: "button", onclick: () => { d.modoRevisao = "completo"; openWizard(d); }, text: "Revisar no modo completo" })
-      ),
-      h("div", { class: "actions" }, h("button", { class: "btn ghost", type: "button", onclick: () => renderDescribe(d.descricaoOriginal), text: "Reescrever descrição" }))
-    );
-    show("sDescribe");
   }
 
   function stepError() {
@@ -1262,7 +1205,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   $("btnBack").addEventListener("click", () => {
     if (saving) return;
     if (editing) { const id = editing.id; editing = null; openChar(id); return; }
-    if (step === 0) { const d = draft; draft = null; d && d.modoCriacao === "descricao" ? renderReadResult(d) : renderMethod(); return; }
+    if (step === 0) { const d = draft; draft = null; renderDescribe(d ? d.descricaoOriginal : ""); return; }
     goStep(step - 1);
   });
   $("btnNext").addEventListener("click", async () => {
