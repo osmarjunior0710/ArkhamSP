@@ -76,7 +76,7 @@ Definidas por MestrIA na criação, na mesma chamada dos kits (`buildInventoryPr
   trabalhando (não é dom de nascença). Ex.: 30 anos de plantão noturno → Medicina.
 - **Maldição nível 1:** desvantagem nos testes de **uma perícia inteira**. Vem principalmente do **trauma**: algo concreto
   (lesão, medo, sequela, hábito ruim). Ex.: machucou a mão numa manifestação → Combate.
-- Perícias diferentes; só as 14 visíveis (Ocultismo fora). Nada sobrenatural. Nome curto e motivo ligado à história.
+- Perícias diferentes (as 15, com Ocultismo, desde AT-44). Nada sobrenatural. Nome curto e motivo ligado à história.
 - **Na narração:** quando um teste usar a perícia, aplicar vantagem ou desvantagem (regra de 2026-11-07: 2 Esperança + 1 Mythos,
   fica a maior ou a menor Esperança). Vantagem e desvantagem no mesmo teste se anulam. Lembrar o motivo na cena
   (a mão que falha, a experiência que salva).

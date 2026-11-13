@@ -294,11 +294,11 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
     ["ciencias", "Ciências", "Biologia, química, física e conhecimento científico."],
     ["humanidades", "Humanidades", "História, religião, cultura e filosofia."],
     ["tecnologia", "Tecnologia", "Computadores, programação, redes e eletrônica."],
+    ["ocultismo", "Ocultismo", "Conhecimento sobrenatural e capacidade de moldar o impossível."],   // visível desde AT-44
     ["persuasao", "Persuasão", "Convencer, negociar, argumentar, ganhar confiança."],
     ["manipulacao", "Manipulação", "Mentir, enganar, intimidar, explorar fraquezas."],
     ["empatia", "Empatia", "Compreender emoções, intenções e comportamentos."],
     ["oficios", "Ofícios", "Mecânica, reparos, arrombamento e trabalhos manuais."]
-    // Ocultismo: escondida até o personagem ter experiência sobrenatural.
   ];
   const PIPS_MAX = 5;                       // máximo do jogo (atributo e perícia)
   const PONTOS_ATRIBUTO = 8, MAX_ATRIBUTO_CRIACAO = 3;
@@ -1003,7 +1003,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       "- Nunca escolha o tipo de história (mortalidade) nem limites de conteúdo.",
       "",
       "Responda SOMENTE com um objeto JSON neste formato:",
-      '{"nome": null, "apelido": null, "pronomes": null, "conceito": null, "historia": null, "crenca": null, "item_pessoal": null, "trauma": null, "atributos": {"forca": 0, "agilidade": 0, "intelecto": 0, "percepcao": 0, "presenca": 0, "vontade": 0}, "pericias": {"atletismo": 0, "combate": 0, "furtividade": 0, "sobrevivencia": 0, "conducao": 0, "investigacao": 0, "medicina": 0, "ciencias": 0, "humanidades": 0, "tecnologia": 0, "persuasao": 0, "manipulacao": 0, "empatia": 0, "oficios": 0}, "saude": null}',
+      '{"nome": null, "apelido": null, "pronomes": null, "conceito": null, "historia": null, "crenca": null, "item_pessoal": null, "trauma": null, "atributos": {"forca": 0, "agilidade": 0, "intelecto": 0, "percepcao": 0, "presenca": 0, "vontade": 0}, "pericias": {"atletismo": 0, "combate": 0, "furtividade": 0, "sobrevivencia": 0, "conducao": 0, "investigacao": 0, "medicina": 0, "ciencias": 0, "humanidades": 0, "tecnologia": 0, "ocultismo": 0, "persuasao": 0, "manipulacao": 0, "empatia": 0, "oficios": 0}, "saude": null}',
       "",
       "DESCRIÇÃO DO JOGADOR:",
       text
@@ -1130,8 +1130,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
         pipLegend(),
         h("div", { class: "rows" }, PERICIAS.map(([k, n, ds]) => pipsRow(n, ds, d.pericias[k], MAX_PERICIA_CRIACAO,
           extra => sum(d.pericias) + extra <= PONTOS_PERICIA,
-          v => { d.pericias[k] = clamp(v, 0, MAX_PERICIA_CRIACAO); renderStep(); }))),
-        h("p", { class: "muted small", text: "Existe mais uma perícia que ninguém escolhe na criação. Ela aparece quando o personagem viver algo que não devia." })
+          v => { d.pericias[k] = clamp(v, 0, MAX_PERICIA_CRIACAO); renderStep(); })))
       );
     }
 
@@ -1241,8 +1240,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
       modoCriacao: d.modoCriacao || "simples",
       descricaoOriginal: (d.descricaoOriginal || "").slice(0, DESC_MAX),
       atributos: Object.assign({}, d.atributos),
-      pericias: Object.assign({ ocultismo: 0 }, d.pericias),
-      ocultismoRevelado: false,
+      pericias: Object.assign({}, d.pericias),
       saude: d.saude, saudeMax: d.saude,
       sanidade: d.sanidade, sanidadeMax: d.sanidade,
       lucidez: LUCIDEZ_MAX,
