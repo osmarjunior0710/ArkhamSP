@@ -117,12 +117,12 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
 - **Label:** `ui-assistente-passos`
 - **Ideia:** dividir um processo longo (criar personagem) em passos curtos, sem perder a noção de onde se está.
 - **Como é:**
-  - **barra fixa no topo:** "Passo N de 6 · Nome do passo", barra de progresso em 6 segmentos (atual em latão) e, quando o passo tem pontos, o contador à direita;
+  - **barra fixa no topo:** "Passo N de total · Nome do passo", barra de progresso com um segmento por passo, sempre numa linha só (atual em latão) e, quando o passo tem pontos, o contador à direita;
   - conteúdo do passo;
   - **barra fixa embaixo:** "Voltar" (ou "Cancelar" no primeiro) à esquerda e "Continuar" (ou a ação final, ex.: "Criar personagem") à direita; a mensagem de erro aparece dentro dessa barra, acima dos botões, para nunca ficar fora da tela;
   - ao tentar avançar com algo faltando, a mensagem diz o que falta; nada avança sozinho.
 - **Onde é usado:** criação de personagem (AT-17).
-- **Histórico:** 2026-11-08: criado em AT-17. 2026-11-09: pílulas trocadas por barra fixa compacta no topo; botões em barra fixa embaixo (AT-20).
+- **Histórico:** 2026-11-08: criado em AT-17. 2026-11-09: pílulas trocadas por barra fixa compacta no topo; botões em barra fixa embaixo (AT-20). 2026-11-13: barra de progresso se ajusta ao número de passos (estava fixa em 6 e quebrava em duas linhas com 7 ou 8 passos; AT-45).
 
 ### Régua com exemplo — rascunho
 - **Label:** `ui-regua-exemplo`
@@ -197,5 +197,13 @@ Catálogo de soluções de interface e funcionalidade já usadas no jogo.
   - embaixo, o motivo em cinza e o efeito ("Testes de Combate rolam com desvantagem.");
   - na lista de atributos e perícias, o ícone **▲ latão** ou **▼ vermelho** ao lado do nome afetado, que aparece mesmo com 0 pontos.
 - **Variações permitidas:** marcas temporárias (condições) com um selo de duração, quando existirem.
-- **Onde é usado:** revisão da criação e ficha (AT-41).
-- **Histórico:** 2026-11-12: criado em AT-41; título no plural, "Bênçãos e Maldições" (AT-42).
+- **Onde é usado:** revisão da criação e ficha (AT-41); passo "Bênção e Maldição" da criação, com ▲/▼ nos rótulos das listas (AT-45).
+- **Histórico:** 2026-11-12: criado em AT-41; título no plural, "Bênçãos e Maldições" (AT-42). 2026-11-13: escolha pelo jogador no passo próprio (AT-45).
+
+### Lista suspensa — rascunho
+- **Label:** `ui-lista-suspensa`
+- **Ideia:** escolher uma opção numa lista que pode ficar longa, sem ocupar a tela inteira.
+- **Quando usar:** escolhas de uma opção entre muitas (ex.: qual perícia recebe a Bênção). Para poucas opções curtas, preferir a régua em pílula (`ui-regua-exemplo`) ou cartões (`ui-cartao-escolha`).
+- **Como é:** a lista nativa do aparelho (no celular abre o seletor do sistema), com a mesma cor e borda dos campos de texto e 40 px de altura. A primeira opção é um convite ("Escolha uma perícia…"). Opções que não podem ser escolhidas ficam desabilitadas (ex.: a perícia já usada na outra lista). Embaixo, em cinza, o contexto da opção escolhida, quando houver (ex.: o motivo sugerido por MestrIA).
+- **Onde é usado:** passo "Bênção e Maldição" da criação (AT-45).
+- **Histórico:** 2026-11-13: criado em AT-45.

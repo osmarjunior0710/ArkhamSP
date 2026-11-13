@@ -71,7 +71,7 @@ Pedido usado no passo "O que carrega" (função `buildInventoryPrompt` em `jogo/
 
 ## Bênção e Maldição (2026-11-12, AT-41, épico AT-40)
 
-Definidas por MestrIA na criação, na mesma chamada dos kits (`buildInventoryPrompt`):
+**Desde AT-45 (2026-11-13), quem escolhe é o jogador**, no passo "Bênção e Maldição", entre as perícias em que colocou pontos. Quando há história (descrição ou história preenchida), MestrIA **sugere** as duas numa chamada própria (`buildMarcasPrompt`), só entre essas perícias; o jogador pode trocar, e a marca trocada fica sem nome e motivo. Critérios da sugestão:
 - **Bênção:** vantagem nos testes de **uma perícia inteira**. Vem do que o personagem conquistou vivendo, estudando ou
   trabalhando (não é dom de nascença). Ex.: 30 anos de plantão noturno → Medicina.
 - **Maldição nível 1:** desvantagem nos testes de **uma perícia inteira**. Vem principalmente do **trauma**: algo concreto
